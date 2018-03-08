@@ -22,19 +22,6 @@ recla[[6]][ , 1, drop = FALSE] -> sex
 insert_pseudomarkers(recla, step = 0.10) -> pseudomap
 ```
 
-Get the total number of markers (and pseudomarkers).
-
-```{r, eval = FALSE}
-sapply(FUN = length, X = pseudomap) -> lens
-sum(lens)
-```
-
-
-
-
-
-The following code & text are taken from Karl's Rmd file where he analyzes Recla data:
-
 ```{r}
 probs <- calc_genoprob(recla, map = pseudomap)
 ```
@@ -78,7 +65,7 @@ Here are the peaks above 5.
 
 ```{r, eval = FALSE}
 library(dplyr)
-(peaks <- find_peaks(out, pseudomap, threshold=5) %>%
+(peaks <- find_peaks(out, pseudomap, threshold = 5) %>%
   arrange(chr, pos))
 ```
 
@@ -113,7 +100,7 @@ library(dplyr)
 
 ```{r}
 sex2 <- sex == "female"
-scan_pvl(probs = pp, pheno = wlph[, c(10, 22)], covariates = sex2, kinship = kinship$`8`, start_snp1 = 1700, n_snp = 500) -> s1_out
+scan_pvl(probs = pp, pheno = wlph[, c(10, 22)], covariates = sex2, kinship = kinship$`8`, start_snp1 = 650, n_snp = 350) -> s1_out
 calc_lrt_tib(s1_out)
 ```
 
