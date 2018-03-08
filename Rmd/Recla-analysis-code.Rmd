@@ -1,0 +1,164 @@
+---
+title: "Recla data analysis"
+author: "Frederick Boehm"
+date: "`r lubridate::now()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Load data
+
+```{r}
+library(qtl2)
+file <- paste0("https://raw.githubusercontent.com/rqtl/",
+               "qtl2data/master/DO_Recla/recla.zip")
+recla <- read_cross2(file)
+# make sex a covariate for use in pvl_scan
+recla[[6]][ , 1, drop = FALSE] -> sex
+# insert pseudomarkers
+insert_pseudomarkers(recla, step = 0.10) -> pseudomap
+```
+
+Get the total number of markers (and pseudomarkers).
+
+```{r, eval = FALSE}
+sapply(FUN = length, X = pseudomap) -> lens
+sum(lens)
+```
+
+
+
+
+
+The following code & text are taken from Karl's Rmd file where he analyzes Recla data:
+
+```{r}
+probs <- calc_genoprob(recla, map = pseudomap)
+```
+
+We now convert the genotype probabilities to haplotype dosages.
+
+```{r}
+aprobs <- genoprob_to_alleleprob(probs)
+```
+
+We now calculate kinship matrices, by the "leave one chromosome out (loco)" method.
+
+```{r}
+kinship <- calc_kinship(aprobs, "loco")
+```
+
+
+## Find genomic region on chr 8
+
+```{r}
+length(pseudomap$`8`)
+gm <- pseudomap$`8`
+```
+
+
+
+
+Genome scans of all phenotypes, after log transform and winsorization.
+
+```{r}
+recla$pheno -> ph
+log(ph) -> lph
+apply(FUN = broman::winsorize, X = lph, MARGIN = 2) -> wlph
+```
+
+```{r, eval = FALSE}
+out <- scan1(aprobs, wlph, kinship)
+```
+
+Here are the peaks above 5.
+
+```{r, eval = FALSE}
+library(dplyr)
+(peaks <- find_peaks(out, pseudomap, threshold=5) %>%
+  arrange(chr, pos))
+```
+
+
+HP_latency also maps to chrom 8, where two LD traits map. Columns 7, 10, and 22 are needed.
+
+
+
+## Examine 3 pairs on chrom 8
+
+Let's consider the three phenotypes that map to approximately 55-57 cM on chromosome 8. 
+
+LD_distance_light (col 7)
+LD_light_pct (col 10)
+HP_latency (col 22)
+
+Recall that Recla et al believe that *Hydin* is the gene responsible for the HP_latency phenotype.
+
+Let's consider first HP_latency and LD_light_pct
+
+### HP_latency and LD_light_pct
+
+
+```{r}
+pp <- aprobs$`8`
+```
+
+```{r}
+library(qtl2pleio)
+library(dplyr)
+```
+
+```{r}
+sex2 <- sex == "female"
+scan_pvl(probs = pp, pheno = wlph[, c(10, 22)], covariates = sex2, kinship = kinship$`8`, start_snp1 = 1700, n_snp = 500) -> s1_out
+calc_lrt_tib(s1_out)
+```
+
+### LD_distance_light & HP_latency
+
+```{r}
+scan_pvl(probs = pp, pheno = wlph[, c(7, 22)], covariates = sex2, kinship = kinship$`8`, start_snp1 = 1700, n_snp = 500) -> s2_out
+calc_lrt_tib(s2_out)
+```
+
+
+### LD_distance_light & LD_light_pct
+
+```{r}
+scan_pvl(probs = pp, pheno = wlph[, c(7, 10)], covariates = sex2, kinship = kinship$`8`, start_snp1 = 1700, n_snp = 500) -> s3_out
+calc_lrt_tib(s3_out)
+```
+
+
+
+```{r}
+tidy_scan_pvl(s1_out, pmap = gm) %>%
+  add_intercepts(c(55.27, 56.77)) %>%
+  plot_pvl(phenames = colnames(recla$pheno)[c(10, 22)])
+```
+
+```{r}
+tidy_scan_pvl(s2_out, pmap = gm) %>%
+  add_intercepts(c(55.27, 56.77)) %>%
+  plot_pvl(phenames = colnames(recla$pheno)[c(7, 22)])
+```
+
+```{r}
+tidy_scan_pvl(s3_out, pmap = gm) %>%
+  add_intercepts(c(55.27, 55.27)) %>%
+  plot_pvl(phenames = colnames(recla$pheno)[c(7, 10)])
+```
+
+## Find the indices for the *pleiotropy peaks*
+
+
+```{r}
+find_pleio_peak_tib(s1_out)
+find_pleio_peak_tib(s2_out)
+find_pleio_peak_tib(s3_out)
+```
+
+
