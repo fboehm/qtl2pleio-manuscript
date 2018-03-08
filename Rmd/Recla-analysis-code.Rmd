@@ -149,3 +149,7 @@ find_pleio_peak_tib(s3_out)
 ```
 
 
+```{r}
+devtools::session_info()
+```
+
