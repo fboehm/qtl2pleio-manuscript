@@ -146,18 +146,21 @@ calc_lrt_tib(s3_out)
 tidy_scan_pvl(s1_out, pmap = gm) %>%
   add_intercepts(c(as.numeric(pos_LD_light_pct), as.numeric(pos_HP_latency))) %>%
   plot_pvl(phenames = colnames(recla$pheno)[c(10, 22)])
+ggsave("2018-03-09_recla-10-22.png")
 ```
 
 ```{r}
 tidy_scan_pvl(s2_out, pmap = gm) %>%
   add_intercepts(c(as.numeric(pos_LD_distance_light), as.numeric(pos_HP_latency))) %>%
   plot_pvl(phenames = colnames(recla$pheno)[c(7, 22)])
+ggsave("2018-03-09_recla-07-22.png")
 ```
 
 ```{r}
 tidy_scan_pvl(s3_out, pmap = gm) %>%
   add_intercepts(c(as.numeric(pos_LD_distance_light), as.numeric(pos_LD_light_pct))) %>%
   plot_pvl(phenames = colnames(recla$pheno)[c(7, 10)])
+ggsave("2018-03-09_recla-07-10.png")
 ```
 
 ## Find the indices for the *pleiotropy peaks*
