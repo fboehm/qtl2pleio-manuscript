@@ -67,6 +67,19 @@ Here are the peaks above 5.
 library(dplyr)
 (peaks <- find_peaks(out, pseudomap, threshold = 5) %>%
   arrange(chr, pos))
+peaks8 <- peaks %>%
+  filter(chr == 8, pos > 50, pos < 60
+         )
+pos_LD_distance_light <- peaks8 %>%
+  filter(lodcolumn == "LD_distance_light") %>%
+  select(pos)
+pos_LD_light_pct <- peaks8 %>%
+  filter(lodcolumn == "LD_light_pct") %>%
+  select(pos)
+pos_HP_latency <- peaks8 %>%
+  filter(lodcolumn == "HP_latency") %>%
+  select(pos)
+
 ```
 
 
@@ -127,23 +140,23 @@ scan_pvl(probs = pp, pheno = wlph[, c(7, 10)], covariates = sex2, kinship = kins
 calc_lrt_tib(s3_out)
 ```
 
-
+## Plots
 
 ```{r}
 tidy_scan_pvl(s1_out, pmap = gm) %>%
-  add_intercepts(c(55.27, 56.77)) %>%
+  add_intercepts(c(as.numeric(pos_LD_light_pct), as.numeric(pos_HP_latency))) %>%
   plot_pvl(phenames = colnames(recla$pheno)[c(10, 22)])
 ```
 
 ```{r}
 tidy_scan_pvl(s2_out, pmap = gm) %>%
-  add_intercepts(c(55.27, 56.77)) %>%
+  add_intercepts(c(as.numeric(pos_LD_distance_light), as.numeric(pos_HP_latency))) %>%
   plot_pvl(phenames = colnames(recla$pheno)[c(7, 22)])
 ```
 
 ```{r}
 tidy_scan_pvl(s3_out, pmap = gm) %>%
-  add_intercepts(c(55.27, 55.27)) %>%
+  add_intercepts(c(as.numeric(pos_LD_distance_light), as.numeric(pos_LD_light_pct))) %>%
   plot_pvl(phenames = colnames(recla$pheno)[c(7, 10)])
 ```
 
