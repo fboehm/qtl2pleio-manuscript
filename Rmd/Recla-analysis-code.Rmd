@@ -57,13 +57,13 @@ log(ph) -> lph
 apply(FUN = broman::winsorize, X = lph, MARGIN = 2) -> wlph
 ```
 
-```{r, eval = FALSE}
+```{r, eval = TRUE}
 out <- scan1(aprobs, wlph, kinship)
 ```
 
 Here are the peaks above 5.
 
-```{r, eval = FALSE}
+```{r, eval = TRUE}
 library(dplyr)
 (peaks <- find_peaks(out, pseudomap, threshold = 5) %>%
   arrange(chr, pos))
