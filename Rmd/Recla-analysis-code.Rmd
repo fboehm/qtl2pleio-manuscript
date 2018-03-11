@@ -12,6 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ### Load data
 
 ```{r}
+library(ggplot2)
 library(qtl2)
 file <- paste0("https://raw.githubusercontent.com/rqtl/",
                "qtl2data/master/DO_Recla/recla.zip")
