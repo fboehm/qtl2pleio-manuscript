@@ -121,6 +121,7 @@ sex2 <- sex == "female"
 # next line takes ~2h to complete
 scan_pvl(probs = pp, pheno = wlph[, c(10, 22)], covariates = sex2, kinship = kinship$`8`, start_snp1 = 650, n_snp = 350) -> s1_out
 calc_lrt_tib(s1_out)
+write.table(x = s1_out, file = "recla-10-22.txt")
 ```
 
 
@@ -130,6 +131,7 @@ calc_lrt_tib(s1_out)
 # next line takes ~2h to complete
 scan_pvl(probs = pp, pheno = wlph[, c(7, 22)], covariates = sex2, kinship = kinship$`8`, start_snp1 = 650, n_snp = 350) -> s2_out
 calc_lrt_tib(s2_out)
+write.table(x = s2_out, file = "recla-07-22.txt")
 ```
 
 
@@ -139,6 +141,7 @@ calc_lrt_tib(s2_out)
 # next line takes ~2h to complete
 scan_pvl(probs = pp, pheno = wlph[, c(7, 10)], covariates = sex2, kinship = kinship$`8`, start_snp1 = 650, n_snp = 350) -> s3_out
 calc_lrt_tib(s3_out)
+write.table(x = s1_out, file = "recla-07-10.txt")
 ```
 
 ## Plots
