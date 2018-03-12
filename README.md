@@ -2,10 +2,18 @@
 Resources from the qtl2pleio manuscript, "A test to distinguish close linkage from pleiotropy in multiparental populations"
 
 
-There are 2 subdirectories in this repository:
+There are 3 subdirectories in this repository:
 
 1. Rmd  
 2. chtc  
+3. results
+
+
+## results contents
+
+Subdirectory "results" contains output files from the Recla analysis; specifically, the results from the 3 calls to `scan_pvl`, each as a text file.
+
+
 
 ## Rmd contents
 
