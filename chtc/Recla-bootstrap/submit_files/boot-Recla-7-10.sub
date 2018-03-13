@@ -5,7 +5,7 @@ s1=650
 nsnp=350
 # length of scan in number of SNPs
 # which run in the experimental design?
-run_num=553
+run_num=563
 #
 nboot_per_job=1
 
@@ -32,7 +32,7 @@ output = boot-$(Process)-run$(run_num).out
 #  used if there were any other files needed for the executable to run.
 should_transfer_files = YES
 when_to_transfer_output = ON_EXIT
-transfer_input_files = ../data,../Rscript,../shell_scripts,http://proxy.chtc.wisc.edu/SQUID/fjboehm/R11.tar.gz,http://proxy.chtc.wisc.edu/SQUID/SLIBS.tar.gz
+transfer_input_files = ../data,../Rscript,../shell_scripts,http://proxy.chtc.wisc.edu/SQUID/fjboehm/R12.tar.gz,http://proxy.chtc.wisc.edu/SQUID/SLIBS.tar.gz
 #
 # Tell HTCondor what amount of compute resources
 #  each job will need on the computer where it runs.
