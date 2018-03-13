@@ -1,7 +1,7 @@
 Recla data analysis
 ================
 Frederick Boehm
-2018-03-11 10:07:40
+2018-03-12 10:22:52
 
 ### Load data
 
@@ -62,6 +62,20 @@ Here are the peaks above 5.
 
 ``` {.r}
 library(dplyr)
+```
+
+    ## 
+    ## Attaching package: 'dplyr'
+
+    ## The following objects are masked from 'package:stats':
+    ## 
+    ##     filter, lag
+
+    ## The following objects are masked from 'package:base':
+    ## 
+    ##     intersect, setdiff, setequal, union
+
+``` {.r}
 (peaks <- find_peaks(out, pseudomap, threshold = 5) %>%
   arrange(chr, pos))
 ```
@@ -198,6 +212,10 @@ calc_lrt_tib(s1_out)
 
     ## [1] 2.771408
 
+``` {.r}
+write.table(x = s1_out, file = "recla-10-22.txt")
+```
+
 ### LD\_distance\_light & HP\_latency
 
 ``` {.r}
@@ -207,6 +225,10 @@ calc_lrt_tib(s2_out)
 ```
 
     ## [1] 2.759916
+
+``` {.r}
+write.table(x = s2_out, file = "recla-07-22.txt")
+```
 
 ### LD\_distance\_light & LD\_light\_pct
 
@@ -222,6 +244,10 @@ calc_lrt_tib(s3_out)
 ```
 
     ## [1] 0.09387654
+
+``` {.r}
+write.table(x = s1_out, file = "recla-07-10.txt")
+```
 
 Plots
 -----
@@ -313,7 +339,7 @@ devtools::session_info()
     ##  language (EN)                        
     ##  collate  en_US.UTF-8                 
     ##  tz       America/Chicago             
-    ##  date     2018-03-11
+    ##  date     2018-03-12
 
     ## Packages -----------------------------------------------------------------
 
