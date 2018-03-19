@@ -1,4 +1,4 @@
 library(qtl2chtc)
-find_missing_jobs(DIR = "../chtc/Recla-bootstrap/results-chtc/boot-run561", outfile = "bad-jobs-run561", njobs = 1000)
-find_missing_jobs(DIR = "../chtc/Recla-bootstrap/results-chtc/boot-run562", outfile = "bad-jobs-run562", njobs = 1000)
-find_missing_jobs(DIR = "../chtc/Recla-bootstrap/results-chtc/boot-run563", outfile = "bad-jobs-run563", njobs = 1000)
+find_missing_jobs(DIR = "chtc/Recla-bootstrap/results-chtc/boot-run561", outfile = "bad-jobs-run561", njobs = 1000)
+find_missing_jobs(DIR = "chtc/Recla-bootstrap/results-chtc/boot-run562", outfile = "bad-jobs-run562", njobs = 1000)
+find_missing_jobs(DIR = "chtc/Recla-bootstrap/results-chtc/boot-run563", outfile = "bad-jobs-run563", njobs = 1000)
