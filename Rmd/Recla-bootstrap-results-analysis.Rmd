@@ -1,7 +1,7 @@
 ---
 title: "Recla analysis - determining the LRT statistics & p-values"
 author: "Frederick Boehm"
-date: "3/7/2018"
+date: "`r lubridate::now()`"
 output: github_document
 ---
 
@@ -12,16 +12,16 @@ In this document, we use the 1000 files (for each of the bivariate traits) that 
 
 ```{r}
 library(dplyr)
-as_tibble(read.table("../results/2018-02-27_pvl-LD_distance_light-HP_latency-chr8-sex.txt")) -> out_0722
-as_tibble(read.table("../results/2018-02-27_pvl-LD_distance_light-LD_light_pct-chr8-sex.txt")) -> out_0710
-as_tibble(read.table("../results/2018-02-27_pvl-LD_light_pct-HP_latency-chr8-sex.txt")) -> out_1022
+as_tibble(read.table("recla-07-22.txt")) -> out_0722
+as_tibble(read.table("recla-07-10.txt")) -> out_0710
+as_tibble(read.table("recla-10-22.txt")) -> out_1022
 ```
 
 ```{r}
 library(qtl2pleio)
-calc_lrt_tib(out_0722) # run 552
-calc_lrt_tib(out_0710) # run 553
-calc_lrt_tib(out_1022) # run 551
+calc_lrt_tib(out_0722) # run 562
+calc_lrt_tib(out_0710) # run 563
+calc_lrt_tib(out_1022) # run 561
 ```
 
 
@@ -30,58 +30,61 @@ calc_lrt_tib(out_1022) # run 551
 Our bootstrap samples were each analyzed with computing resources from the Center for High-Throughput Computing (CHTC) at UW-Madison.
 
 ```{bash}
-ls ../chtc/Recla-bootstrap/results-chtc/boot-run551/*.txt | wc
-ls ../chtc/Recla-bootstrap/results-chtc/boot-run552/*.txt | wc
-ls ../chtc/Recla-bootstrap/results-chtc/boot-run553/*.txt | wc
+ls ../chtc/Recla-bootstrap/submit_files/*run561*.txt | wc
+ls ../chtc/Recla-bootstrap/submit_files/*run562*.txt | wc
+ls ../chtc/Recla-bootstrap/submit_files/*run563*.txt | wc
 ```
 
-We see that each directory has the required 1000 files. 
+We see that each analysis has the required 1000 files. 
 
 
-### Run 551
+### Run 561
 
 ```{r}
-directory <- "../chtc/Recla-bootstrap/results-chtc/boot-run551"
-fns <- dir(directory)
+directory <- "../chtc/Recla-bootstrap/submit_files"
+fns <- dir(directory, pattern = "recla-boot-run561", full.names = TRUE)
 i <- 1
 out <- list()
 for (fn in fns){
-  full_fn <- file.path(directory, fn)
-  read.table(full_fn) -> out[[i]]
+  read.table(fn) -> out[[i]]
   i <- i + 1
 }
 sum(do.call("rbind", out) > calc_lrt_tib(out_1022))
 ```
 
 
-## Run 552
+## Run 562
 
 ```{r}
-directory <- "../chtc/Recla-bootstrap/results-chtc/boot-run552"
-fns <- dir(directory)
+fns <- dir(directory, pattern = "recla-boot-run562", full.names = TRUE)
 i <- 1
 out <- list()
 for (fn in fns){
-  full_fn <- file.path(directory, fn)
-  read.table(full_fn) -> out[[i]]
+  read.table(fn) -> out[[i]]
   i <- i + 1
 }
 sum(do.call("rbind", out) > calc_lrt_tib(out_0722))
 ```
 
 
-## Run 553
+## Run 563
 
 ```{r}
-directory <- "../chtc/Recla-bootstrap/results-chtc/boot-run553"
-fns <- dir(directory)
+fns <- dir(directory, pattern = "recla-boot-run563", full.names = TRUE)
 i <- 1
 out <- list()
 for (fn in fns){
-  full_fn <- file.path(directory, fn)
-  read.table(full_fn) -> out[[i]]
+  read.table(fn) -> out[[i]]
   i <- i + 1
 }
 sum(do.call("rbind", out) > calc_lrt_tib(out_0710))
 ```
+
+
+```{r}
+devtools::session_info()
+```
+
+
+
 

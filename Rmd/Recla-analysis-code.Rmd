@@ -141,7 +141,7 @@ write.table(x = s2_out, file = "recla-07-22.txt")
 # next line takes ~2h to complete
 scan_pvl(probs = pp, pheno = wlph[, c(7, 10)], covariates = sex2, kinship = kinship$`8`, start_snp1 = 650, n_snp = 350) -> s3_out
 calc_lrt_tib(s3_out)
-write.table(x = s1_out, file = "recla-07-10.txt")
+write.table(x = s3_out, file = "recla-07-10.txt")
 ```
 
 ## Plots
