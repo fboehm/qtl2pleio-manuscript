@@ -1,11 +1,11 @@
 Recla data analysis
 ================
 Frederick Boehm
-2018-03-12 10:22:52
+2018-04-03 14:27:57
 
 ### Load data
 
-``` {.r}
+``` r
 library(ggplot2)
 library(qtl2)
 file <- paste0("https://raw.githubusercontent.com/rqtl/",
@@ -17,50 +17,50 @@ recla[[6]][ , 1, drop = FALSE] -> sex
 insert_pseudomarkers(recla, step = 0.10) -> pseudomap
 ```
 
-``` {.r}
+``` r
 probs <- calc_genoprob(recla, map = pseudomap)
 ```
 
 We now convert the genotype probabilities to haplotype dosages.
 
-``` {.r}
+``` r
 aprobs <- genoprob_to_alleleprob(probs)
 ```
 
 We now calculate kinship matrices, by the "leave one chromosome out (loco)" method.
 
-``` {.r}
+``` r
 kinship <- calc_kinship(aprobs, "loco")
 ```
 
 Find genomic region on chr 8
 ----------------------------
 
-``` {.r}
+``` r
 length(pseudomap$`8`)
 ```
 
     ## [1] 1010
 
-``` {.r}
+``` r
 gm <- pseudomap$`8`
 ```
 
 Genome scans of all phenotypes, after log transform and winsorization.
 
-``` {.r}
+``` r
 recla$pheno -> ph
 log(ph) -> lph
 apply(FUN = broman::winsorize, X = lph, MARGIN = 2) -> wlph
 ```
 
-``` {.r}
+``` r
 out <- scan1(aprobs, wlph, kinship)
 ```
 
 Here are the peaks above 5.
 
-``` {.r}
+``` r
 library(dplyr)
 ```
 
@@ -75,7 +75,7 @@ library(dplyr)
     ## 
     ##     intersect, setdiff, setequal, union
 
-``` {.r}
+``` r
 (peaks <- find_peaks(out, pseudomap, threshold = 5) %>%
   arrange(chr, pos))
 ```
@@ -90,7 +90,7 @@ library(dplyr)
     ## 7        16 VC_bottom_distance_first4   3  16.3700  5.212627
     ## 8        14           VC_top_time_pct   3  18.0390  6.059737
     ## 9         7         LD_distance_light   3  23.4390  5.267017
-    ## 10       12        VC_top_time_first4   3  48.1280  6.054755
+    ## 10       12        VC_top_time_first4   3  48.1280  6.054756
     ## 11       15           VC_top_velocity   3  48.5630  6.246314
     ## 12        8            LD_transitions   3  63.6289  5.149258
     ## 13        3             OF_corner_pct   4   8.9111  6.437580
@@ -119,8 +119,8 @@ library(dplyr)
     ## 36        7         LD_distance_light   9  36.6965  5.170923
     ## 37       10              LD_light_pct   9  36.6965  5.335588
     ## 38       12        VC_top_time_first4   9  38.4834  5.099533
-    ## 39       14           VC_top_time_pct   9  39.1680  6.342866
-    ## 40       22                HP_latency   9  46.8502  5.340047
+    ## 39       14           VC_top_time_pct   9  39.1680  6.342865
+    ## 40       22                HP_latency   9  46.8502  5.340046
     ## 41        1        OF_distance_first4  10  29.7530  5.456199
     ## 42       19        VC_bottom_time_pct  10  32.5438  5.459850
     ## 43       26                        bw  10  47.8530  5.038663
@@ -130,7 +130,7 @@ library(dplyr)
     ## 47       21     VC_bottom_transitions  11  60.5984  5.347443
     ## 48       10              LD_light_pct  11  63.3943  6.463179
     ## 49        7         LD_distance_light  11  63.4514  6.390085
-    ## 50       14           VC_top_time_pct  12  20.4776  7.080590
+    ## 50       14           VC_top_time_pct  12  20.4776  7.080589
     ## 51       20        VC_bottom_velocity  12  21.7760  5.606376
     ## 52        6             OF_center_pct  12  35.5140  6.406918
     ## 53       22                HP_latency  12  43.7776  5.642095
@@ -146,18 +146,18 @@ library(dplyr)
     ## 63       23     TS_frequency_climbing  15  12.6680  6.024861
     ## 64       10              LD_light_pct  15  15.2374  5.727106
     ## 65        1        OF_distance_first4  16  23.2656  5.234713
-    ## 66        5           OF_immobile_pct  17   7.7049  5.082184
+    ## 66        5           OF_immobile_pct  17   7.7049  5.082185
     ## 67       13           VC_top_distance  17  15.7582  6.608871
     ## 68       26                        bw  17  59.7330  5.332256
     ## 69       15           VC_top_velocity  18   8.3750  5.580258
     ## 70       12        VC_top_time_first4  18  18.1850  6.478477
-    ## 71        8            LD_transitions  18  37.3182  5.037067
+    ## 71        8            LD_transitions  18  37.3182  5.037068
     ## 72       16 VC_bottom_distance_first4  19  24.9615  7.209821
-    ## 73       17     VC_bottom_time_first4  19  24.9615  7.450061
+    ## 73       17     VC_bottom_time_first4  19  24.9615  7.450062
     ## 74       22                HP_latency  19  47.7977  5.467152
     ## 75       26                        bw   X  57.2600  6.321700
 
-``` {.r}
+``` r
 peaks8 <- peaks %>%
   filter(chr == 8, pos > 50, pos < 60
          )
@@ -187,18 +187,18 @@ Let's consider first HP\_latency and LD\_light\_pct
 
 ### HP\_latency and LD\_light\_pct
 
-``` {.r}
+``` r
 pp <- aprobs$`8`
 ```
 
-``` {.r}
+``` r
 library(qtl2pleio)
 library(dplyr)
 ```
 
 The calls to `scan_pvl` below take about 2 hours each on my macbook pro. I added a progress meter so that you know the estimated completion time.
 
-``` {.r}
+``` r
 sex2 <- sex == "female"
 # next line takes ~2h to complete
 scan_pvl(probs = pp, pheno = wlph[, c(10, 22)], covariates = sex2, kinship = kinship$`8`, start_snp1 = 650, n_snp = 350) -> s1_out
@@ -206,19 +206,19 @@ scan_pvl(probs = pp, pheno = wlph[, c(10, 22)], covariates = sex2, kinship = kin
 
     ## 3 subjects dropped due to missing values
 
-``` {.r}
+``` r
 calc_lrt_tib(s1_out)
 ```
 
     ## [1] 2.771408
 
-``` {.r}
+``` r
 write.table(x = s1_out, file = "recla-10-22.txt")
 ```
 
 ### LD\_distance\_light & HP\_latency
 
-``` {.r}
+``` r
 # next line takes ~2h to complete
 scan_pvl(probs = pp, pheno = wlph[, c(7, 22)], covariates = sex2, kinship = kinship$`8`, start_snp1 = 650, n_snp = 350) -> s2_out
 calc_lrt_tib(s2_out)
@@ -226,33 +226,33 @@ calc_lrt_tib(s2_out)
 
     ## [1] 2.759916
 
-``` {.r}
+``` r
 write.table(x = s2_out, file = "recla-07-22.txt")
 ```
 
 ### LD\_distance\_light & LD\_light\_pct
 
-``` {.r}
+``` r
 # next line takes ~2h to complete
 scan_pvl(probs = pp, pheno = wlph[, c(7, 10)], covariates = sex2, kinship = kinship$`8`, start_snp1 = 650, n_snp = 350) -> s3_out
 ```
 
     ## 3 subjects dropped due to missing values
 
-``` {.r}
+``` r
 calc_lrt_tib(s3_out)
 ```
 
     ## [1] 0.09387654
 
-``` {.r}
-write.table(x = s1_out, file = "recla-07-10.txt")
+``` r
+write.table(x = s3_out, file = "recla-07-10.txt")
 ```
 
 Plots
 -----
 
-``` {.r}
+``` r
 tidy_scan_pvl(s1_out, pmap = gm) %>%
   add_intercepts(c(as.numeric(pos_LD_light_pct), as.numeric(pos_HP_latency))) %>%
   plot_pvl(phenames = colnames(recla$pheno)[c(10, 22)])
@@ -260,9 +260,9 @@ tidy_scan_pvl(s1_out, pmap = gm) %>%
 
     ## Warning: Removed 208 rows containing missing values (geom_path).
 
-![](Recla-analysis-code_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-14-1.png)
+![](Recla-analysis-code_files/figure-markdown_github/unnamed-chunk-14-1.png)
 
-``` {.r}
+``` r
 ggsave("2018-03-09_recla-10-22.png")
 ```
 
@@ -270,7 +270,7 @@ ggsave("2018-03-09_recla-10-22.png")
 
     ## Warning: Removed 208 rows containing missing values (geom_path).
 
-``` {.r}
+``` r
 tidy_scan_pvl(s2_out, pmap = gm) %>%
   add_intercepts(c(as.numeric(pos_LD_distance_light), as.numeric(pos_HP_latency))) %>%
   plot_pvl(phenames = colnames(recla$pheno)[c(7, 22)])
@@ -278,9 +278,9 @@ tidy_scan_pvl(s2_out, pmap = gm) %>%
 
     ## Warning: Removed 209 rows containing missing values (geom_path).
 
-![](Recla-analysis-code_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-15-1.png)
+![](Recla-analysis-code_files/figure-markdown_github/unnamed-chunk-15-1.png)
 
-``` {.r}
+``` r
 ggsave("2018-03-09_recla-07-22.png")
 ```
 
@@ -288,15 +288,15 @@ ggsave("2018-03-09_recla-07-22.png")
 
     ## Warning: Removed 209 rows containing missing values (geom_path).
 
-``` {.r}
+``` r
 tidy_scan_pvl(s3_out, pmap = gm) %>%
   add_intercepts(c(as.numeric(pos_LD_distance_light), as.numeric(pos_LD_light_pct))) %>%
   plot_pvl(phenames = colnames(recla$pheno)[c(7, 10)])
 ```
 
-![](Recla-analysis-code_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-16-1.png)
+![](Recla-analysis-code_files/figure-markdown_github/unnamed-chunk-16-1.png)
 
-``` {.r}
+``` r
 ggsave("2018-03-09_recla-07-10.png")
 ```
 
@@ -305,101 +305,103 @@ ggsave("2018-03-09_recla-07-10.png")
 Find the indices for the *pleiotropy peaks*
 -------------------------------------------
 
-``` {.r}
+``` r
 find_pleio_peak_tib(s1_out)
 ```
 
     ## loglik139 
     ##       788
 
-``` {.r}
+``` r
 find_pleio_peak_tib(s2_out)
 ```
 
     ## loglik124 
     ##       773
 
-``` {.r}
+``` r
 find_pleio_peak_tib(s3_out)
 ```
 
     ## loglik106 
     ##       755
 
-``` {.r}
+``` r
 devtools::session_info()
 ```
 
     ## Session info -------------------------------------------------------------
 
     ##  setting  value                       
-    ##  version  R version 3.3.1 (2016-06-21)
-    ##  system   x86_64, linux-gnu           
+    ##  version  R version 3.4.3 (2017-11-30)
+    ##  system   x86_64, darwin15.6.0        
     ##  ui       X11                         
     ##  language (EN)                        
     ##  collate  en_US.UTF-8                 
     ##  tz       America/Chicago             
-    ##  date     2018-03-12
+    ##  date     2018-04-03
 
     ## Packages -----------------------------------------------------------------
 
-    ##  package     * version  date       source                           
-    ##  assertthat    0.2.0    2017-04-11 CRAN (R 3.3.1)                   
-    ##  backports     1.1.0    2017-05-22 CRAN (R 3.3.1)                   
-    ##  base        * 3.3.1    2016-06-28 local                            
-    ##  bindr         0.1      2016-11-13 CRAN (R 3.3.1)                   
-    ##  bindrcpp    * 0.2      2017-06-17 CRAN (R 3.3.1)                   
-    ##  bit           1.1-12   2014-04-09 CRAN (R 3.3.1)                   
-    ##  bit64         0.9-7    2017-05-08 CRAN (R 3.3.1)                   
-    ##  blob          1.1.0    2017-06-17 cran (@1.1.0)                    
-    ##  broman        0.67-4   2017-12-08 CRAN (R 3.3.1)                   
-    ##  colorspace    1.3-2    2016-12-14 CRAN (R 3.3.1)                   
-    ##  data.table    1.10.4-3 2017-10-27 cran (@1.10.4-)                  
-    ##  datasets    * 3.3.1    2016-06-28 local                            
-    ##  DBI           0.7      2017-06-18 CRAN (R 3.3.1)                   
-    ##  devtools      1.13.5   2018-02-18 CRAN (R 3.3.1)                   
-    ##  digest        0.6.12   2017-01-27 CRAN (R 3.3.1)                   
-    ##  dplyr       * 0.7.4    2017-09-28 cran (@0.7.4)                    
-    ##  evaluate      0.10.1   2017-06-24 CRAN (R 3.3.1)                   
-    ##  gemma2        0.0.1    2018-02-28 Github (fboehm/gemma2@221b37a)   
-    ##  ggplot2     * 2.2.1    2016-12-30 CRAN (R 3.3.1)                   
-    ##  glue          1.2.0    2017-10-29 cran (@1.2.0)                    
-    ##  graphics    * 3.3.1    2016-06-28 local                            
-    ##  grDevices   * 3.3.1    2016-06-28 local                            
-    ##  grid          3.3.1    2016-06-28 local                            
-    ##  gtable        0.2.0    2016-02-26 CRAN (R 3.2.2)                   
-    ##  htmltools     0.3.6    2017-04-28 CRAN (R 3.3.1)                   
-    ##  jsonlite      1.5      2017-06-01 CRAN (R 3.3.1)                   
-    ##  knitr         1.16     2017-05-18 CRAN (R 3.3.1)                   
-    ##  labeling      0.3      2014-08-23 CRAN (R 3.3.1)                   
-    ##  lattice       0.20-33  2015-07-14 CRAN (R 3.3.1)                   
-    ##  lazyeval      0.2.0    2016-06-12 CRAN (R 3.3.1)                   
-    ##  lubridate     1.7.3    2018-02-27 CRAN (R 3.3.1)                   
-    ##  magrittr      1.5      2014-11-22 CRAN (R 3.3.1)                   
-    ##  Matrix        1.2-10   2017-04-28 CRAN (R 3.3.1)                   
-    ##  memoise       1.1.0    2017-04-21 CRAN (R 3.3.1)                   
-    ##  methods     * 3.3.1    2016-06-28 local                            
-    ##  munsell       0.4.3    2016-02-13 CRAN (R 3.2.2)                   
-    ##  mvtnorm       1.0-7    2018-01-26 cran (@1.0-7)                    
-    ##  pillar        1.2.1    2018-02-27 cran (@1.2.1)                    
-    ##  pkgconfig     2.0.1    2017-03-21 CRAN (R 3.3.1)                   
-    ##  plyr          1.8.4    2016-06-08 CRAN (R 3.3.1)                   
-    ##  prettyunits   1.0.2    2015-07-13 cran (@1.0.2)                    
-    ##  progress      1.1.2    2016-12-14 cran (@1.1.2)                    
-    ##  qtl2        * 0.12     2018-02-28 Github (rqtl/qtl2@635eef1)       
-    ##  qtl2pleio   * 0.1.2    2018-03-05 Github (fboehm/qtl2pleio@d2fb4f7)
-    ##  R6            2.2.2    2017-06-17 CRAN (R 3.3.1)                   
-    ##  Rcpp          0.12.15  2018-01-20 cran (@0.12.15)                  
-    ##  rlang         0.2.0    2018-02-20 cran (@0.2.0)                    
-    ##  rmarkdown   * 1.6      2017-06-15 CRAN (R 3.3.1)                   
-    ##  rprojroot     1.2      2017-01-16 CRAN (R 3.3.1)                   
-    ##  RSQLite       2.0      2017-06-19 cran (@2.0)                      
-    ##  scales        0.4.1    2016-11-09 CRAN (R 3.3.1)                   
-    ##  stats       * 3.3.1    2016-06-28 local                            
-    ##  stringi       1.1.6    2017-11-17 CRAN (R 3.3.1)                   
-    ##  stringr       1.3.0    2018-02-19 CRAN (R 3.3.1)                   
-    ##  tibble        1.4.2    2018-01-22 cran (@1.4.2)                    
-    ##  tools         3.3.1    2016-06-28 local                            
-    ##  utils       * 3.3.1    2016-06-28 local                            
-    ##  withr         2.0.0    2017-07-28 CRAN (R 3.3.1)                   
-    ##  yaml          2.1.14   2016-11-12 CRAN (R 3.3.1)
+    ##  package     * version    date       source                             
+    ##  assertthat    0.2.0      2017-04-11 CRAN (R 3.4.0)                     
+    ##  backports     1.1.2      2017-12-13 CRAN (R 3.4.3)                     
+    ##  base        * 3.4.3      2017-12-07 local                              
+    ##  bindr         0.1.1      2018-03-13 CRAN (R 3.4.4)                     
+    ##  bindrcpp    * 0.2        2017-06-17 CRAN (R 3.4.0)                     
+    ##  bit           1.1-12     2014-04-09 CRAN (R 3.4.0)                     
+    ##  bit64         0.9-7      2017-05-08 CRAN (R 3.4.0)                     
+    ##  blob          1.1.0      2017-06-17 CRAN (R 3.4.0)                     
+    ##  broman        0.67-4     2017-12-08 CRAN (R 3.4.3)                     
+    ##  colorspace    1.3-2      2016-12-14 CRAN (R 3.4.0)                     
+    ##  compiler      3.4.3      2017-12-07 local                              
+    ##  crayon        1.3.4      2017-09-16 CRAN (R 3.4.1)                     
+    ##  data.table    1.10.4-3   2017-10-27 cran (@1.10.4-)                    
+    ##  datasets    * 3.4.3      2017-12-07 local                              
+    ##  DBI           0.8        2018-03-02 CRAN (R 3.4.3)                     
+    ##  devtools      1.13.5     2018-02-18 CRAN (R 3.4.3)                     
+    ##  digest        0.6.15     2018-01-28 cran (@0.6.15)                     
+    ##  dplyr       * 0.7.4      2017-09-28 cran (@0.7.4)                      
+    ##  evaluate      0.10.1     2017-06-24 CRAN (R 3.4.0)                     
+    ##  gemma2        0.0.1      2018-02-14 Github (fboehm/gemma2@221b37a)     
+    ##  ggplot2     * 2.2.1.9000 2018-02-14 Github (hadley/ggplot2@39e4a3b)    
+    ##  glue          1.2.0      2017-10-29 CRAN (R 3.4.2)                     
+    ##  graphics    * 3.4.3      2017-12-07 local                              
+    ##  grDevices   * 3.4.3      2017-12-07 local                              
+    ##  grid          3.4.3      2017-12-07 local                              
+    ##  gtable        0.2.0      2016-02-26 CRAN (R 3.4.0)                     
+    ##  hms           0.4.2      2018-03-10 CRAN (R 3.4.4)                     
+    ##  htmltools     0.3.6      2017-04-28 CRAN (R 3.4.0)                     
+    ##  jsonlite      1.5        2017-06-01 cran (@1.5)                        
+    ##  knitr         1.20       2018-02-20 CRAN (R 3.4.3)                     
+    ##  labeling      0.3        2014-08-23 CRAN (R 3.4.0)                     
+    ##  lattice       0.20-35    2017-03-25 CRAN (R 3.4.3)                     
+    ##  lazyeval      0.2.1      2017-10-29 CRAN (R 3.4.2)                     
+    ##  lubridate     1.7.3      2018-02-27 CRAN (R 3.4.3)                     
+    ##  magrittr      1.5.0      2017-09-23 Github (tidyverse/magrittr@0a76de2)
+    ##  Matrix        1.2-12     2017-11-20 CRAN (R 3.4.3)                     
+    ##  memoise       1.1.0      2017-04-21 CRAN (R 3.4.0)                     
+    ##  methods     * 3.4.3      2017-12-07 local                              
+    ##  munsell       0.4.3      2016-02-13 CRAN (R 3.4.0)                     
+    ##  pillar        1.2.1      2018-02-27 CRAN (R 3.4.3)                     
+    ##  pkgconfig     2.0.1      2017-03-21 CRAN (R 3.4.0)                     
+    ##  plyr          1.8.4      2016-06-08 CRAN (R 3.4.0)                     
+    ##  prettyunits   1.0.2      2015-07-13 CRAN (R 3.4.0)                     
+    ##  progress      1.1.2.9002 2018-02-16 Github (r-lib/progress@72c9873)    
+    ##  qtl2        * 0.12       2018-01-19 local                              
+    ##  qtl2pleio   * 0.1.2      2018-03-14 local (fboehm/qtl2pleio@NA)        
+    ##  R6            2.2.2      2017-06-17 CRAN (R 3.4.0)                     
+    ##  Rcpp          0.12.16    2018-03-13 cran (@0.12.16)                    
+    ##  rlang         0.2.0.9000 2018-03-13 Github (tidyverse/rlang@49e9389)   
+    ##  rmarkdown     1.9        2018-03-01 CRAN (R 3.4.3)                     
+    ##  rprojroot     1.3-2      2018-01-03 CRAN (R 3.4.3)                     
+    ##  RSQLite       2.0        2017-06-19 CRAN (R 3.4.0)                     
+    ##  scales        0.5.0.9000 2018-01-29 Github (hadley/scales@d767915)     
+    ##  stats       * 3.4.3      2017-12-07 local                              
+    ##  stringi       1.1.7      2018-03-12 CRAN (R 3.4.4)                     
+    ##  stringr       1.3.0      2018-02-19 cran (@1.3.0)                      
+    ##  tibble        1.4.2      2018-01-22 cran (@1.4.2)                      
+    ##  tools         3.4.3      2017-12-07 local                              
+    ##  utils       * 3.4.3      2017-12-07 local                              
+    ##  withr         2.1.2      2018-03-15 CRAN (R 3.4.4)                     
+    ##  yaml          2.1.18     2018-03-08 CRAN (R 3.4.4)
