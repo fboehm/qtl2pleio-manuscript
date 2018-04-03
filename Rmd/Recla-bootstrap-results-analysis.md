@@ -1,7 +1,7 @@
 Recla analysis - determining the LRT statistics & p-values
 ================
 Frederick Boehm
-2018-04-02 11:38:38
+2018-04-03 18:00:12
 
 In this document, we use the 1000 files (for each of the bivariate traits) that each contain a likelihood ratio test statistic for a bootstrap sample.
 
@@ -40,7 +40,7 @@ calc_lrt_tib(out_0722) # run 562
 calc_lrt_tib(out_0710) # run 563
 ```
 
-    ## [1] 2.771408
+    ## [1] 0.09387654
 
 ``` r
 calc_lrt_tib(out_1022) # run 561
@@ -61,7 +61,7 @@ ls ../chtc/Recla-bootstrap/submit_files/*run563*.txt | wc
 
     ##     1000    1000   62890
     ##     1000    1000   62890
-    ##      998     998   62766
+    ##     1000    1000   62890
 
 We see that each analysis has the required 1000 files.
 
@@ -111,7 +111,7 @@ for (fn in fns){
 sum(do.call("rbind", out) > calc_lrt_tib(out_0710))
 ```
 
-    ## [1] 114
+    ## [1] 871
 
 ``` r
 devtools::session_info()
@@ -126,7 +126,7 @@ devtools::session_info()
     ##  language (EN)                        
     ##  collate  en_US.UTF-8                 
     ##  tz       America/Chicago             
-    ##  date     2018-04-02
+    ##  date     2018-04-03
 
     ## Packages -----------------------------------------------------------------
 
