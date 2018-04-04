@@ -6,18 +6,19 @@ There are 3 subdirectories in this repository:
 
 1. Rmd  
 2. chtc  
-3. results
+3. R 
 
 
-## results contents
+## R contents
 
-Subdirectory "results" contains output files from the Recla analysis; specifically, the results from the 3 calls to `scan_pvl`, each as a text file.
+Subdirectory "R" contains R scripts 
+
 
 
 
 ## Rmd contents
 
-Rmd contains Rmarkdown files and github markdown documents (ie, the output from the Rmarkdown documents). It also contains saved png files for use in the manuscript. 
+Rmd contains Rmarkdown files and github markdown documents (ie, the output from the Rmarkdown documents). It also contains saved png files for use in the manuscript. Additionally, intermediate results files are here, namely, those that contain the `pvl_scan` results for each pair in the Recla analysis. 
 
 ## chtc contents
 
