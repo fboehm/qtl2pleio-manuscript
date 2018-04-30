@@ -1,0 +1,198 @@
+---
+title: 'Recla analysis: Updated figures'
+author: "Frederick Boehm"
+date: "4/16/2018"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Read pvl scan results from files
+
+```{r}
+library(dplyr)
+as_tibble(read.table("recla-07-10.txt")) -> pvl0710
+as_tibble(read.table("recla-07-22.txt")) -> pvl0722
+as_tibble(read.table("recla-10-22.txt")) -> pvl1022
+```
+
+## Load Recla from qtl2data
+
+```{r}
+library(qtl2)
+file <- paste0("https://raw.githubusercontent.com/rqtl/",
+               "qtl2data/master/DO_Recla/recla.zip")
+recla <- read_cross2(file)
+# make sex a covariate for use in pvl_scan
+recla[[6]][ , 1, drop = FALSE] -> sex
+# insert pseudomarkers
+insert_pseudomarkers(recla, step = 0.10) -> pseudomap
+gm <- pseudomap$`8`
+
+```
+
+```{r}
+probs <- calc_genoprob(recla, map = pseudomap)
+```
+
+We now convert the genotype probabilities to haplotype dosages.
+
+```{r}
+aprobs <- genoprob_to_alleleprob(probs)
+```
+
+We now calculate kinship matrices, by the "leave one chromosome out (loco)" method.
+
+```{r}
+kinship <- calc_kinship(aprobs, "loco")
+```
+
+
+
+
+```{r}
+recla$pheno -> ph
+log(ph) -> lph
+apply(FUN = broman::winsorize, X = lph, MARGIN = 2) -> wlph
+```
+
+```{r, eval = TRUE}
+sex2 <- sex == "female"
+out <- scan1(genoprobs = aprobs, pheno = wlph, kinship = kinship, addcovar = sex2, reml = TRUE)
+```
+
+
+```{r, eval = TRUE}
+(peaks <- find_peaks(out, pseudomap, threshold = 5) %>%
+  arrange(chr, pos) %>%
+   select(- lodindex))
+peaks8 <- peaks %>%
+  filter(chr == 8, pos > 50, pos < 60
+         )
+pos_LD_distance_light <- peaks8 %>%
+  filter(lodcolumn == "LD_distance_light") %>%
+  select(pos)
+pos_LD_light_pct <- peaks8 %>%
+  filter(lodcolumn == "LD_light_pct") %>%
+  select(pos)
+pos_HP_latency <- peaks8 %>%
+  filter(lodcolumn == "HP_latency") %>%
+  select(pos)
+
+```
+
+
+```{r}
+library(xtable)
+print(xtable(peaks), include.rownames = FALSE, tabular.environment = "longtable")
+```
+
+
+
+## Plots
+
+```{r}
+library(qtl2pleio)
+p1022 <- tidy_scan_pvl(pvl1022, pmap = gm) %>%
+  add_intercepts(c(as.numeric(pos_LD_light_pct), as.numeric(pos_HP_latency))) %>%
+  plot_pvl(phenames = colnames(recla$pheno)[c(10, 22)])
+```
+
+```{r}
+p0722 <- tidy_scan_pvl(pvl0722, pmap = gm) %>%
+  add_intercepts(c(as.numeric(pos_LD_distance_light), as.numeric(pos_HP_latency))) %>%
+  plot_pvl(phenames = colnames(recla$pheno)[c(7, 22)])
+```
+
+```{r}
+p0710 <- tidy_scan_pvl(pvl0710, pmap = gm) %>%
+  add_intercepts(c(as.numeric(pos_LD_distance_light), as.numeric(pos_LD_light_pct))) %>%
+  plot_pvl(phenames = colnames(recla$pheno)[c(7, 10)])
+```
+
+```{r, fig.height = 10}
+library(cowplot)
+myplot <- plot_grid(p1022, p0722, p0710, labels=c("A", "B", "C"), ncol = 1)
+save_plot(filename = "all3.eps", plot = myplot, base_aspect_ratio = 2.5, ncol = 1, nrow = 3)
+```
+
+## Three scatter plots of phenotypes
+
+```{r}
+as_tibble(wlph) -> wlph_tib
+scatter0710 <- ggplot() + geom_point(data = wlph_tib, aes(y = LD_distance_light, x = LD_light_pct))
+scatter1022 <- ggplot() + geom_point(data = wlph_tib, aes(y = HP_latency, x = LD_light_pct))
+scatter0722 <- ggplot() + geom_point(data = wlph_tib, aes(y = HP_latency, x = LD_distance_light))
+myplot_scatter <- plot_grid(scatter1022, scatter0722, scatter0710, labels=c("A", "B", "C"), ncol = 1)
+save_plot(filename = "all3scatter.eps", plot = myplot_scatter, base_aspect_ratio = 2.5, ncol = 1, nrow = 3)
+
+```
+
+## Genome-wide LOD plots for the 3 traits from Recla
+
+```{r}
+#setEPS()
+#postscript("genomewide_lod_trait7.eps")
+l7 <- plot(out, map = pseudomap, lodcolumn = 7)
+#dev.off()
+```
+```{r}
+#setEPS()
+#postscript("genomewide_lod_trait10.eps")
+plot(out, map = pseudomap, lodcolumn = 10)
+#dev.off()
+```
+
+```{r}
+#setEPS()
+#postscript("genomewide_lod_trait22.eps")
+plot(out, map = pseudomap, lodcolumn = 22)
+#dev.off()
+```
+
+```{r}
+
+setEPS()
+postscript("genomewide_all3.eps")
+par(mfrow = c(3, 1))
+
+plot(out, map = pseudomap, lodcolumn = 7)
+plot(out, map = pseudomap, lodcolumn = 10)
+plot(out, map = pseudomap, lodcolumn = 22)
+dev.off()
+```
+
+
+
+
+## Allele effects plots on chr 8 for each of the three Recla traits
+
+```{r}
+scan1coef(aprobs[ , 8], pheno = wlph[, 7], kinship = kinship$`8`, 
+          reml = TRUE,
+          addcovar = sex2) -> s1c_7
+scan1coef(aprobs[ , 8], pheno = wlph[, 10], kinship = kinship$`8`, 
+          reml = TRUE,
+          addcovar = sex2) -> s1c_10
+scan1coef(aprobs[ , 8], pheno = wlph[, 22], kinship = kinship$`8`, 
+          reml = TRUE,
+          addcovar = sex2) -> s1c_22
+```
+
+```{r}
+setEPS()
+postscript("coef_all3.eps")
+par(mfrow = c(3, 1))
+plot(s1c_7, map = pseudomap, columns = 1:8, col = qtl2::CCcolors
+             )
+plot(s1c_10, map = pseudomap, columns = 1:8, col = qtl2::CCcolors
+              )
+plot(s1c_22, map = pseudomap, columns = 1:8, col = qtl2::CCcolors
+              )
+dev.off()
+```
+
+
+
