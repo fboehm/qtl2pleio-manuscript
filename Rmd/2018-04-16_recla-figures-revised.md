@@ -3,8 +3,7 @@ Recla analysis: Updated figures
 Frederick Boehm
 4/16/2018
 
-Read pvl scan results from files
---------------------------------
+## Read pvl scan results from files
 
 ``` r
 library(dplyr)
@@ -22,13 +21,23 @@ library(dplyr)
     ##     intersect, setdiff, setequal, union
 
 ``` r
+library(ggplot2)
+```
+
+    ## 
+    ## Attaching package: 'ggplot2'
+
+    ## The following object is masked from 'package:dplyr':
+    ## 
+    ##     vars
+
+``` r
 as_tibble(read.table("recla-07-10.txt")) -> pvl0710
 as_tibble(read.table("recla-07-22.txt")) -> pvl0722
 as_tibble(read.table("recla-10-22.txt")) -> pvl1022
 ```
 
-Load Recla from qtl2data
-------------------------
+## Load Recla from qtl2data
 
 ``` r
 library(qtl2)
@@ -40,6 +49,7 @@ recla[[6]][ , 1, drop = FALSE] -> sex
 # insert pseudomarkers
 insert_pseudomarkers(recla, step = 0.10) -> pseudomap
 gm <- pseudomap$`8`
+# fix phenotype names as desired
 ```
 
 ``` r
@@ -52,7 +62,8 @@ We now convert the genotype probabilities to haplotype dosages.
 aprobs <- genoprob_to_alleleprob(probs)
 ```
 
-We now calculate kinship matrices, by the "leave one chromosome out (loco)" method.
+We now calculate kinship matrices, by the “leave one chromosome out
+(loco)” method.
 
 ``` r
 kinship <- calc_kinship(aprobs, "loco")
@@ -62,6 +73,9 @@ kinship <- calc_kinship(aprobs, "loco")
 recla$pheno -> ph
 log(ph) -> lph
 apply(FUN = broman::winsorize, X = lph, MARGIN = 2) -> wlph
+#colnames(wlph)[c(7, 10, 22)] <- c("distance traveled in light", "percent time in light", "hot plate latency")
+
+as_tibble(wlph) -> wlph_tib
 ```
 
 ``` r
@@ -177,7 +191,7 @@ print(xtable(peaks), include.rownames = FALSE, tabular.environment = "longtable"
     ## floating = TRUE. Changing to FALSE.
 
     ## % latex table generated in R 3.4.3 by xtable 1.8-2 package
-    ## % Tue Apr 17 13:25:24 2018
+    ## % Wed May  9 14:50:49 2018
     ## \begin{longtable}{llrr}
     ##   \hline
     ## lodcolumn & chr & pos & lod \\ 
@@ -261,14 +275,14 @@ print(xtable(peaks), include.rownames = FALSE, tabular.environment = "longtable"
     ## \hline
     ## \end{longtable}
 
-Plots
------
+## Plots
 
 ``` r
 library(qtl2pleio)
+colnames(recla$pheno)[c(7, 10, 22)] <- c("Distance traveled in light", "Percent time in light", "Hot plate latency")
 p1022 <- tidy_scan_pvl(pvl1022, pmap = gm) %>%
   add_intercepts(c(as.numeric(pos_LD_light_pct), as.numeric(pos_HP_latency))) %>%
-  plot_pvl(phenames = colnames(recla$pheno)[c(10, 22)])
+  plot_pvl(phenames = colnames(recla$pheno)[c(10, 22)]) + ggtitle("Chromosome 8 profile LODs for percent time in light and hot plate latency") 
 ```
 
     ## Warning: Column `marker1`/`marker` joining factor and character vector,
@@ -280,7 +294,7 @@ p1022 <- tidy_scan_pvl(pvl1022, pmap = gm) %>%
 ``` r
 p0722 <- tidy_scan_pvl(pvl0722, pmap = gm) %>%
   add_intercepts(c(as.numeric(pos_LD_distance_light), as.numeric(pos_HP_latency))) %>%
-  plot_pvl(phenames = colnames(recla$pheno)[c(7, 22)])
+  plot_pvl(phenames = colnames(recla$pheno)[c(7, 22)]) + ggtitle("Chromosome 8 profile LODs for distance traveled in light and hot plate latency")
 ```
 
     ## Warning: Column `marker1`/`marker` joining factor and character vector,
@@ -292,7 +306,7 @@ p0722 <- tidy_scan_pvl(pvl0722, pmap = gm) %>%
 ``` r
 p0710 <- tidy_scan_pvl(pvl0710, pmap = gm) %>%
   add_intercepts(c(as.numeric(pos_LD_distance_light), as.numeric(pos_LD_light_pct))) %>%
-  plot_pvl(phenames = colnames(recla$pheno)[c(7, 10)])
+  plot_pvl(phenames = colnames(recla$pheno)[c(7, 10)]) + ggtitle("Chromosome 8 profile LODs for distance traveled in light and percent time in light")
 ```
 
     ## Warning: Column `marker1`/`marker` joining factor and character vector,
@@ -304,15 +318,6 @@ p0710 <- tidy_scan_pvl(pvl0710, pmap = gm) %>%
 ``` r
 library(cowplot)
 ```
-
-    ## Loading required package: ggplot2
-
-    ## 
-    ## Attaching package: 'ggplot2'
-
-    ## The following object is masked from 'package:dplyr':
-    ## 
-    ##     vars
 
     ## 
     ## Attaching package: 'cowplot'
@@ -330,82 +335,107 @@ myplot <- plot_grid(p1022, p0722, p0710, labels=c("A", "B", "C"), ncol = 1)
     ## Warning: Removed 209 rows containing missing values (geom_path).
 
 ``` r
-save_plot(filename = "all3.png", plot = myplot, base_aspect_ratio = 2.5, ncol = 1, nrow = 3)
+save_plot(filename = "all3.eps", plot = myplot, base_aspect_ratio = 2.5, ncol = 1, nrow = 3)
+save_plot(filename = "all3.svg", plot = myplot, base_aspect_ratio = 2.5, ncol = 1, nrow = 3)
 ```
 
-Three scatter plots of phenotypes
----------------------------------
+## Three scatter plots of phenotypes
 
 ``` r
-as_tibble(wlph) -> wlph_tib
-scatter0710 <- ggplot() + geom_point(data = wlph_tib, aes(y = LD_distance_light, x = LD_light_pct))
-scatter1022 <- ggplot() + geom_point(data = wlph_tib, aes(y = HP_latency, x = LD_light_pct))
-scatter0722 <- ggplot() + geom_point(data = wlph_tib, aes(y = HP_latency, x = LD_distance_light))
+scatter0710 <- ggplot() + geom_point(data = wlph_tib, aes(y = LD_distance_light, x = LD_light_pct)) + labs(x = "Distance traveled in light", y = "Percent time in light") + ggtitle("Scatterplot of percent time in light vs. distance traveled in light")
+scatter1022 <- ggplot() + geom_point(data = wlph_tib, aes(y = HP_latency, x = LD_light_pct)) + labs(x = "Percent time in light", y = "Hot plate latency") + ggtitle("Scatterplot of hot plate latency vs. percent time in light")
+scatter0722 <- ggplot() + geom_point(data = wlph_tib, aes(y = HP_latency, x = LD_distance_light)) + labs(x = "Distance traveled in light", y = "Hot plate latency")+ ggtitle("Scatterplot of hot plate latency vs. distance traveled in light")
 myplot_scatter <- plot_grid(scatter1022, scatter0722, scatter0710, labels=c("A", "B", "C"), ncol = 1)
 ```
 
     ## Warning: Removed 3 rows containing missing values (geom_point).
-
+    
     ## Warning: Removed 3 rows containing missing values (geom_point).
 
 ``` r
-save_plot(filename = "all3scatter.png", plot = myplot_scatter, base_aspect_ratio = 2.5, ncol = 1, nrow = 3)
+save_plot(filename = "all3scatter.eps", plot = myplot_scatter, base_aspect_ratio = 2.5, ncol = 1, nrow = 3)
 ```
 
-Genome-wide LOD plots for the 3 traits from Recla
--------------------------------------------------
+## Genome-wide LOD plots for the 3 traits from Recla
 
 ``` r
-png("genomewide_lod_trait7.png")
-plot(out, map = pseudomap, lodcolumn = 7)
+#setEPS()
+#postscript("genomewide_lod_trait7.eps")
+l7 <- plot(out, map = pseudomap, lodcolumn = 7, main = "Genome-wide LODs for distance traveled in light")
+```
+
+![](2018-04-16_recla-figures-revised_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
+
+``` r
+#dev.off()
+```
+
+``` r
+#setEPS()
+#postscript("genomewide_lod_trait10.eps")
+plot(out, map = pseudomap, lodcolumn = 10, main = "Genome-wide LODs for percent time in light")
+```
+
+![](2018-04-16_recla-figures-revised_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
+
+``` r
+#dev.off()
+```
+
+``` r
+#setEPS()
+#postscript("genomewide_lod_trait22.eps")
+plot(out, map = pseudomap, lodcolumn = 22, main = "Genome-wide LODs for hot plate latency")
+```
+
+![](2018-04-16_recla-figures-revised_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
+
+``` r
+#dev.off()
+```
+
+``` r
+setEPS()
+postscript("genomewide_all3.eps")
+par(mfrow = c(3, 1))
+
+plot(out, map = pseudomap, lodcolumn = 7, main = "Genome-wide LODs for distance traveled in light")
+plot(out, map = pseudomap, lodcolumn = 10, main = "Genome-wide LODs for percent time in light")
+plot(out, map = pseudomap, lodcolumn = 22, main = "Genome-wide LODs for hot plate latency")
 dev.off()
 ```
 
     ## quartz_off_screen 
     ##                 2
 
-``` r
-png("genomewide_lod_trait10.png")
-plot(out, map = pseudomap, lodcolumn = 10)
-dev.off()
-```
-
-    ## quartz_off_screen 
-    ##                 2
+## Allele effects plots on chr 8 for each of the three Recla traits
 
 ``` r
-png("genomewide_lod_trait22.png")
-plot(out, map = pseudomap, lodcolumn = 22)
-dev.off()
-```
-
-    ## quartz_off_screen 
-    ##                 2
-
-Allele effects plots on chr 8 for each of the three Recla traits
-----------------------------------------------------------------
-
-``` r
-sex <- 
-png("coef7.png")
 scan1coef(aprobs[ , 8], pheno = wlph[, 7], kinship = kinship$`8`, 
           reml = TRUE,
-          addcovar = sex2) %>%
-  plot_coefCC(map = pseudomap, scan1_output = out[, 7, drop = FALSE],
-              top_panel_prop = 0.5)
-dev.off()
-```
-
-    ## quartz_off_screen 
-    ##                 2
-
-``` r
-png("coef10.png")
+          addcovar = sex2) -> s1c_7
 scan1coef(aprobs[ , 8], pheno = wlph[, 10], kinship = kinship$`8`, 
           reml = TRUE,
-          addcovar = sex2) %>%
-  plot_coefCC(map = pseudomap, scan1_output = out[, 10, drop = FALSE],
-              top_panel_prop = 0.5)
+          addcovar = sex2) -> s1c_10
+scan1coef(aprobs[ , 8], pheno = wlph[, 22], kinship = kinship$`8`, 
+          reml = TRUE,
+          addcovar = sex2) -> s1c_22
+```
+
+``` r
+# ensure that subsets are scan1output objects
+s1c_7s <- s1c_7[650:999, ]
+s1c_10s <- s1c_10[650:999, ]
+s1c_22s <- s1c_22[650:999, ]
+```
+
+``` r
+setEPS()
+postscript("coef_all3.eps")
+par(mfrow = c(3, 1))
+plot_coefCC(s1c_7s, map = pseudomap, legend = "topright", main = "Allele effects for distance traveled in light")
+plot_coefCC(s1c_10s, map = pseudomap, main = "Allele effects for percent time in light")
+plot_coefCC(s1c_22s, map = pseudomap, main = "Allele effects for hot plate latency")
 dev.off()
 ```
 
@@ -413,12 +443,11 @@ dev.off()
     ##                 2
 
 ``` r
-png("coef22.png")
-scan1coef(aprobs[ , 8], pheno = wlph[, 22], kinship = kinship$`8`, 
-          reml = TRUE,
-          addcovar = sex2) %>%
-  plot_coefCC(map = pseudomap, scan1_output = out[, 22, drop = FALSE],
-              top_panel_prop = 0.5)
+svg("coef_all3.svg")
+par(mfrow = c(3, 1))
+plot_coefCC(s1c_7s, map = pseudomap, legend = "topright", main = "Allele effects for distance traveled in light")
+plot_coefCC(s1c_10s, map = pseudomap, main = "Allele effects for percent time in light")
+plot_coefCC(s1c_22s, map = pseudomap, main = "Allele effects for hot plate latency")
 dev.off()
 ```
 

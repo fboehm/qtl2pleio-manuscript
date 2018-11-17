@@ -1,7 +1,7 @@
 ---
 title: 'Recla analysis: Updated figures'
 author: "Frederick Boehm"
-date: "4/16/2018"
+date: "`r lubridate::now()`"
 output: github_document
 ---
 
