@@ -1,17 +1,22 @@
 # qtl2pleio-manuscript
-Resources from the qtl2pleio manuscript, "A test to distinguish close linkage from pleiotropy in multiparental populations"
+Resources from the qtl2pleio manuscript, "Testing pleiotropy vs. separate QTL in multiparental populations"
 
 
-There are 3 subdirectories in this repository:
+There are 4 subdirectories in this repository:
 
 1. Rmd  
 2. chtc  
-3. R 
+3. R  
+4. overleaf-repo
+
+We include a Makefile to ease manuscript assembly. Just type `make` at the BASH prompt to compile the pdf from the tex file "overleaf-repo/main.tex".
+
+
 
 
 ## R contents
 
-Subdirectory "R" contains R scripts 
+Subdirectory "R" contains R scripts and outputted figures.
 
 
 
@@ -19,6 +24,11 @@ Subdirectory "R" contains R scripts
 ## Rmd contents
 
 Rmd contains Rmarkdown files and github markdown documents (ie, the output from the Rmarkdown documents). It also contains saved png files for use in the manuscript. Additionally, intermediate results files are here, namely, those that contain the `pvl_scan` results for each pair in the Recla analysis. 
+
+## overleaf-repo contents
+
+overleaf-repo contains files that we originally created on the website overleaf.com. They include the tex file "overleaf-repo/main.tex" for compilation with latex.
+
 
 ## chtc contents
 
