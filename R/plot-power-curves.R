@@ -16,3 +16,4 @@ mytib %>%
   broman::theme_karl(legend.position = "none") + 
   xlab("Distance (cM)") + ylab("Power")
 ggsave("R/power-curves.eps")
+ggsave("R/power-curves.png")

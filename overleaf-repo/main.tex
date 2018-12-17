@@ -304,7 +304,7 @@ We also investigated the test's power to detect the presence of two distinct QTL
 We simulated 400 bivariate traits per set of parameter inputs. For each simulated bivariate trait, we calculated a likelihood ratio test statistic. We then applied our parametric bootstrap to calibrate the test statistics. For each bivariate trait, we used $b = 400$ bootstrap samples. Because the bootstrap test statistics within a single set of parameter inputs followed approximately the same distribution, we pooled the $400 * 400 = 160,000$ bootstrap samples per set of parameter inputs and compared each test statistic to the empirical distribution derived from the 160,000 bootstrap samples. However, for parameter inputs with interlocus distance equal to zero, we didn't pool the 160,000 bootstrap samples; instead, we proceeded by calculating power, \textit{i.e.}, type I error rate, as we did in the type I error rate study above.
 
 \begin{figure}
-\includegraphics[width = \textwidth]{power-curves}
+\includegraphics[width = \textwidth]{../R/power-curves.eps}
 \caption{Pleiotropy vs. separate QTL power curves for each of four sets of parameter settings. Factors that differ among the four curves are allele effects difference and allele partitioning. Olive green denotes high (2) allele effects difference and allele partitioning into two groups of four. Purple denotes high (2) allele effects difference with unequal allele partitioning. Red and blue both have the low (1) allele effects difference with even and uneven, respectively, allele partitioning.}
 \label{fig:power}
 \end{figure}
@@ -330,14 +330,14 @@ We briefly describe the phenotypes that \citet{logan2013high} and \citet{recla20
 To determine whether \textit{Hydin} affects "percent time in light", we examined a phenotype scatter plot, performed a test of pleiotropy vs. separate QTL, and created founder allele effects plots. A scatter plot revealed that "percent time in light" and "hot plate latency" are not highly correlated, with a Pearson correlation coefficient of $-0.15$ (Figure \ref{fig:scatter}). 
 
 \begin{figure}
-\includegraphics[width = \textwidth]{2018-11-19-scatter.eps}
+\includegraphics[width = \textwidth]{../Rmd/scatter.eps}
 \caption{Scatter plot of "hot plate latency" against "percent time in light", after applying logarithm transformations and winsorizing both traits.}
 \label{fig:scatter}
 \end{figure}
 
 
 \begin{figure}
-\includegraphics[width = \textwidth]{2018-11-19-chr8-lods.eps}
+\includegraphics[width = \textwidth]{../Rmd/chr8-lods.eps}
 \caption{Chromosome 8 univariate LOD scores for percent time in light and hot plate latency reveal broad, overlapping peaks between 53 cM and 64 cM. The peak for percent time in light spans the region from approximately 53 cM to 60 cM, with a maximum near 55 cM. The peak for hot plate latency begins near 56 cM and ends about 64 cM.}
 \label{fig:chr8-lod}
 \end{figure}
@@ -347,7 +347,7 @@ To determine whether \textit{Hydin} affects "percent time in light", we examined
 In examining the founder allele effects plot for "percent time in light", we see that the purple (WSB) and red (PWK) alleles have high effects near 55 cM, while the navy blue (NOD) has a dramatically lower value (Figure \ref{fig:chr8-effects}). The allele effects plot for "hot plate latency", on the other hand, features a noticeably distinct pattern of allele effects near 55 to 60 cM (Figure \ref{fig:chr8-effects}). Specifically, it has grey (B6) and green (CAST) alleles with much lower effects, while the pink (129), yellow (AJ), purple (WSB), and light blue (NZO) all show higher allele effects in this region.
 
 \begin{figure}
-\includegraphics[width = \textwidth]{2018-11-19-coefs.eps}
+\includegraphics[width = \textwidth]{../Rmd/coefs.eps}
 \caption{Chromosome 8 univariate LOD scores for percent time in light and hot plate latency reveal broad, overlapping peaks between 53 cM and 64 cM. The peak for percent time in light spans the region from approximately 53 cM to 60 cM, with a maximum near 55 cM. The peak for hot plate latency begins near 56 cM and ends about 64 cM.}
 \label{fig:chr8-effects}
 \end{figure}
@@ -361,7 +361,7 @@ Using the two-dimensional QTL scan results, we calculated a likelihood ratio tes
 
 
 \begin{figure}
-\includegraphics[width = \textwidth]{2018-11-19-profile.eps}
+\includegraphics[width = \textwidth]{../Rmd/profile.eps}
 \caption{Profile LOD curves for the pleiotropy vs. separate QTL hypothesis test for "percent time in light" and "hot plate latency". Gray trace denotes pleiotropy LOD values. Triangles denote the univariate LOD maxima, while diamonds denote the profile LOD maxima. For "percent time in light", the yellow triangle obscures the smaller yellow diamond. Likelihood ratio test statistic value corresponds to the height of the blue and yellow traces at their maxima.}
 \label{fig:profiles}
 \end{figure}
@@ -503,13 +503,13 @@ percent time in light & 8 & 55.28 & 5.27 \\
 \newpage
 \section{Supplementary figures}
 \begin{figure}
-\includegraphics{2018-11-19-genomewide_lod_trait10.eps}
+\includegraphics{../Rmd/genomewide_lod_trait10.eps}
 \caption{Genome-wide QTL scan for percent time in light reveals multiple QTL, including one on Chromosome 8.}
 \label{fig:genomewide10}
 \end{figure}
 
 \begin{figure}
-\includegraphics{2018-11-19-genomewide_lod_trait22.eps}
+\includegraphics{../Rmd/genomewide_lod_trait22.eps}
 \caption{Genome-wide QTL scan for hot plate latency reveals multiple QTL, including a peak on Chromosome 8.}
 \label{fig:genomewide22}
 \end{figure}
