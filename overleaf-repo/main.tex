@@ -136,13 +136,16 @@ chromosome 8.
 \section{Methods}
 \label{sec:materials:methods}
 
-Our strategy involves first identifying two traits that map to one
-genomic region. We then perform a two-dimensional QTL scan over the
-genomic region. We identify the marker that maximizes the likelihood
-under pleiotropy and the ordered pair of markers that maximizes the
-likelihood under the two separate QTL model. The logarithm of the
-ratio of the two likelihoods is our test statistic. We then calibrate
-our test statistic with a parametric bootstrap.
+Our strategy involves first identifying two traits that map to a common
+genomic region. We then perform a two-dimensional, two-QTL scan over
+the genomic region, with each trait affected by one QTL of varying
+position. We identify the QTL position that maximizes the likelihood
+under pleiotropy (that is, along the diagonal where the two QTL are at
+a common location), and the ordered pair of positions that maximizes
+the likelihood under the model where the two QTL are allowed to be
+distinct. The logarithm of the ratio of the two likelihoods is our
+test statistic. We calibrate this test statistic with a parametric
+bootstrap.
 
 \subsection{Data structures}
 
