@@ -1,16 +1,8 @@
-%\documentclass[a4paper]{article}
-
-%\documentclass[9pt,twocolumn,twoside, lineno]{gsajnl}
 \documentclass[12pt,twoside, lineno]{gsajnl}
 % Use the documentclass option 'lineno' to view line numbers
 \usepackage{tabularx}
 \usepackage{longtable}
 \articletype{mp} % article type
-% {inv} Investigation
-% {gs} Genomic Selection
-% {goi} Genetics of Immunity
-% {gos} Genetics of Sex
-% {mp} Multiparental Populations
 
 \title{Testing pleiotropy vs. separate QTL in multiparental populations}
 
@@ -27,13 +19,6 @@
 \keywords{Quantitative trait locus; pleiotropy; multivariate analysis; linear mixed effects models; systems genetics; ...}
 
 \runningtitle{Testing pleiotropy in MPPs} % For use in the footer
-
-%% For the footnote.
-%% Give the last name of the first author if only one author;
-% \runningauthor{FirstAuthorLastname}
-%% last names of both authors if there are two authors;
-% \runningauthor{FirstAuthorLastname and SecondAuthorLastname}
-%% last name of the first author followed by et al, if more than two authors.
 \runningauthor{Boehm \textit{et al.}}
 
 
@@ -59,7 +44,6 @@ find evidence for presence of two distinct loci in a 2.5~cM region.
 Our methods have been incorporated into the R package
 package \texttt{qtl2pleio}.
 
-%Please see additional guidelines notes on preparing your abstract below.
 \end{abstract}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Stuff between the two lines of percentage marks may need to be removed before the draft is finalized.
@@ -79,15 +63,8 @@ package \texttt{qtl2pleio}.
 \thispagestyle{firststyle}
 \marginmark
 \firstpagefootnote
-\correspondingauthoraffiliation{Department of Statistics, 1220 Medical Sciences Center, 1300 University Avenue, Madison, WI 53706. E-mail: frederick.boehm@gmail.com} %Please insert the affiliation correspondence address and email for the corresponding author. The corresponding author should be marked with a `1' in the author list, as shown in the example.}
+\correspondingauthoraffiliation{Department of Statistics, 1220 Medical Sciences Center, 1300 University Avenue, Madison, WI 53706. E-mail: frederick.boehm@gmail.com}
 \vspace{-11pt}%
-
-%\lettrine[lines=2]{\color{color2}T}{}his \textit{Genetics} journal template is provided to help you write your work in the correct journal format. Instructions for use are provided below.
-
-
-
-
-% try to zoom from big picture to my specific questions
 
 
 
@@ -99,9 +76,6 @@ questions, such as whether two traits share a single pleiotropic
 locus.
 
 
-%In a 2014 systems genetics study of behavioral traits, \citet{recla2014precise} identified a gene on chromosome 8, \textit{Hydin} (axonemal central pair apparatus protein; MGI:2389007), that associates with thermal pain response in Diversity Outbred (DO) mice \citep{churchill2012diversity, svenson2012high}. While a molecular mechanism for this relationship remains unclear, \citet{recla2014precise} reasoned that \textit{Hydin}'s gene product, a protein, might impact ciliary motility in cerebral spinal fluid of the brain.
-
-%In our analyses of 26 phenotypes from \citet{recla2014precise} and its companion report \citep{logan2013high}, we identified two additional traits that, when considered individually, map to the same region of chromosome 8 as does thermal pain response. \citet{logan2013high} originally reported these associations, but didn't reach conclusions about the underlying genes. This prompted us to ask the question ``Are there multiple underlying loci, or is there a single pleiotropic locus'' for these three traits, thermal pain response, percent time in light, and distance traveled in light.
 
 
 Previous research addressed the question of pleiotropy vs. separate
@@ -150,22 +124,9 @@ a population of 261 DO mice \citep{logan2013high,recla2014precise}.
 We find modest evidence for distinct QTL in a 2.5-cM region on mouse
 chromosome 8.
 
-%For the introduction, authors should be mindful of the broad readership of the journal. The introduction should set the stage for the importance of the work to a generalist reader and draw the reader in to the specific study. The scope and impact of the work should be clearly stated.
-
-%In individual organisms where a mutant is being studied, the rationale for the study of that mutant must be clear to a geneticist not studying that particular organism. Similarly, study of particular phenotypes should be justified broadly and not on the basis of interest for that organism alone. General background on the importance of the genetic pathway and/or phenotype should be provided in a single, well-reasoned paragraph near the beginning of the introduction.
-
-%Authors are encouraged to:
-
-%\begin{itemize}
-%\item cite the supporting literature completely rather than select a subset of citations;
-%\item provide important background citations, including relevant review papers (to help orient the non-specialist reader);
-%\item to cite similar work in other organisms.
-%\end{itemize}
 
 \section{Methods}
 \label{sec:materials:methods}
-
-%Manuscripts submitted to \textit{GENETICS} should contain a clear description of the experimental design in sufficient detail so that the experimental analysis could be repeated by another scientist. If the level of detail necessary to explain the protocol goes beyond two paragraphs, give a short description in the main body of the paper and prepare a detailed description for supporting information.  For example, details would include indicating how many individuals were used, and if applicable how individuals or groups were combined for analysis. If working with mutants indicate how many independent mutants were isolated. If working with populations indicate how samples were collected and whether they were random with respect to the target population.
 
 Our strategy involves first identifying two traits that map to one genomic region. We then perform a two-dimensional QTL scan over the genomic region. We identify the marker that maximizes the likelihood under pleiotropy and the ordered pair of markers that maximizes the likelihood under the two separate QTL model. The logarithm of the ratio of the two likelihoods is our test statistic. We then calibrate our test statistic with a parametric bootstrap.
 
@@ -176,10 +137,7 @@ We arrange the data into three objects. The first is a $n$ by $k$ by $m$ array o
 One additional object is the genotype-derived collection of ``leave one chromosome out'' kinship matrices. The ``leave one chromosome out'' approach calculates a collection of kinship matrices, one for each chromosome. Each kinship matrix results from kinship estimation performed while omitting the genetic data from a single chromosome. For example, the chromosome 1 ``leave one chromosome out'' kinship matrix results from omitting the genetic data of chromosome 1 and using all other genetic data. Our motivation for using ``leave one chromosome out'' kinship calculations is to avoid using any marker's genetic data in both the kinship matrix and a design matrix for linear mixed effects models \citep{yang2014advantages}.
 
 
-%\subsection{Allele probabilities inference}
 
-
-%\citet{broman2012genotype,broman2012haplotype} developed hidden Markov model methods for genotype probability inference in recombinant inbred lines. We applied these methods, as implemented in the R package \texttt{qtl2}, to infer probabilities for each of the 36 states (8 homozygote and 28 heterozygote) at each marker. With the 36 genotype probabilities per mouse per marker, we calculated 8 founder allele probabilities per mouse per marker.
 
 \subsection{Statistical Models}
 The next step in a pleiotropy vs. separate QTL test, after identifying two traits and a genomic region of interest, is a two-dimensional QTL scan \citep{jiang1995multiple}. in a two-dimensional QTL scan, we fit the multivariate linear mixed effects model defined in Equation \ref{eqn:model1} once for every ordered pair of markers. Note that we assumed an additive genetic model throughout our analyses, but extensions to design matrices for dominance models are straightforward.
@@ -307,9 +265,6 @@ We share an accessory R package that contains our functions at:
 
 \noindent We share these data in \texttt{qtl2} format at \href{https://github.com/rqtl/qtl2data}{https://github.com/rqtl/qtl2data}.
 
-%At the end of the Materials and Methods section, include a statement on reagent and data availability. Please read the Data and Reagent Policy before writing the statement. Make sure to list the accession numbers or DOIs of any data you have placed in public repositories. List the file names and descriptions of any data you will upload as supplemental information. The statement should also include any applicable IRB numbers. You may include specifications for how to properly acknowledge or cite the data.
-
-%For example: Strains are available upon request. File S1 contains detailed descriptions of all supplemental files. File S2 contains SNP ID numbers and locations. File S3 contains genotypes for each individual. Sequence data are available at GenBank and the accession numbers are listed in File S3. Gene expression data are available at GEO with the accession number: GDS1234. Code used to generate the simulated data is provided in file S4.
 
 
 
@@ -424,43 +379,6 @@ Using the two-dimensional QTL scan results, we calculated a likelihood ratio tes
 
 
 
-%The results and discussion should not be repetitive. The results section should give a factual presentation of the data and all tables and figures should be referenced; the discussion should not summarize the results but provide an interpretation of the results, and should clearly delineate between the findings of the particular study and the possible impact of those findings in a larger context. Authors are encouraged to cite recent work relevant to their interpretations. Present and discuss results only once, not in both the Results and Discussion sections. It is sometimes acceptable to combine results and discussion. The text should be as succinct as possible. Heed Strunk and White's dictum: "Omit needless words!"
-
-%\section{Additional guidelines}
-
-%\subsection{Numbers} In the text, write out numbers nine or less except as part of a date, a fraction or decimal, a percentage, or a unit of measurement. Use Arabic numbers for those larger than nine, except as the first word of a sentence; however, try to avoid starting a sentence with such a number.
-
-%\subsection{Units} Use abbreviations of the customary units of measurement only when they are preceded by a number: "3 min" but "several minutes". Write "percent" as one word, except when used with a number: "several percent" but "75\%." To indicate temperature in centigrade, use ° (for example, 37°); include a letter after the degree symbol only when some other scale is intended (for example, 45°K).
-
-%\subsection{Nomenclature and Italicization} Italicize names of organisms even when  when the species is not indicated.  Italicize the first three letters of the names of restriction enzyme cleavage sites, as in HindIII. Write the names of strains in roman except when incorporating specific genotypic designations. Italicize genotype names and symbols, including all components of alleles, but not when the name of a gene is the same as the name of an enzyme. Do not use "+" to indicate wild type. Carefully distinguish between genotype (italicized) and phenotype (not italicized) in both the writing and the symbolism.
-
-%\subsection{Cross References}
-%Use the \verb|\nameref| command with the \verb|\label| command to insert cross-references to section headings. For example, a \verb|\label| has been defined in the section \nameref{sec:materials:methods}.
-
-%\section{In-text Citations}
-
-%Add citations using the \verb|\citep{}| command, for example  or for multiple citations,
-
-%\section{Examples of Article Components}
-%\label{sec:examples}
-
-%The sections below show examples of different header levels, which you can use in the primary sections of the manuscript (Results, Discussion, etc.) to organize your content.
-
-%\section{First level section header}
-
-%Use this level to group two or more closely related headings in a long article.
-
-%\subsection{Second level section header}
-
-%Second level section text.
-
-%\subsubsection{Third level section header:}
-
-%Third level section text. These headings may be numbered, but only when the numbers must be cited in the text.
-
-%\section{Figures and Tables}
-
-%Figures and Tables should be labelled and referenced in the standard way using the \verb|\label{}| and \verb|\ref{}| commands.
 
 \section{Discussion}
 
