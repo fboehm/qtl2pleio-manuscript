@@ -4,7 +4,7 @@
 \usepackage{longtable}
 \articletype{mp} % article type
 
-\title{Testing pleiotropy vs. separate QTL in multiparental populations}
+\title{Testing pleiotropy vs.\ separate QTL in multiparental populations}
 
 \author[$\ast$,1]{Frederick J. Boehm}
 \author[$\dagger$]{Elissa J. Chesler}
@@ -78,10 +78,10 @@ locus.
 
 
 
-Previous research addressed the question of pleiotropy vs. separate
+Previous research addressed the question of pleiotropy vs.\ separate
 QTL in two-parent crosses.
 \citet{jiang1995multiple} developed a likelihood
-ratio test for pleiotropy vs. separate QTL for a pair of traits.
+ratio test for pleiotropy vs.\ separate QTL for a pair of traits.
 Their approach assumed that each trait was affected by a single QTL.
 Under the null hypothesis, the two traits were affected by a common
 QTL, and under the alternative hypothesis the two traits were affected
@@ -103,7 +103,7 @@ of alleles from the eight CC founder lines. Random
 matings among non-siblings have maintained the DO
 population for more than 23 generations \citep{chesler2016diversity}.
 
-Several limitations of previous pleiotropy vs. separate QTL tests
+Several limitations of previous pleiotropy vs.\ separate QTL tests
 prevent their direct application in multiparental populations. First,
 multiparental populations can have complex patterns of relatedness
 among subjects, and failure to account for these patterns of
@@ -113,7 +113,7 @@ Second, previous tests allowed for only two founder lines
 that the null distribution of the test statistic follows a chi-square
 distribution.
 
-We developed a pleiotropy vs. separate QTL test for two traits in
+We developed a pleiotropy vs.\ separate QTL test for two traits in
 multiparental populations. Our test builds on research that
 \citet{jiang1995multiple}, \citet{knott2000multitrait},
 \citet{tian2016dissection}, and \citet{zhou2014efficient} initiated.
@@ -123,7 +123,7 @@ the incorporation of multivariate polygenic random effects to account
 for relatedness. Furthermore, we implemented a parametric bootstrap to
 calibrate test statistic values \citep{efron1979,tian2016dissection}.
 
-Below, we describe our likelihood ratio test for pleiotropy vs.
+Below, we describe our likelihood ratio test for pleiotropy vs.\
 separate QTL. In simulation studies, we find that it is slightly
 conservative, and that it has power to detect two separate loci when
 the univariate LOD peaks are strong. We further illustrate our
@@ -176,7 +176,7 @@ mixed effects models \citep{yang2014advantages}.
 
 \subsection{Statistical Models}
 
-The next step in a pleiotropy vs. separate QTL test, after identifying
+The next step in a pleiotropy vs.\ separate QTL test, after identifying
 two traits and a genomic region of interest, is a two-dimensional QTL
 scan \citep{jiang1995multiple}. in a two-dimensional QTL scan, we fit
 the multivariate linear mixed effects model defined in Equation
@@ -263,7 +263,7 @@ identity matrix. We then calculate the log likelihood for a normal
 distribution with mean $X vec(\hat B)$ and covariance $\hat \Sigma$
 that depends on our estimates of $V_g$ and $V_e$ (Equation \ref{cov}).
 
-\subsection{Pleiotropy vs. separate QTL hypothesis testing framework}
+\subsection{Pleiotropy vs.\ separate QTL hypothesis testing framework}
 
 Our test applies to two traits considered simultaneously. Below,
 $\omega_1$ and $\omega_2$ denote putative locus positions for traits
@@ -487,7 +487,7 @@ type I error rate study above.
 
 \begin{figure}
 \includegraphics[width = \textwidth]{../R/power-curves.eps}
-\caption{Pleiotropy vs. separate QTL power curves for each of four
+\caption{Pleiotropy vs.\ separate QTL power curves for each of four
   sets of parameter settings. Factors that differ among the four
   curves are allele effects difference and allele partitioning. Olive
   green denotes high (2) allele effects difference and allele
@@ -560,7 +560,7 @@ indicative of nociception: hindpaw lick or hindpaw shake/flutter.
 
 To determine whether \textit{Hydin} affects "percent time in light",
 we examined a phenotype scatter plot, performed a test of pleiotropy
-vs. separate QTL, and created founder allele effects plots. A scatter
+vs.\ separate QTL, and created founder allele effects plots. A scatter
 plot revealed that "percent time in light" and "hot plate latency" are
 not highly correlated, with a Pearson correlation coefficient of
 $-0.15$ (Figure \ref{fig:scatter}).
@@ -631,7 +631,7 @@ null hypothesis of pleiotropy.
 
 \begin{figure}
 \includegraphics[width = \textwidth]{../Rmd/profile.eps}
-\caption{Profile LOD curves for the pleiotropy vs. separate QTL
+\caption{Profile LOD curves for the pleiotropy vs.\ separate QTL
   hypothesis test for "percent time in light" and "hot plate latency".
   Gray trace denotes pleiotropy LOD values. Triangles denote the
   univariate LOD maxima, while diamonds denote the profile LOD maxima.
@@ -651,7 +651,7 @@ null hypothesis of pleiotropy.
 
 \section{Discussion}
 
-We developed a test of pleiotropy vs. separate QTL for multiparental
+We developed a test of pleiotropy vs.\ separate QTL for multiparental
 populations, characterized it with simulation studies, and applied it
 to answer a scientific question in behavioral genetics. Our simulation
 studies indicate that the test has power to detect presence of
@@ -701,7 +701,7 @@ expose objects from the python module \texttt{limmbo}
 \citep{reticulate}.
 
 
-We now contrast pleiotropy vs. separate QTL tests with mediation tests
+We now contrast pleiotropy vs.\ separate QTL tests with mediation tests
 in efforts to illustrate their complementary roles. Many systems
 genetics investigations apply mediation tests and related methods to
 infer biomolecular causal relationships
@@ -713,17 +713,17 @@ putative mediator is declared a mediator of the phenotype-QTL
 relationship.
 
 An important distinction lies in the different goals for mediation
-tests and pleiotropy vs. separate QTL tests. In a mediation test, we
+tests and pleiotropy vs.\ separate QTL tests. In a mediation test, we
 seek to identify mediators of a phenotype-QTL relationship from a
-collection of putative mediators. In a pleiotropy vs. separate QTL
+collection of putative mediators. In a pleiotropy vs.\ separate QTL
 test, one examines two (or more) phenotypes and inquires about the
-number of distinct QTL. A pleiotropy vs. separate QTL test provides
+number of distinct QTL. A pleiotropy vs.\ separate QTL test provides
 information about the number of underlying QTL, while a mediation test
 offers conclusions about the relative ordering of biological
 intermediates within a molecular pathway.
 
 Despite their distinct goals, \citet{schadt2005integrative} argue that
-both a pleiotropy vs. separate QTL test and causal inference methods,
+both a pleiotropy vs.\ separate QTL test and causal inference methods,
 such as mediation tests, may contribute to gene network
 reconstruction. They develop a model selection strategy, based on
 Akaike information criterion \citep{akaike1974new}, to determine which
@@ -734,7 +734,7 @@ phenotype data \citep{schadt2005integrative}. In this context,
 hypotheses, such as the possibility of two QTL, one of which
 associates with both traits, and one of which associates with only one
 trait. As envisioned by \citet{schadt2005integrative}, we foresee
-complementary roles emerging for our pleiotropy vs. separate QTL test
+complementary roles emerging for our pleiotropy vs.\ separate QTL test
 and mediation tests in the dissection of complex trait genetic
 architecture.
 
