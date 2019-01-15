@@ -91,7 +91,12 @@ package \texttt{qtl2pleio}.
 
 
 
-Complex trait studies in multiparental populations present new challenges in statistical methods and data analysis. Among these is the development of strategies for multivariate trait analysis. While examining one trait at a time has become standard practice in mapping quantitative trait loci (QTL), we argue below that simultaneous analysis of two or more traits in multiparental populations addresses additional questions, including the ability to ask whether two traits share a single pleiotropic locus. We present below a statistical hypothesis test to address this question. We characterize our test's statistical properties and apply it to publicly available data from Diversity Outbred mice to learn that two behavioral traits that map to a 2.5-cM region arise from two separate QTL.
+Complex trait studies in multiparental populations present new
+challenges in statistical methods and data analysis. Among these is
+the development of strategies for multivariate trait analysis. The
+joint analysis of two or more traits allows one to address additional
+questions, such as whether two traits share a single pleiotropic
+locus.
 
 
 %In a 2014 systems genetics study of behavioral traits, \citet{recla2014precise} identified a gene on chromosome 8, \textit{Hydin} (axonemal central pair apparatus protein; MGI:2389007), that associates with thermal pain response in Diversity Outbred (DO) mice \citep{churchill2012diversity, svenson2012high}. While a molecular mechanism for this relationship remains unclear, \citet{recla2014precise} reasoned that \textit{Hydin}'s gene product, a protein, might impact ciliary motility in cerebral spinal fluid of the brain.
@@ -99,18 +104,51 @@ Complex trait studies in multiparental populations present new challenges in sta
 %In our analyses of 26 phenotypes from \citet{recla2014precise} and its companion report \citep{logan2013high}, we identified two additional traits that, when considered individually, map to the same region of chromosome 8 as does thermal pain response. \citet{logan2013high} originally reported these associations, but didn't reach conclusions about the underlying genes. This prompted us to ask the question ``Are there multiple underlying loci, or is there a single pleiotropic locus'' for these three traits, thermal pain response, percent time in light, and distance traveled in light.
 
 
-Previous research addressed the question of pleiotropy vs. separate QTL in two-parent crosses. To gain insight into genetic architecture of complex traits, \citet{jiang1995multiple} developed a likelihood ratio test for pleiotropy vs. separate QTL. For two traits that map to a single genomic region, they fit null models in which a single QTL affects two traits and alternative models in which two distinct QTL affect one trait each.  \citet{jiang1995multiple} argued that distinguishing between these two hypotheses - pleiotropy and separate QTL - informs understanding of genetic architecture of complex traits. \citet{knott2000multitrait} used linear regression to develop a fast approximation to the test of \citet{jiang1995multiple}, while \citet{tian2016dissection} used the methods from \citet{knott2000multitrait} to dissect QTL hotspots in a F$_2$ population. In analyzing genome-wide expression traits, \citet{tian2016dissection} found evidence for the presence of at least two QTL in five of six expression trait hotspots.
+Previous research addressed the question of pleiotropy vs. separate
+QTL in two-parent crosses.
+\citet{jiang1995multiple} developed a likelihood
+ratio test for pleiotropy vs. separate QTL for a pair of traits.
+Their approach assumed that each trait was affected by a single QTL.
+Under the null hypothesis, the two traits were affected by a common
+QTL, and under the alternative hypothesis the two traits were affected
+by distinct QTL.
+\citet{knott2000multitrait} used linear regression to develop a fast
+approximation to the test of \citet{jiang1995multiple}, while
+\citet{tian2016dissection} used the methods from
+\citet{knott2000multitrait} to dissect QTL hotspots in a F$_2$
+population.
 
 
-Newly developed, community-supported multiparental populations, such as the Diversity Outbred mouse population, have enabled high-precision mapping of complex traits \citep{de2014genetics}. The Diversity Outbred mouse population began with progenitors of the Collaborative Cross mice \citep{churchill2004collaborative,churchill2012diversity}. Each Diversity Outbred mouse is a highly heterozygous genetic mosaic of alleles from the eight Collaborative Cross founder lines. Random matings among non-siblings have maintained the Diversity Outbred population for more than 23 generations \citep{chesler2016diversity}.
+Multiparental populations, such
+as the Diversity Outbred (DO)mouse population \citep{churchill2012diversity}, enable high-precision
+mapping of complex traits \citep{de2014genetics}. The DO
+mouse population began with progenitors of the Collaborative
+Cross (CC) mice \citep{churchill2004collaborative}
+Each DO mouse is a highly heterozygous genetic mosaic
+of alleles from the eight CC founder lines. Random
+matings among non-siblings have maintained the DO
+population for more than 23 generations \citep{chesler2016diversity}.
 
-
-Several limitations of previous pleiotropy vs. separate QTL tests prevent their direct application in multiparental populations. First, multiparental populations have complex patterns of relatedness among subjects, and failure to account for these patterns of relatedness may lead to spurious results \citep{yang2014advantages}. Second, previous tests allowed for only two founder lines \citep{jiang1995multiple}. Finally, \citet{jiang1995multiple} assumed that the null distribution of the test statistic follows a chi-square distribution.
+Several limitations of previous pleiotropy vs. separate QTL tests
+prevent their direct application in multiparental populations. First,
+multiparental populations can have complex patterns of relatedness
+among subjects, and failure to account for these patterns of
+relatedness may lead to spurious results \citep{yang2014advantages}.
+Second, previous tests allowed for only two founder lines
+\citep{jiang1995multiple}. Finally, \citet{jiang1995multiple} assumed
+that the null distribution of the test statistic follows a chi-square
+distribution.
 
 We developed a pleiotropy vs. separate QTL test for two traits in multiparental populations. Our test builds on research that \citet{jiang1995multiple}, \citet{knott2000multitrait}, \citet{tian2016dissection}, and \citet{zhou2014efficient} initiated. Our innovations include the accommodation of $k$ founder alleles per locus (compared to the traditional two founder alleles per locus) and the incorporation of multivariate polygenic random effects to account for relatedness. Furthermore, we implemented a parametric bootstrap to calibrate test statistic values \citep{efron1979,tian2016dissection}.
 
-Below, we describe our likelihood ratio test for pleiotropy vs. separate QTL. In simulation studies, we find that it is slightly conservative, and that it has power to detect two separate loci when the univariate LOD peaks are strong. We then apply our test to two behavioral phenotypes. We find modest evidence for two distinct QTL in a region on Chromosome 8 \citep{logan2013high,recla2014precise}.
-
+Below, we describe our likelihood ratio test for pleiotropy vs.
+separate QTL. In simulation studies, we find that it is slightly
+conservative, and that it has power to detect two separate loci when
+the univariate LOD peaks are strong. We further illustrate our
+approach with an application to data on a pair of behavior traits in
+a population of 261 DO mice \citep{logan2013high,recla2014precise}.
+We find modest evidence for distinct QTL in a 2.5-cM region on mouse
+chromosome 8.
 
 %For the introduction, authors should be mindful of the broad readership of the journal. The introduction should set the stage for the importance of the work to a generalist reader and draw the reader in to the specific study. The scope and impact of the work should be clearly stated.
 
