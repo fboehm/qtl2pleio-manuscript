@@ -113,7 +113,15 @@ Second, previous tests allowed for only two founder lines
 that the null distribution of the test statistic follows a chi-square
 distribution.
 
-We developed a pleiotropy vs. separate QTL test for two traits in multiparental populations. Our test builds on research that \citet{jiang1995multiple}, \citet{knott2000multitrait}, \citet{tian2016dissection}, and \citet{zhou2014efficient} initiated. Our innovations include the accommodation of $k$ founder alleles per locus (compared to the traditional two founder alleles per locus) and the incorporation of multivariate polygenic random effects to account for relatedness. Furthermore, we implemented a parametric bootstrap to calibrate test statistic values \citep{efron1979,tian2016dissection}.
+We developed a pleiotropy vs. separate QTL test for two traits in
+multiparental populations. Our test builds on research that
+\citet{jiang1995multiple}, \citet{knott2000multitrait},
+\citet{tian2016dissection}, and \citet{zhou2014efficient} initiated.
+Our innovations include the accommodation of $k$ founder alleles per
+locus (compared to the traditional two founder alleles per locus) and
+the incorporation of multivariate polygenic random effects to account
+for relatedness. Furthermore, we implemented a parametric bootstrap to
+calibrate test statistic values \citep{efron1979,tian2016dissection}.
 
 Below, we describe our likelihood ratio test for pleiotropy vs.
 separate QTL. In simulation studies, we find that it is slightly
@@ -128,26 +136,68 @@ chromosome 8.
 \section{Methods}
 \label{sec:materials:methods}
 
-Our strategy involves first identifying two traits that map to one genomic region. We then perform a two-dimensional QTL scan over the genomic region. We identify the marker that maximizes the likelihood under pleiotropy and the ordered pair of markers that maximizes the likelihood under the two separate QTL model. The logarithm of the ratio of the two likelihoods is our test statistic. We then calibrate our test statistic with a parametric bootstrap.
+Our strategy involves first identifying two traits that map to one
+genomic region. We then perform a two-dimensional QTL scan over the
+genomic region. We identify the marker that maximizes the likelihood
+under pleiotropy and the ordered pair of markers that maximizes the
+likelihood under the two separate QTL model. The logarithm of the
+ratio of the two likelihoods is our test statistic. We then calibrate
+our test statistic with a parametric bootstrap.
 
 \subsection{Data structures}
 
-We arrange the data into three objects. The first is a $n$ by $k$ by $m$ array of allele probabilities for n subjects with $k$ alleles per marker and $m$ markers on a single chromosome. The second object is a $n$ by $d$ matrix of phenotype values, where $d = 2$ for our analyses. Each column is a single phenotype and each row is a single subject. The third object is a $n$ by $c$ matrix of covariates, where each row is one subject and each column is one covariate. In analyses below, we use four indicator variables to specify each subject's sex and membership in one of four waves of subjects.
+We arrange the data into three objects. The first is a $n$ by $k$ by
+$m$ array of allele probabilities for n subjects with $k$ alleles per
+marker and $m$ markers on a single chromosome. The second object is a
+$n$ by $d$ matrix of phenotype values, where $d = 2$ for our analyses.
+Each column is a single phenotype and each row is a single subject.
+The third object is a $n$ by $c$ matrix of covariates, where each row
+is one subject and each column is one covariate. In analyses below, we
+use four indicator variables to specify each subject's sex and
+membership in one of four waves of subjects.
 
-One additional object is the genotype-derived collection of ``leave one chromosome out'' kinship matrices. The ``leave one chromosome out'' approach calculates a collection of kinship matrices, one for each chromosome. Each kinship matrix results from kinship estimation performed while omitting the genetic data from a single chromosome. For example, the chromosome 1 ``leave one chromosome out'' kinship matrix results from omitting the genetic data of chromosome 1 and using all other genetic data. Our motivation for using ``leave one chromosome out'' kinship calculations is to avoid using any marker's genetic data in both the kinship matrix and a design matrix for linear mixed effects models \citep{yang2014advantages}.
+One additional object is the genotype-derived collection of ``leave
+one chromosome out'' kinship matrices. The ``leave one chromosome
+out'' approach calculates a collection of kinship matrices, one for
+each chromosome. Each kinship matrix results from kinship estimation
+performed while omitting the genetic data from a single chromosome.
+For example, the chromosome 1 ``leave one chromosome out'' kinship
+matrix results from omitting the genetic data of chromosome 1 and
+using all other genetic data. Our motivation for using ``leave one
+chromosome out'' kinship calculations is to avoid using any marker's
+genetic data in both the kinship matrix and a design matrix for linear
+mixed effects models \citep{yang2014advantages}.
 
 
 
 
 \subsection{Statistical Models}
-The next step in a pleiotropy vs. separate QTL test, after identifying two traits and a genomic region of interest, is a two-dimensional QTL scan \citep{jiang1995multiple}. in a two-dimensional QTL scan, we fit the multivariate linear mixed effects model defined in Equation \ref{eqn:model1} once for every ordered pair of markers. Note that we assumed an additive genetic model throughout our analyses, but extensions to design matrices for dominance models are straightforward.
+
+The next step in a pleiotropy vs. separate QTL test, after identifying
+two traits and a genomic region of interest, is a two-dimensional QTL
+scan \citep{jiang1995multiple}. in a two-dimensional QTL scan, we fit
+the multivariate linear mixed effects model defined in Equation
+\ref{eqn:model1} once for every ordered pair of markers. Note that we
+assumed an additive genetic model throughout our analyses, but
+extensions to design matrices for dominance models are
+straightforward.
 
 
 \begin{equation}
 vec(Y) = X vec(B) + vec(G) + vec(E)
 \label{eqn:model1}
 \end{equation}
-where $Y$ is a $n$ by $2$ matrix of phenotypes values, where each row is one mouse and each column is one trait; $X$ is a $2n$ by $2(k + c)$ matrix that contains two markers' $k$ allele probabilities and $c$ covariates in diagonal blocks; $B$ is a $(k + c)$ by $2$ matrix of allele effects and covariate effects; $G$ is a $n$ by $2$ matrix of random effects; and $E$ is a $n$ by $2$ matrix of random errors. $n$ is the number of mice. The `vec' operator stacks columns from a matrix into a single vector. For example, a 2 by 2 matrix inputted to `vec' results in a vector with length 4. Its first two entries are the matrix's first column, while the third and fourth entries are the matrix's second column.
+where $Y$ is a $n$ by $2$ matrix of phenotypes values, where each row
+is one mouse and each column is one trait; $X$ is a $2n$ by $2(k + c)$
+matrix that contains two markers' $k$ allele probabilities and $c$
+covariates in diagonal blocks; $B$ is a $(k + c)$ by $2$ matrix of
+allele effects and covariate effects; $G$ is a $n$ by $2$ matrix of
+random effects; and $E$ is a $n$ by $2$ matrix of random errors. $n$
+is the number of mice. The `vec' operator stacks columns from a matrix
+into a single vector. For example, a 2 by 2 matrix inputted to `vec'
+results in a vector with length 4. Its first two entries are the
+matrix's first column, while the third and fourth entries are the
+matrix's second column.
 
 
 We also impose distributional assumptions on $G$ and $E$:
@@ -163,20 +213,35 @@ and
 E \sim MN_{nx2}(0, I, V_e)
 \label{eqn:model3}
 \end{equation}
-where $MN_{n x 2}(0, V_r, V_c)$ denotes the matrix-variate (n by 2) normal distribution with mean being the $n$ by $2$ matrix with all zero entries and row covariance $V_r$ and column covariance $V_c$. We assume that $G$ and $E$ are independent.
+where $MN_{n x 2}(0, V_r, V_c)$ denotes the matrix-variate (n by 2)
+normal distribution with mean being the $n$ by $2$ matrix with all
+zero entries and row covariance $V_r$ and column covariance $V_c$. We
+assume that $G$ and $E$ are independent.
 
 
 \subsection{Parameter inference and log likelihood calculation}
 
-Inference for parameters in multivariate linear mixed effects models is notoriously difficult and computationally intense \citep{meyer1989restricted,meyer1991estimating}. Thus, we make the simplifying assumption that $V_g$ and $V_e$ don't depend on allele probabilities. We use restricted maximum likelihood methods to fit the model:
+Inference for parameters in multivariate linear mixed effects models
+is notoriously difficult and computationally intense
+\citep{meyer1989restricted,meyer1991estimating}. Thus, we make the
+simplifying assumption that $V_g$ and $V_e$ don't depend on allele
+probabilities. We use restricted maximum likelihood methods to fit the
+model:
 
 \begin{equation}
 vec(Y) = X_0vec(B) + vec(G) + vec(E)
 \label{model}
 \end{equation}
-$X_0$ is a $2n$ by $2(c + 1)$ matrix. The first column of each diagonal block $X_0$ has all entries equal to one, and the remaining columns are covariates.
+$X_0$ is a $2n$ by $2(c + 1)$ matrix. The first column of each
+diagonal block $X_0$ has all entries equal to one, and the remaining
+columns are covariates.
 
-We draw on our implementation \citep{gemma2} (in \texttt{R}) of the GEMMA algorithm for fitting a multivariate linear mixed effects model with expectation-maximization \citep{zhou2014efficient}. We use restricted maximum likelihood fits for the variance components $V_g$ and $V_e$ in subsequent calculations of the generalized least squares solution $\hat B$.
+We draw on our implementation \citep{gemma2} (in \texttt{R}) of the
+GEMMA algorithm for fitting a multivariate linear mixed effects model
+with expectation-maximization \citep{zhou2014efficient}. We use
+restricted maximum likelihood fits for the variance components $V_g$
+and $V_e$ in subsequent calculations of the generalized least squares
+solution $\hat B$.
 
 \begin{equation}
     \hat B = (X^T\hat\Sigma^{-1}X)^{-1}X^T\hat\Sigma^{-1}vec(Y)
@@ -189,11 +254,18 @@ We draw on our implementation \citep{gemma2} (in \texttt{R}) of the GEMMA algori
     \label{cov}
 \end{equation}
 
-\noindent where $\otimes$ denotes the Kronecker product, $K$ is a ("leave one chromosome out") kinship matrix, and $I_n$ is a n by n identity matrix. We then calculate the log likelihood for a normal distribution with mean $X vec(\hat B)$ and covariance $\hat \Sigma$ that depends on our estimates of $V_g$ and $V_e$ (Equation \ref{cov}).
+\noindent where $\otimes$ denotes the Kronecker product, $K$ is a
+("leave one chromosome out") kinship matrix, and $I_n$ is a n by n
+identity matrix. We then calculate the log likelihood for a normal
+distribution with mean $X vec(\hat B)$ and covariance $\hat \Sigma$
+that depends on our estimates of $V_g$ and $V_e$ (Equation \ref{cov}).
 
 \subsection{Pleiotropy vs. separate QTL hypothesis testing framework}
 
-Our test applies to two traits considered simultaneously. Below, $\omega_1$ and $\omega_2$ denote putative locus positions for traits one and two. We quantitatively state the competing hypotheses for our test as:
+Our test applies to two traits considered simultaneously. Below,
+$\omega_1$ and $\omega_2$ denote putative locus positions for traits
+one and two. We quantitatively state the competing hypotheses for our
+test as:
 
 \begin{eqnarray}
 H_0: \omega_1 = \omega_2 \nonumber\\
@@ -207,11 +279,21 @@ H_A: \omega_1 \neq \omega_2
 - \log_{10} \frac{\max L_0(B, \Sigma, \omega_1, \omega_2)}{\max L_A(B, \Sigma, \omega_1, \omega_2)}
 \label{eqn:test-statistic}
 \end{equation}
-where $L_0$ is the likelihood under the null hypothesis (pleiotropy) and $L_A$ is the likelihood under the alternative hypothesis (separate QTL). We maximize each term in the fraction over its respective parameter space.
+where $L_0$ is the likelihood under the null hypothesis (pleiotropy)
+and $L_A$ is the likelihood under the alternative hypothesis (separate
+QTL). We maximize each term in the fraction over its respective
+parameter space.
 
 \subsection{Visualizing profile LOD traces}
 
-Following an innovation of \citet{zeng2000genetic} and \citet{tian2016dissection}, we plotted three traces: profile LOD$_1$ trace, profile LOD$_2$ trace, and the pleiotropy trace to aid in visualizing the two-dimensional likelihood surface. By definition (Equation \ref{eq:lodp}), the maximum height of the pleiotropy trace is zero. Additionally, the maxima for profile LOD$_1$ trace and profile LOD$_2$ trace are equal and non-negative (Equations \ref{eq:lodpvl} and \ref{eq:profilelod}).
+Following an innovation of \citet{zeng2000genetic} and
+\citet{tian2016dissection}, we plotted three traces: profile LOD$_1$
+trace, profile LOD$_2$ trace, and the pleiotropy trace to aid in
+visualizing the two-dimensional likelihood surface. By definition
+(Equation \ref{eq:lodp}), the maximum height of the pleiotropy trace
+is zero. Additionally, the maxima for profile LOD$_1$ trace and
+profile LOD$_2$ trace are equal and non-negative (Equations
+\ref{eq:lodpvl} and \ref{eq:profilelod}).
 
 We define the $LOD$ for our test:
 
@@ -221,7 +303,8 @@ LOD(\omega_1, \omega_2) = ll_{10}(\omega_1, \omega_2) - \max ll_{10}(\omega, \om
 \end{equation}
 where $ll_{10}$ denotes log-likelihood.
 
-We follow \citet{zeng2000genetic} and \citet{tian2016dissection} in defining profile LOD by the equation
+We follow \citet{zeng2000genetic} and \citet{tian2016dissection} in
+defining profile LOD by the equation
 
 \begin{equation}
 \text{profile LOD}_1(\omega_1) = \max_{\omega_2}\text{LOD}_{pvl}(\omega_1, \omega_2)
@@ -229,7 +312,8 @@ We follow \citet{zeng2000genetic} and \citet{tian2016dissection} in defining pro
 \end{equation}
 We define profile LOD$_2(\omega_2)$ analogously.
 
-We constructed the pleiotropy trace by calculating the log-likelihoods for the pleiotropic models at every marker.
+We constructed the pleiotropy trace by calculating the log-likelihoods
+for the pleiotropic models at every marker.
 
 \begin{equation}
 LOD_{p}(\omega) = ll_{10}(\omega, \omega) - \max ll_{10}(\omega, \omega)
@@ -241,12 +325,31 @@ LOD_{p}(\omega) = ll_{10}(\omega, \omega) - \max ll_{10}(\omega, \omega)
 
 \subsection{Bootstrap for test statistic calibration}
 
-We used a parametric bootstrap to calibrate our test statistic \citep{efron1979}. While \citet{jiang1995multiple} used quantiles of a chi-squared distribution to determine p-values, apparent deviations of the test statistic distribution from a chi-squared concerned us. Thus, we followed the approach of \citet{tian2016dissection} by identifying the marker that maximizes the likelihood under pleiotropy (the null hypothesis). We then used the inferred model parameters (under pleiotropy) at this marker to create bootstrap data sets, according to equations \ref{eqn:model1}, \ref{eqn:model2}, and \ref{eqn:model3}. Specifically, we created $b$ bootstrap data sets for each analysis. We performed a two-dimensional QTL scan (over the genomic region of interest) with each of the $b$ bootstrap samples to get $b$ test statistic values. We treated these $b$ test statistics as the empirical distribution with which we compared the test statistic for the observed data. We calculated the p-value as the proportion of the $b$ test statistics ($\Lambda_i$) that equaled or exceeded the test statistic value for the true data, $\Lambda$:
+We used a parametric bootstrap to calibrate our test statistic
+\citep{efron1979}. While \citet{jiang1995multiple} used quantiles of a
+chi-squared distribution to determine p-values, apparent deviations of
+the test statistic distribution from a chi-squared concerned us. Thus,
+we followed the approach of \citet{tian2016dissection} by identifying
+the marker that maximizes the likelihood under pleiotropy (the null
+hypothesis). We then used the inferred model parameters (under
+pleiotropy) at this marker to create bootstrap data sets, according to
+equations \ref{eqn:model1}, \ref{eqn:model2}, and \ref{eqn:model3}.
+Specifically, we created $b$ bootstrap data sets for each analysis. We
+performed a two-dimensional QTL scan (over the genomic region of
+interest) with each of the $b$ bootstrap samples to get $b$ test
+statistic values. We treated these $b$ test statistics as the
+empirical distribution with which we compared the test statistic for
+the observed data. We calculated the p-value as the proportion of the
+$b$ test statistics ($\Lambda_i$) that equaled or exceeded the test
+statistic value for the true data, $\Lambda$:
 
 \begin{equation}
 p = \frac{\# \lbrace i:\Lambda_i \geq \Lambda\rbrace}{b}
 \end{equation}
-where $\Lambda_{i}$ denotes the likelihood ratio test statistic for the $i^{th}$ bootstrap data set and $\Lambda$ denotes the true likelihood ratio test statistic, \textit{i.e.}, that for the observed data.
+where $\Lambda_{i}$ denotes the likelihood ratio test statistic for
+the $i^{th}$ bootstrap data set and $\Lambda$ denotes the true
+likelihood ratio test statistic, \textit{i.e.}, that for the observed
+data.
 
 \subsection{Data \& Software Availability}
 
@@ -270,13 +373,24 @@ We share an accessory R package that contains our functions at:
 
 \section{Simulation studies}
 
-We performed two types of simulation studies, one for type I error rate assessment and one to characterize statistical power to detect separate QTL. To simulate traits, we specified $X$, $B$, $V_g$, $K$, and $V_e$ matrices (Equations \ref{eqn:model1}, \ref{eqn:model2}, \ref{eqn:model3}). For all type I error rate studies, we used the allele probabilities from a single locus for 479 Diversity Outbred mice. For studies to assess power to detect separate QTL, we used the same 479 Diversity Outbred mice and allele probabilities of markers that are centered at the marker fro
-the type I error rate studies.
+We performed two types of simulation studies, one for type I error
+rate assessment and one to characterize statistical power to detect
+separate QTL. To simulate traits, we specified $X$, $B$, $V_g$, $K$,
+and $V_e$ matrices (Equations \ref{eqn:model1}, \ref{eqn:model2},
+\ref{eqn:model3}). For all type I error rate studies, we used the
+allele probabilities from a single locus for 479 Diversity Outbred
+mice. For studies to assess power to detect separate QTL, we used the
+same 479 Diversity Outbred mice and allele probabilities of markers
+that are centered at the marker fro the type I error rate studies.
 
 \subsection{Type I error rate analysis}
 
-
-To quantify type I error rate ({\em i.e.}, false positive rate), we simulated 400 bivariate traits for each of eight sets of parameter inputs (Table \ref{table-typeI}). We used a $2^3$ factorial experimental design with three factors: allele effects difference, allele effects partitioning, and genetic correlation, \textit{i.e.}, the off-diagonal entry in the 2 by 2 matrix $V_g$.
+To quantify type I error rate ({\em i.e.}, false positive rate), we
+simulated 400 bivariate traits for each of eight sets of parameter
+inputs (Table \ref{table-typeI}). We used a $2^3$ factorial
+experimental design with three factors: allele effects difference,
+allele effects partitioning, and genetic correlation, \textit{i.e.},
+the off-diagonal entry in the 2 by 2 matrix $V_g$.
 
 \begin{center}
 \begin{table}
@@ -294,82 +408,232 @@ To quantify type I error rate ({\em i.e.}, false positive rate), we simulated 40
     8 & 12 & F:ABCDEGH & 0.6 & 0.025\\
     \hline
   \end{tabular}
-  \caption{Type I error rates for all eight runs in our $2^3$ experimental design. We set (marginal) genetic variances, \emph{i.e.}, diagonal elements of $V_g$, to 1 in all runs. $V_e$ was set to the 2 by 2 identity matrix in all runs. We used allele probabilities at a single genetic marker to simulate traits for all eight sets of parameter inputs. Founder allele one-letter abbreviations are listed in Table \ref{table-letters}. In the column "Allele effects partitioning", "ABCD:EFGH" means that lines A, B, C, and D form one group while the other four lines are the second group. "F:ABCDEGH" means that the F allele is one group, while the seven other lines are a second group. Thus, for run 1, we assigned lines A, B, C, and D to have founder allele effects of $3$, while E, F, G, and H had founder allele effects of $-3$.}
+  \caption{Type I error rates for all eight runs in our $2^3$
+    experimental design. We set (marginal) genetic variances,
+    \emph{i.e.}, diagonal elements of $V_g$, to 1 in all runs. $V_e$
+    was set to the 2 by 2 identity matrix in all runs. We used allele
+    probabilities at a single genetic marker to simulate traits for
+    all eight sets of parameter inputs. Founder allele one-letter
+    abbreviations are listed in Table \ref{table-letters}. In the
+    column "Allele effects partitioning", "ABCD:EFGH" means that lines
+    A, B, C, and D form one group while the other four lines are the
+    second group. "F:ABCDEGH" means that the F allele is one group,
+    while the seven other lines are a second group. Thus, for run 1,
+    we assigned lines A, B, C, and D to have founder allele effects of
+    $3$, while E, F, G, and H had founder allele effects of $-3$.}
   \label{table-typeI}
   \end{table}
 \end{center}
 
-We explain below the reasoning behind our choice of levels for the three factors. We chose two strong allele effects difference values, 6 and 12. These ensured that the univariate phenotypes mapped with high LOD scores to the region of interest. For one level of the allele partitioning factor, we isolated the CAST allele (F). Three considerations motivated this choice. First, we observed in other analyses that CAST allele effects often differed from those of the other seven founder lines. Second, the phylogenetic distance between CAST and the other lines is greater than other inter-line distances \citep{didion2013deconstructing}. Third, we wanted to examine the effect of sample sizes (approximately equal vs unequal) in our analyses.  We chose to evenly split the founder alleles into two groups of four for the other level of the allele partitioning factor (Table \ref{table-typeI}). We considered two values, 0 and 0.6, of the genetic correlation, \textit{i.e.}, the off-diagonal entry in $V_g$. The marginal genetic variances (\textit{i.e.}, the diagonal entries in $V_g$) for each trait were always set to one.
+We explain below the reasoning behind our choice of levels for the
+three factors. We chose two strong allele effects difference values, 6
+and 12. These ensured that the univariate phenotypes mapped with high
+LOD scores to the region of interest. For one level of the allele
+partitioning factor, we isolated the CAST allele (F). Three
+considerations motivated this choice. First, we observed in other
+analyses that CAST allele effects often differed from those of the
+other seven founder lines. Second, the phylogenetic distance between
+CAST and the other lines is greater than other inter-line distances
+\citep{didion2013deconstructing}. Third, we wanted to examine the
+effect of sample sizes (approximately equal vs unequal) in our
+analyses. We chose to evenly split the founder alleles into two groups
+of four for the other level of the allele partitioning factor (Table
+\ref{table-typeI}). We considered two values, 0 and 0.6, of the
+genetic correlation, \textit{i.e.}, the off-diagonal entry in $V_g$.
+The marginal genetic variances (\textit{i.e.}, the diagonal entries in
+$V_g$) for each trait were always set to one.
 
-We performed 400 tests per set of parameter inputs. Each test used $b = 400$ bootstrap samples. For each bootstrap sample, we calculated the test statistic (Equation \ref{eqn:test-statistic}). We then compared the test statistic from the simulated trait against the empirical distribution of its 400 bootstrap test statistics. When the simulated trait's test statistic exceeded the 0.95 quantile of the empirical distribution of bootstrap test statistics, we rejected the null hypothesis. We observed that the test is slightly conservative over our range of parameter selections (Table \ref{table-typeI}).
+We performed 400 tests per set of parameter inputs. Each test used $b
+= 400$ bootstrap samples. For each bootstrap sample, we calculated the
+test statistic (Equation \ref{eqn:test-statistic}). We then compared
+the test statistic from the simulated trait against the empirical
+distribution of its 400 bootstrap test statistics. When the simulated
+trait's test statistic exceeded the 0.95 quantile of the empirical
+distribution of bootstrap test statistics, we rejected the null
+hypothesis. We observed that the test is slightly conservative over
+our range of parameter selections (Table \ref{table-typeI}).
 
 
 \subsection{Power analysis}
 
-We also investigated the test's power to detect the presence of two distinct QTL. We used a 2 by 2 by 5 experimental design, where our three factors were allele effects difference, allele effects partitioning, and inter-locus distance. The two levels of allele effects difference were 1 and 2. The two levels of allele effects partitioning were, as in the type I error rate studies, ABCD:EFGH and F:ABCDEGH (Table \ref{table-letters}). The five levels of interlocus distance were 0, 0.5, 1, 2, and 3 cM. $V_g$ and $V_e$ were both set to the 2 by 2 identity matrix in all power study simulations.
+We also investigated the test's power to detect the presence of two
+distinct QTL. We used a 2 by 2 by 5 experimental design, where our
+three factors were allele effects difference, allele effects
+partitioning, and inter-locus distance. The two levels of allele
+effects difference were 1 and 2. The two levels of allele effects
+partitioning were, as in the type I error rate studies, ABCD:EFGH and
+F:ABCDEGH (Table \ref{table-letters}). The five levels of interlocus
+distance were 0, 0.5, 1, 2, and 3 cM. $V_g$ and $V_e$ were both set to
+the 2 by 2 identity matrix in all power study simulations.
 
-We simulated 400 bivariate traits per set of parameter inputs. For each simulated bivariate trait, we calculated a likelihood ratio test statistic. We then applied our parametric bootstrap to calibrate the test statistics. For each bivariate trait, we used $b = 400$ bootstrap samples. Because the bootstrap test statistics within a single set of parameter inputs followed approximately the same distribution, we pooled the $400 * 400 = 160,000$ bootstrap samples per set of parameter inputs and compared each test statistic to the empirical distribution derived from the 160,000 bootstrap samples. However, for parameter inputs with interlocus distance equal to zero, we didn't pool the 160,000 bootstrap samples; instead, we proceeded by calculating power, \textit{i.e.}, type I error rate, as we did in the type I error rate study above.
+We simulated 400 bivariate traits per set of parameter inputs. For
+each simulated bivariate trait, we calculated a likelihood ratio test
+statistic. We then applied our parametric bootstrap to calibrate the
+test statistics. For each bivariate trait, we used $b = 400$ bootstrap
+samples. Because the bootstrap test statistics within a single set of
+parameter inputs followed approximately the same distribution, we
+pooled the $400 * 400 = 160,000$ bootstrap samples per set of
+parameter inputs and compared each test statistic to the empirical
+distribution derived from the 160,000 bootstrap samples. However, for
+parameter inputs with interlocus distance equal to zero, we didn't
+pool the 160,000 bootstrap samples; instead, we proceeded by
+calculating power, \textit{i.e.}, type I error rate, as we did in the
+type I error rate study above.
 
 \begin{figure}
 \includegraphics[width = \textwidth]{../R/power-curves.eps}
-\caption{Pleiotropy vs. separate QTL power curves for each of four sets of parameter settings. Factors that differ among the four curves are allele effects difference and allele partitioning. Olive green denotes high (2) allele effects difference and allele partitioning into two groups of four. Purple denotes high (2) allele effects difference with unequal allele partitioning. Red and blue both have the low (1) allele effects difference with even and uneven, respectively, allele partitioning.}
+\caption{Pleiotropy vs. separate QTL power curves for each of four
+  sets of parameter settings. Factors that differ among the four
+  curves are allele effects difference and allele partitioning. Olive
+  green denotes high (2) allele effects difference and allele
+  partitioning into two groups of four. Purple denotes high (2) allele
+  effects difference with unequal allele partitioning. Red and blue
+  both have the low (1) allele effects difference with even and
+  uneven, respectively, allele partitioning.}
 \label{fig:power}
 \end{figure}
 
-We present our power study results in Figure \ref{fig:power}. Each curve tends upward monotonically as interlocus distance increases. The curve with both the high value, 2, of allele effects difference and even allele partitioning into two groups of four founder alleles uniformly has the greatest power (olive green in Figure \ref{fig:power}). The purple curve denotes the parameter input sets with uneven allele partitioning (F:ABCDEGH) and the high value (2) of allele effects difference. The two curves - red and blue - with the low value, 1, of allele effects difference are uniformly less powerful than those with the high value of allele effects difference. Within the two curves with allele effects difference equal to one, that with the even partitioning (ABCD:EFGH) of founder alleles has uniformly greater power.
+We present our power study results in Figure \ref{fig:power}. Each
+curve tends upward monotonically as interlocus distance increases. The
+curve with both the high value, 2, of allele effects difference and
+even allele partitioning into two groups of four founder alleles
+uniformly has the greatest power (olive green in Figure
+\ref{fig:power}). The purple curve denotes the parameter input sets
+with uneven allele partitioning (F:ABCDEGH) and the high value (2) of
+allele effects difference. The two curves - red and blue - with the
+low value, 1, of allele effects difference are uniformly less powerful
+than those with the high value of allele effects difference. Within
+the two curves with allele effects difference equal to one, that with
+the even partitioning (ABCD:EFGH) of founder alleles has uniformly
+greater power.
 
 
 \section{Application}
 \label{sec:app}
 
-To illustrate our methods, we applied our test to data from \citet{logan2013high} and \citet{recla2014precise}. \citet{logan2013high} identified two phenotypes - "percent time in light" and "distance traveled in light" - that mapped to 55 cM on chromosome 8. This genomic region intrigued us because \citet{recla2014precise} identified \textit{Hydin} as the gene that underlies the mapping of "hot plate latency" to 57 cM (Supplementary figures). This led us to ask whether \textit{Hydin} affects "percent time in light". We ignored "distance traveled in light" because of its high correlation (Pearson correlation 0.89) with "percent time in light".
+To illustrate our methods, we applied our test to data from
+\citet{logan2013high} and \citet{recla2014precise}.
+\citet{logan2013high} identified two phenotypes - "percent time in
+light" and "distance traveled in light" - that mapped to 55 cM on
+chromosome 8. This genomic region intrigued us because
+\citet{recla2014precise} identified \textit{Hydin} as the gene that
+underlies the mapping of "hot plate latency" to 57 cM (Supplementary
+figures). This led us to ask whether \textit{Hydin} affects "percent
+time in light". We ignored "distance traveled in light" because of its
+high correlation (Pearson correlation 0.89) with "percent time in
+light".
 
 
 
 
-We downloaded and formatted the data from the Mouse Phenome Database \citep{bogue2015collaborative}. We inserted pseudomarkers at 0.1 cM intervals to bring the number of genome-wide markers to 20,183. We used three data structures: one for genotype data, one for phenotype data, and a third for covariates data. For each mouse and each marker, we have eight founder allele probabilities. We structured the allele probabilities for each chromosome as a 261 by 8 by $m_i$ three-dimensional array, where $m_i$ denotes the number of markers on chromosome $i$. We arranged phenotype data into a 261 by 3 matrix, where each column was a single phenotype and each row corresponded to a single mouse. We used only the sex covariate in our analyses.
+We downloaded and formatted the data from the Mouse Phenome Database
+\citep{bogue2015collaborative}. We inserted pseudomarkers at 0.1 cM
+intervals to bring the number of genome-wide markers to 20,183. We
+used three data structures: one for genotype data, one for phenotype
+data, and a third for covariates data. For each mouse and each marker,
+we have eight founder allele probabilities. We structured the allele
+probabilities for each chromosome as a 261 by 8 by $m_i$
+three-dimensional array, where $m_i$ denotes the number of markers on
+chromosome $i$. We arranged phenotype data into a 261 by 3 matrix,
+where each column was a single phenotype and each row corresponded to
+a single mouse. We used only the sex covariate in our analyses.
 
-We briefly describe the phenotypes that \citet{logan2013high} and \citet{recla2014precise} measured. Both "percent time in light" and "distance traveled in light" were measured by placing mice in a light-dark box, consisting of an insert dividing an open-field apparatus into a light component and a dark component. \citet{logan2013high} then measured the percentage of 20 minutes time spent in the light component of the light-dark box. "Hot plate latency" reflects pain reflexes in response to a thermal stimulus, as recorded by a hot plate analgesia meter. Each mouse remained on the plate until it performed either of two behaviors regarded as indicative of nociception: hindpaw lick or hindpaw shake/flutter.
+We briefly describe the phenotypes that \citet{logan2013high} and
+\citet{recla2014precise} measured. Both "percent time in light" and
+"distance traveled in light" were measured by placing mice in a
+light-dark box, consisting of an insert dividing an open-field
+apparatus into a light component and a dark component.
+\citet{logan2013high} then measured the percentage of 20 minutes time
+spent in the light component of the light-dark box. "Hot plate
+latency" reflects pain reflexes in response to a thermal stimulus, as
+recorded by a hot plate analgesia meter. Each mouse remained on the
+plate until it performed either of two behaviors regarded as
+indicative of nociception: hindpaw lick or hindpaw shake/flutter.
 
 
 
 
-To determine whether \textit{Hydin} affects "percent time in light", we examined a phenotype scatter plot, performed a test of pleiotropy vs. separate QTL, and created founder allele effects plots. A scatter plot revealed that "percent time in light" and "hot plate latency" are not highly correlated, with a Pearson correlation coefficient of $-0.15$ (Figure \ref{fig:scatter}).
+To determine whether \textit{Hydin} affects "percent time in light",
+we examined a phenotype scatter plot, performed a test of pleiotropy
+vs. separate QTL, and created founder allele effects plots. A scatter
+plot revealed that "percent time in light" and "hot plate latency" are
+not highly correlated, with a Pearson correlation coefficient of
+$-0.15$ (Figure \ref{fig:scatter}).
 
 \begin{figure}
 \includegraphics[width = \textwidth]{../Rmd/scatter.eps}
-\caption{Scatter plot of "hot plate latency" against "percent time in light", after applying logarithm transformations and winsorizing both traits.}
+\caption{Scatter plot of "hot plate latency" against "percent time in
+  light", after applying logarithm transformations and winsorizing
+  both traits.}
 \label{fig:scatter}
 \end{figure}
 
 
 \begin{figure}
 \includegraphics[width = \textwidth]{../Rmd/chr8-lods.eps}
-\caption{Chromosome 8 univariate LOD scores for percent time in light and hot plate latency reveal broad, overlapping peaks between 53 cM and 64 cM. The peak for percent time in light spans the region from approximately 53 cM to 60 cM, with a maximum near 55 cM. The peak for hot plate latency begins near 56 cM and ends about 64 cM.}
+\caption{Chromosome 8 univariate LOD scores for percent time in light
+  and hot plate latency reveal broad, overlapping peaks between 53 cM
+  and 64 cM. The peak for percent time in light spans the region from
+  approximately 53 cM to 60 cM, with a maximum near 55 cM. The peak
+  for hot plate latency begins near 56 cM and ends about 64 cM.}
 \label{fig:chr8-lod}
 \end{figure}
 
 
 
-In examining the founder allele effects plot for "percent time in light", we see that the purple (WSB) and red (PWK) alleles have high effects near 55 cM, while the navy blue (NOD) has a dramatically lower value (Figure \ref{fig:chr8-effects}). The allele effects plot for "hot plate latency", on the other hand, features a noticeably distinct pattern of allele effects near 55 to 60 cM (Figure \ref{fig:chr8-effects}). Specifically, it has grey (B6) and green (CAST) alleles with much lower effects, while the pink (129), yellow (AJ), purple (WSB), and light blue (NZO) all show higher allele effects in this region.
+In examining the founder allele effects plot for "percent time in
+light", we see that the purple (WSB) and red (PWK) alleles have high
+effects near 55 cM, while the navy blue (NOD) has a dramatically lower
+value (Figure \ref{fig:chr8-effects}). The allele effects plot for
+"hot plate latency", on the other hand, features a noticeably distinct
+pattern of allele effects near 55 to 60 cM (Figure
+\ref{fig:chr8-effects}). Specifically, it has grey (B6) and green
+(CAST) alleles with much lower effects, while the pink (129), yellow
+(AJ), purple (WSB), and light blue (NZO) all show higher allele
+effects in this region.
 
 \begin{figure}
 \includegraphics[width = \textwidth]{../Rmd/coefs.eps}
-\caption{Chromosome 8 univariate LOD scores for percent time in light and hot plate latency reveal broad, overlapping peaks between 53 cM and 64 cM. The peak for percent time in light spans the region from approximately 53 cM to 60 cM, with a maximum near 55 cM. The peak for hot plate latency begins near 56 cM and ends about 64 cM.}
+\caption{Chromosome 8 univariate LOD scores for percent time in light
+  and hot plate latency reveal broad, overlapping peaks between 53 cM
+  and 64 cM. The peak for percent time in light spans the region from
+  approximately 53 cM to 60 cM, with a maximum near 55 cM. The peak
+  for hot plate latency begins near 56 cM and ends about 64 cM.}
 \label{fig:chr8-effects}
 \end{figure}
 
 
 
 
-We then performed a two-dimensional QTL scan for the pair of phenotypes. With these results, we created a profile LOD plot (Figure \ref{fig:profiles}). The profile LOD plot for the analysis of "percent time in light" and "hot plate latency" displays a peak in the "percent time in light" profile LOD trace near 55 cM; in fact, it overlaps perfectly with the univariate LOD peak for "percent time in light". "Hot plate latency", on the other hand, demonstrates a broad peak in the profile LOD trace, with the maximum achieved near 57 cM (Figure \ref{fig:profiles}A). The pleiotropy trace maximum occurs, too, near 57 cM. The maximal heights of the two profile LOD traces are near 1.2, which is the likelihood ratio test statistic value.
+We then performed a two-dimensional QTL scan for the pair of
+phenotypes. With these results, we created a profile LOD plot (Figure
+\ref{fig:profiles}). The profile LOD plot for the analysis of "percent
+time in light" and "hot plate latency" displays a peak in the "percent
+time in light" profile LOD trace near 55 cM; in fact, it overlaps
+perfectly with the univariate LOD peak for "percent time in light".
+"Hot plate latency", on the other hand, demonstrates a broad peak in
+the profile LOD trace, with the maximum achieved near 57 cM (Figure
+\ref{fig:profiles}A). The pleiotropy trace maximum occurs, too, near
+57 cM. The maximal heights of the two profile LOD traces are near 1.2,
+which is the likelihood ratio test statistic value.
 
-Using the two-dimensional QTL scan results, we calculated a likelihood ratio test statistic value: 1.20. We also calculated a bootstrap p-value with $b = 1000$. The p-value was 0.109. Having set type I error rate $\alpha = 0.05$, this p-values led us to fail to reject the null hypothesis of pleiotropy.
+Using the two-dimensional QTL scan results, we calculated a likelihood
+ratio test statistic value: 1.20. We also calculated a bootstrap
+p-value with $b = 1000$. The p-value was 0.109. Having set type I
+error rate $\alpha = 0.05$, this p-values led us to fail to reject the
+null hypothesis of pleiotropy.
 
 
 \begin{figure}
 \includegraphics[width = \textwidth]{../Rmd/profile.eps}
-\caption{Profile LOD curves for the pleiotropy vs. separate QTL hypothesis test for "percent time in light" and "hot plate latency". Gray trace denotes pleiotropy LOD values. Triangles denote the univariate LOD maxima, while diamonds denote the profile LOD maxima. For "percent time in light", the yellow triangle obscures the smaller yellow diamond. Likelihood ratio test statistic value corresponds to the height of the blue and yellow traces at their maxima.}
+\caption{Profile LOD curves for the pleiotropy vs. separate QTL
+  hypothesis test for "percent time in light" and "hot plate latency".
+  Gray trace denotes pleiotropy LOD values. Triangles denote the
+  univariate LOD maxima, while diamonds denote the profile LOD maxima.
+  For "percent time in light", the yellow triangle obscures the
+  smaller yellow diamond. Likelihood ratio test statistic value
+  corresponds to the height of the blue and yellow traces at their
+  maxima.}
 \label{fig:profiles}
 \end{figure}
 
@@ -382,37 +646,129 @@ Using the two-dimensional QTL scan results, we calculated a likelihood ratio tes
 
 \section{Discussion}
 
-We developed a test of pleiotropy vs. separate QTL for multiparental populations, characterized it with simulation studies, and applied it to answer a scientific question in behavioral genetics. Our simulation studies indicate that the test has power to detect presence of separate loci, especially when univariate trait associations are strong (Figure \ref{fig:power}). Type I error rates indicate that our test is slightly conservative (Table \ref{table-typeI}).
+We developed a test of pleiotropy vs. separate QTL for multiparental
+populations, characterized it with simulation studies, and applied it
+to answer a scientific question in behavioral genetics. Our simulation
+studies indicate that the test has power to detect presence of
+separate loci, especially when univariate trait associations are
+strong (Figure \ref{fig:power}). Type I error rates indicate that our
+test is slightly conservative (Table \ref{table-typeI}).
 
-We applied our test to two behavioral phenotypes in a study of 261 Diversity Outbred mice \citep{recla2014precise,logan2013high}. Our results suggest the presence of two distinct QTL, with one QTL (that containing \textit{Hydin}) affecting only "hot plate latency" and a second QTL affecting "percent time in light" (Figure \ref{fig:profiles}). While our p-value of 0.109 led us to fail to reject the pleiotropy hypothesis, the modest p-value suggests the possibility of two distinct loci.
+We applied our test to two behavioral phenotypes in a study of 261
+Diversity Outbred mice \citep{recla2014precise,logan2013high}. Our
+results suggest the presence of two distinct QTL, with one QTL (that
+containing \textit{Hydin}) affecting only "hot plate latency" and a
+second QTL affecting "percent time in light" (Figure
+\ref{fig:profiles}). While our p-value of 0.109 led us to fail to
+reject the pleiotropy hypothesis, the modest p-value suggests the
+possibility of two distinct loci.
 
-Founder allele effects plots provide further evidence for the presence of two distinct loci. As \citet{macdonald2007joint} and \citet{king2012genetic} argue in their analyses of multiparental *Drosophila* populations, a biallelic pleiotropic QTL would result in allele effects plots that have similar patterns. While we don't know that "percent time in light" and "hot plate latency" arise from biallelic QTL, the dramatic differences that we observe in allele effects patterns further support the argument for two distinct loci, with *Hydin* affecting only "hot plate latency".
+Founder allele effects plots provide further evidence for the presence
+of two distinct loci. As \citet{macdonald2007joint} and
+\citet{king2012genetic} argue in their analyses of multiparental
+*Drosophila* populations, a biallelic pleiotropic QTL would result in
+allele effects plots that have similar patterns. While we don't know
+that "percent time in light" and "hot plate latency" arise from
+biallelic QTL, the dramatic differences that we observe in allele
+effects patterns further support the argument for two distinct loci,
+with *Hydin* affecting only "hot plate latency".
+
+Before discussing future directions for our research, we consider
+limitations of our current software and methods. Analyses with
+\texttt{qtl2pleio} are slow. One factor contributing to this is the
+fact that we wrote \texttt{qtl2pleio} mostly in R. R, due to its
+design, is slower than many compiled languages, such as C++
+\citep{wickham2014advanced}. To accelerate our multi-dimensional QTL
+scans, we integrated C++ code into \texttt{qtl2pleio}
+\citep{eddelbuettel2011rcpp}.
+
+Another computational bottleneck is the estimation of variance
+components $V_g$ and $V_e$. In future research, where we may develop
+tests for simultaneous analysis of more than two traits, we will
+consider other strategies for variance component estimation, including
+that described by \citet{hannah2018limmbo}, who implement a bootstrap
+strategy to estimate variance components for lower-dimensional
+phenotypes before combining bootstrap variance component estimates
+into valid covariance matrices for the full multivariate phenotype.
+We'll add this variance component estimation method to
+\texttt{qtl2pleio} by using the \texttt{reticulate} R package to
+expose objects from the python module \texttt{limmbo}
+\citep{reticulate}.
 
 
-Before discussing future directions for our research, we consider limitations of our current software and methods. Analyses with \texttt{qtl2pleio} are slow. One factor contributing to this is the fact that we wrote \texttt{qtl2pleio} mostly in R. R, due to its design, is slower than many compiled languages, such as C++ \citep{wickham2014advanced}. To accelerate our multi-dimensional QTL scans, we integrated C++ code into \texttt{qtl2pleio} \citep{eddelbuettel2011rcpp}.
+We now contrast pleiotropy vs. separate QTL tests with mediation tests
+in efforts to illustrate their complementary roles. Many systems
+genetics investigations apply mediation tests and related methods to
+infer biomolecular causal relationships
+\citep{chick2016defining,schadt2005integrative,baron1986moderator}. A
+mediation test proceeds by including a putative mediator as a
+covariate in the regression analysis of phenotype and QTL. If a
+putative mediator sufficiently diminishes the LOD score, then the
+putative mediator is declared a mediator of the phenotype-QTL
+relationship.
 
-Another computational bottleneck is the estimation of variance components $V_g$ and $V_e$. In future research, where we may develop tests for simultaneous analysis of more than two traits, we will consider other strategies for variance component estimation, including that described by \citet{hannah2018limmbo}, who implement a bootstrap strategy to estimate variance components for lower-dimensional phenotypes before combining bootstrap variance component estimates into valid covariance matrices for the full multivariate phenotype. We'll add this variance component estimation method to \texttt{qtl2pleio} by using the \texttt{reticulate} R package to expose objects from the python module \texttt{limmbo} \citep{reticulate}.
+An important distinction lies in the different goals for mediation
+tests and pleiotropy vs. separate QTL tests. In a mediation test, we
+seek to identify mediators of a phenotype-QTL relationship from a
+collection of putative mediators. In a pleiotropy vs. separate QTL
+test, one examines two (or more) phenotypes and inquires about the
+number of distinct QTL. A pleiotropy vs. separate QTL test provides
+information about the number of underlying QTL, while a mediation test
+offers conclusions about the relative ordering of biological
+intermediates within a molecular pathway.
 
+Despite their distinct goals, \citet{schadt2005integrative} argue that
+both a pleiotropy vs. separate QTL test and causal inference methods,
+such as mediation tests, may contribute to gene network
+reconstruction. They develop a model selection strategy, based on
+Akaike information criterion \citep{akaike1974new}, to determine which
+causal model is most compatible with the observed multivariate
+phenotype data \citep{schadt2005integrative}. In this context,
+\citet{schadt2005integrative} extend the methods of
+\citet{jiang1995multiple} to consider more complicated alternative
+hypotheses, such as the possibility of two QTL, one of which
+associates with both traits, and one of which associates with only one
+trait. As envisioned by \citet{schadt2005integrative}, we foresee
+complementary roles emerging for our pleiotropy vs. separate QTL test
+and mediation tests in the dissection of complex trait genetic
+architecture.
 
-We now contrast pleiotropy vs. separate QTL tests with mediation tests in efforts to illustrate their complementary roles. Many systems genetics investigations apply mediation tests and related methods to infer biomolecular causal relationships \citep{chick2016defining,schadt2005integrative,baron1986moderator}. A mediation test proceeds by including a putative mediator as a covariate in the regression analysis of phenotype and QTL. If a putative mediator sufficiently diminishes the LOD score, then the putative mediator is declared a mediator of the phenotype-QTL relationship.
-
-An important distinction lies in the different goals for mediation tests and pleiotropy vs. separate QTL tests. In a mediation test, we seek to identify mediators of a phenotype-QTL relationship from a collection of putative mediators. In a pleiotropy vs. separate QTL test, one examines two (or more) phenotypes and inquires about the number of distinct QTL. A pleiotropy vs. separate QTL test provides information about the number of underlying QTL, while a mediation test offers conclusions about the relative ordering of biological intermediates within a molecular pathway.
-
-Despite their distinct goals, \citet{schadt2005integrative} argue that both a pleiotropy vs. separate QTL test and causal inference methods, such as mediation tests, may contribute to gene network reconstruction. They develop a model selection strategy, based on Akaike information criterion \citep{akaike1974new}, to determine which causal model is most compatible with the observed multivariate phenotype data \citep{schadt2005integrative}. In this context, \citet{schadt2005integrative} extend the methods of \citet{jiang1995multiple} to consider more complicated alternative hypotheses, such as the possibility of two QTL, one of which associates with both traits, and one of which associates with only one trait. As envisioned by \citet{schadt2005integrative}, we foresee complementary roles emerging for our pleiotropy vs. separate QTL test and mediation tests in the dissection of complex trait genetic architecture.
-
-Two trends make our scientific contributions especially timely: the accelerating ability of biologists to measure tens of thousands of traits in model organisms and the proliferation of model organism multiparental populations in diverse species. Technological advances in mass spectrometry and RNA sequencing enable the acquisition of high-dimensional biomolecular phenotypes \citep{ozsolak2011rna,han2012multi}. Multiparental populations in \textit{Arabidopsis}, maize, wheat, oil palm, rice, \textit{Drosophila}, yeast, and other organisms enable high-precision QTL mapping \citep{yu2008genetic, tisne2017identification, stanley2017genetic, raghavan2017approaches, mackay2012drosophila, kover2009multiparent, cubillos2013high}. The need to analyze high-dimensional phenotypes in multiparental populations compels the scientific community to develop tools to study genotype-phenotype relationships and complex trait architecture. Our test, and its future extensions, will contribute to these ongoing efforts.
+Two trends make our scientific contributions especially timely: the
+accelerating ability of biologists to measure tens of thousands of
+traits in model organisms and the proliferation of model organism
+multiparental populations in diverse species. Technological advances
+in mass spectrometry and RNA sequencing enable the acquisition of
+high-dimensional biomolecular phenotypes
+\citep{ozsolak2011rna,han2012multi}. Multiparental populations in
+\textit{Arabidopsis}, maize, wheat, oil palm, rice,
+\textit{Drosophila}, yeast, and other organisms enable high-precision
+QTL mapping \citep{yu2008genetic, tisne2017identification,
+  stanley2017genetic, raghavan2017approaches, mackay2012drosophila,
+  kover2009multiparent, cubillos2013high}. The need to analyze
+high-dimensional phenotypes in multiparental populations compels the
+scientific community to develop tools to study genotype-phenotype
+relationships and complex trait architecture. Our test, and its future
+extensions, will contribute to these ongoing efforts.
 
 
 
 
 \subsection*{Acknowledgments}
 
-This research was performed using the compute resources and assistance of the UW-Madison Center For High Throughput Computing (CHTC) in the Department of Computer Sciences. The CHTC is supported by UW-Madison, the Advanced Computing Initiative, the Wisconsin Alumni Research Foundation, the Wisconsin Institutes for Discovery, and the National Science Foundation, and is an active member of the Open Science Grid, which is supported by the National Science Foundation and the U.S. Department of Energy's Office of Science.
+This research was performed using the compute resources and assistance
+of the UW-Madison Center For High Throughput Computing (CHTC) in the
+Department of Computer Sciences. The CHTC is supported by UW-Madison,
+the Advanced Computing Initiative, the Wisconsin Alumni Research
+Foundation, the Wisconsin Institutes for Discovery, and the National
+Science Foundation, and is an active member of the Open Science Grid,
+which is supported by the National Science Foundation and the U.S.
+Department of Energy's Office of Science.
 
-We thank Lindsay Traeger, Julia Kemis, and Rene Welch for critiquing early versions of the manuscript.
+We thank Lindsay Traeger, Julia Kemis, and Rene Welch for critiquing
+early versions of the manuscript.
 
-This work was supported in part by National Institutes of Health grant R01GM070683 (to K.W.B.).
-\bibliography{research,qtl2pleio-manuscript}
+This work was supported in part by National Institutes of Health grant
+R01GM070683 (to K.W.B.). \bibliography{research,qtl2pleio-manuscript}
 
 \newpage
 \appendix
@@ -456,7 +812,8 @@ percent time in light & 8 & 55.28 & 5.27 \\
  hot plate latency & 19 & 47.80 & 5.48 \\
    \hline
 \end{tabular}
-  \caption{Both "hot plate latency" and "percent time in light" demonstrate multiple QTL peaks with LOD scores above 5.}
+  \caption{Both "hot plate latency" and "percent time in light"
+    demonstrate multiple QTL peaks with LOD scores above 5.}
   \label{table-peaks}
 \end{table}
 
@@ -474,13 +831,15 @@ percent time in light & 8 & 55.28 & 5.27 \\
 \section{Supplementary figures}
 \begin{figure}
 \includegraphics{../Rmd/genomewide_lod_trait10.eps}
-\caption{Genome-wide QTL scan for percent time in light reveals multiple QTL, including one on Chromosome 8.}
+\caption{Genome-wide QTL scan for percent time in light reveals
+  multiple QTL, including one on Chromosome 8.}
 \label{fig:genomewide10}
 \end{figure}
 
 \begin{figure}
 \includegraphics{../Rmd/genomewide_lod_trait22.eps}
-\caption{Genome-wide QTL scan for hot plate latency reveals multiple QTL, including a peak on Chromosome 8.}
+\caption{Genome-wide QTL scan for hot plate latency reveals multiple
+  QTL, including a peak on Chromosome 8.}
 \label{fig:genomewide22}
 \end{figure}
 
