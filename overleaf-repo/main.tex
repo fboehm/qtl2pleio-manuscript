@@ -223,21 +223,22 @@ assume that $G$ and $E$ are independent.
 \subsection{Parameter inference and log likelihood calculation}
 
 Inference for parameters in multivariate linear mixed effects models
-is notoriously difficult and computationally intense
-\citep{meyer1989restricted,meyer1991estimating}. Thus, we make the
-simplifying assumption that $V_g$ and $V_e$ don't depend on allele
-probabilities. We use restricted maximum likelihood methods to fit the
+is notoriously difficult and can be computationally intense
+\citep{meyer1989restricted,meyer1991estimating}. Thus, we estimate
+$V_g$ and $V_e$ under the null hypothesis of no QTL, and then taken
+them as fixed and known in our two-dimensional, two-QTL genome scan.
+We use restricted maximum likelihood methods to fit the
 model:
 
 \begin{equation}
 vec(Y) = X_0vec(B) + vec(G) + vec(E)
 \label{model}
 \end{equation}
-$X_0$ is a $2n$ by $2(c + 1)$ matrix. The first column of each
-diagonal block $X_0$ has all entries equal to one, and the remaining
-columns are covariates.
+where $X_0$ is a $2n$ by $2(c + 1)$ matrix whose first column of each
+diagonal block $X_0$ has all entries equal to one (for an intercept); the remaining
+columns are the covariates.
 
-We draw on our implementation \citep{gemma2} (in \texttt{R}) of the
+We draw on our R implementation \citep{gemma2} of the
 GEMMA algorithm for fitting a multivariate linear mixed effects model
 with expectation-maximization \citep{zhou2014efficient}. We use
 restricted maximum likelihood fits for the variance components $V_g$
@@ -255,8 +256,8 @@ solution $\hat B$.
     \label{cov}
 \end{equation}
 
-\noindent where $\otimes$ denotes the Kronecker product, $K$ is a
-("leave one chromosome out") kinship matrix, and $I_n$ is a n by n
+\noindent where $\otimes$ denotes the Kronecker product, $K$ is the
+kinship matrix, and $I_n$ is a n by n
 identity matrix. We then calculate the log likelihood for a normal
 distribution with mean $X vec(\hat B)$ and covariance $\hat \Sigma$
 that depends on our estimates of $V_g$ and $V_e$ (Equation \ref{cov}).
