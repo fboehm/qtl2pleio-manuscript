@@ -397,20 +397,6 @@ the off-diagonal entry in the 2 by 2 matrix $V_g$.
 
 \begin{table}
 \begin{center}
-\small
-  \begin{tabular}{ c | c | c | c | c}
-    \hline
-    Run & $\Delta$(Allele effects) & Allele effects partitioning & Genetic correlation & Type I error rate \\ \hline
-    1 & 6 & ABCD:EFGH & 0 & 0.0325\\
-    2 & 6 & ABCD:EFGH & 0.6 & 0.035\\
-    3 & 6 & F:ABCDEGH & 0 & 0.040\\
-    4 & 6 & F:ABCDEGH & 0.6 & 0.045\\
-    5 & 12 & ABCD:EFGH & 0 & 0.0375\\
-    6 & 12 & ABCD:EFGH & 0.6 & 0.0425\\
-    7 & 12 & F:ABCDEGH & 0 & 0.025\\
-    8 & 12 & F:ABCDEGH & 0.6 & 0.025\\
-    \hline
-  \end{tabular}
   \caption{Type I error rates for all eight runs in our $2^3$
     experimental design. We set (marginal) genetic variances,
     \emph{i.e.}, diagonal elements of $V_g$, to 1 in all runs. $V_e$
@@ -425,6 +411,23 @@ the off-diagonal entry in the 2 by 2 matrix $V_g$.
     we assigned lines A, B, C, and D to have founder allele effects of
     $3$, while E, F, G, and H had founder allele effects of $-3$.}
   \label{table-typeI}
+
+  \bigskip
+
+\small
+  \begin{tabular}{ c | c | c | c | c}
+    \hline
+    Run & $\Delta$(Allele effects) & Allele effects partitioning & Genetic correlation & Type I error rate \\ \hline
+    1 & 6 & ABCD:EFGH & 0 & 0.0325\\
+    2 & 6 & ABCD:EFGH & 0.6 & 0.035\\
+    3 & 6 & F:ABCDEGH & 0 & 0.040\\
+    4 & 6 & F:ABCDEGH & 0.6 & 0.045\\
+    5 & 12 & ABCD:EFGH & 0 & 0.0375\\
+    6 & 12 & ABCD:EFGH & 0.6 & 0.0425\\
+    7 & 12 & F:ABCDEGH & 0 & 0.025\\
+    8 & 12 & F:ABCDEGH & 0.6 & 0.025\\
+    \hline
+  \end{tabular}
 \end{center}
   \end{table}
 
