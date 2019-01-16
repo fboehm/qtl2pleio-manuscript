@@ -341,7 +341,7 @@ hypothesis of pleiotropy.
 We then use the inferred model parameters under that model and with
 the QTL at that position to simulate bootstrap data sets according to
 the model in equations \ref{eqn:model1}--\ref{eqn:model3}.
-For each of $b$ (generally 1000) bootstrap data sets, we
+For each of $b$ bootstrap data sets, we
 perform a two-dimensional QTL scan (over the genomic region of
 interest) and derive the test
 statistic value. We treat these $b$ test statistics as the
@@ -389,7 +389,7 @@ empirically from data for a set of 479 Diversity Outbred mice from
 \subsection{Type I error rate analysis}
 
 To quantify type I error rate ({\em i.e.}, false positive rate), we
-simulated 400 bivariate traits for each of eight sets of parameter
+simulated 400 pairs of traits for each of eight sets of parameter
 inputs (Table \ref{table-typeI}). We used a $2^3$ factorial
 experimental design with three factors: allele effects difference,
 allele effects partitioning, and genetic correlation, \textit{i.e.},
@@ -427,51 +427,43 @@ the off-diagonal entry in the 2 by 2 matrix $V_g$.
 \end{center}
   \end{table}
 
-We explain below the reasoning behind our choice of levels for the
-three factors. We chose two strong allele effects difference values, 6
-and 12. These ensured that the univariate phenotypes mapped with high
-LOD scores to the region of interest. For one level of the allele
-partitioning factor, we isolated the CAST allele (F). Three
-considerations motivated this choice. First, we observed in other
-analyses that CAST allele effects often differed from those of the
-other seven founder lines. Second, the phylogenetic distance between
-CAST and the other lines is greater than other inter-line distances
-\citep{didion2013deconstructing}. Third, we wanted to examine the
-effect of sample sizes (approximately equal vs unequal) in our
-analyses. We chose to evenly split the founder alleles into two groups
-of four for the other level of the allele partitioning factor (Table
-\ref{table-typeI}). We considered two values, 0 and 0.6, of the
-genetic correlation, \textit{i.e.}, the off-diagonal entry in $V_g$.
-The marginal genetic variances (\textit{i.e.}, the diagonal entries in
-$V_g$) for each trait were always set to one.
+We chose two strong allele effects difference values, 6 and 12. These
+ensured that the univariate phenotypes mapped with high LOD scores to
+the region of interest. For the allele partitioning factor, we used
+either equally frequent QTL alleles, or a private allele in the CAST
+strain (F). For the residual genetic correlation (the off-diagonal
+entry in $V_g$), we considered the values 0 and 0.6. The marginal
+genetic variances (\textit{i.e.}, the diagonal entries in $V_g$) for
+each trait were always set to one.
 
-We performed 400 tests per set of parameter inputs. Each test used $b
-= 400$ bootstrap samples. For each bootstrap sample, we calculated the
+We performed 400 simulation replicates per set of parameter inputs,
+and each used $b = 400$ bootstrap samples. For each bootstrap sample, we calculated the
 test statistic (Equation \ref{eqn:test-statistic}). We then compared
 the test statistic from the simulated trait against the empirical
 distribution of its 400 bootstrap test statistics. When the simulated
 trait's test statistic exceeded the 0.95 quantile of the empirical
 distribution of bootstrap test statistics, we rejected the null
 hypothesis. We observed that the test is slightly conservative over
-our range of parameter selections (Table \ref{table-typeI}).
+our range of parameter selections (Table \ref{table-typeI}), with
+estimated type I error rates $<$ 0.05.
 
 
 \subsection{Power analysis}
 
-We also investigated the test's power to detect the presence of two
-distinct QTL. We used a 2 by 2 by 5 experimental design, where our
+We also investigated the power to detect the presence of two
+distinct QTL. We used a 2 $\times$ 2 $\times$ 5 experimental design, where our
 three factors were allele effects difference, allele effects
 partitioning, and inter-locus distance. The two levels of allele
 effects difference were 1 and 2. The two levels of allele effects
-partitioning were, as in the type I error rate studies, ABCD:EFGH and
+partitioning were as in the type I error rate studies, ABCD:EFGH and
 F:ABCDEGH (Table~S\ref{table-letters}). The five levels of interlocus
 distance were 0, 0.5, 1, 2, and 3 cM. $V_g$ and $V_e$ were both set to
 the 2 by 2 identity matrix in all power study simulations.
 
-We simulated 400 bivariate traits per set of parameter inputs. For
-each simulated bivariate trait, we calculated a likelihood ratio test
+We simulated 400 pairs of traits per set of parameter inputs. For
+each simulation replicate, we calculated the likelihood ratio test
 statistic. We then applied our parametric bootstrap to calibrate the
-test statistics. For each bivariate trait, we used $b = 400$ bootstrap
+test statistics. For each simulation replicate, we used $b = 400$ bootstrap
 samples. Because the bootstrap test statistics within a single set of
 parameter inputs followed approximately the same distribution, we
 pooled the $400 * 400 = 160,000$ bootstrap samples per set of
@@ -479,7 +471,7 @@ parameter inputs and compared each test statistic to the empirical
 distribution derived from the 160,000 bootstrap samples. However, for
 parameter inputs with interlocus distance equal to zero, we didn't
 pool the 160,000 bootstrap samples; instead, we proceeded by
-calculating power, \textit{i.e.}, type I error rate, as we did in the
+calculating power (\textit{i.e.}, type I error rate, in this case), as we did in the
 type I error rate study above.
 
 \begin{figure}
@@ -487,27 +479,21 @@ type I error rate study above.
 \caption{Pleiotropy vs.\ separate QTL power curves for each of four
   sets of parameter settings. Factors that differ among the four
   curves are allele effects difference and allele partitioning. Olive
-  green denotes high (2) allele effects difference and allele
+  green denotes high allele effects difference and allele
   partitioning into two groups of four. Purple denotes high (2) allele
   effects difference with unequal allele partitioning. Red and blue
-  both have the low (1) allele effects difference with even and
-  uneven, respectively, allele partitioning.}
+  both have the low allele effects difference with even and
+  uneven allele partitioning, respectively.}
 \label{fig:power}
 \end{figure}
 
-We present our power study results in Figure~\ref{fig:power}. Each
-curve tends upward monotonically as interlocus distance increases. The
-curve with both the high value, 2, of allele effects difference and
-even allele partitioning into two groups of four founder alleles
-uniformly has the greatest power (olive green in Figure~\ref{fig:power}).
-The purple curve denotes the parameter input sets
-with uneven allele partitioning (F:ABCDEGH) and the high value (2) of
-allele effects difference. The two curves - red and blue - with the
-low value, 1, of allele effects difference are uniformly less powerful
-than those with the high value of allele effects difference. Within
-the two curves with allele effects difference equal to one, that with
-the even partitioning (ABCD:EFGH) of founder alleles has uniformly
-greater power.
+We present our power study results in Figure~\ref{fig:power}.
+Power increases as interlocus distance increases. The top two curves
+correspond to the case where the QTL effects are largest. For each value
+for the QTL effect, power is greater when the QTL alleles are equally
+frequent, and smaller when a QTL allele is private to one strain. One
+can have high power to detect that the two traits have distinct QTL
+when they are separated by $>$ 1~cM and when the QTL have large effect.
 
 
 \section{Application}
