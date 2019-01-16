@@ -149,27 +149,22 @@ bootstrap.
 
 \subsection{Data structures}
 
-We arrange the data into three objects. The first is a $n$ by $k$ by
-$m$ array of allele probabilities for n subjects with $k$ alleles per
-marker and $m$ markers on a single chromosome. The second object is a
-$n$ by $d$ matrix of phenotype values, where $d = 2$ for our analyses.
-Each column is a single phenotype and each row is a single subject.
-The third object is a $n$ by $c$ matrix of covariates, where each row
-is one subject and each column is one covariate. In analyses below, we
-use four indicator variables to specify each subject's sex and
-membership in one of four waves of subjects.
+The data consist of three objects. The first is an $n$ by $k$ by $m$
+array of allele probabilities for $n$ subjects with $k$ alleles and
+$m$ marker positions on a single chromosome [derived from the observed
+SNP genotype data by a hidden Markov model; see
+\citet{broman2019rqtl2}]. The second object is an $n$ by 2 matrix of
+phenotype values. Each column is a phenotype and each row is a
+subject. The third object is an $n$ by $c$ matrix of covariates, where
+each row is a subject and each column is a covariate.
 
-One additional object is the genotype-derived collection of ``leave
-one chromosome out'' kinship matrices. The ``leave one chromosome
-out'' approach calculates a collection of kinship matrices, one for
-each chromosome. Each kinship matrix results from kinship estimation
-performed while omitting the genetic data from a single chromosome.
-For example, the chromosome 1 ``leave one chromosome out'' kinship
-matrix results from omitting the genetic data of chromosome 1 and
-using all other genetic data. Our motivation for using ``leave one
-chromosome out'' kinship calculations is to avoid using any marker's
-genetic data in both the kinship matrix and a design matrix for linear
-mixed effects models \citep{yang2014advantages}.
+One additional object is the genotype-derived kinship matrix, which is
+used in the linear mixed model to account for population structure. We
+are focusing on a defined genomic interval, and we prefer to use a
+kinship matrix derived by the ``leave one chromosome out'' (LOCO)
+method \citep{yang2014advantages}, in which the kinship matrix is
+derived from the genotypes for all chromosomes except the chromosome
+under test.
 
 
 
