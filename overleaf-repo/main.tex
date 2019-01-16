@@ -515,53 +515,15 @@ greater power.
 \label{sec:app}
 
 To illustrate our methods, we applied our test to data from
-\citet{logan2013high} and \citet{recla2014precise}.
-\citet{logan2013high} identified two phenotypes - "percent time in
-light" and "distance traveled in light" - that mapped to 55 cM on
-chromosome 8. This genomic region intrigued us because
+\citet{logan2013high} and \citet{recla2014precise}, on 261 DO mice
+measured for a set of behavioral phenotypes.
 \citet{recla2014precise} identified \textit{Hydin} as the gene that
-underlies the mapping of "hot plate latency" to 57 cM (Supplementary
-figures). This led us to ask whether \textit{Hydin} affects "percent
-time in light". We ignored "distance traveled in light" because of its
-high correlation (Pearson correlation 0.89) with "percent time in
-light".
-
-
-
-
-We downloaded and formatted the data from the Mouse Phenome Database
-\citep{bogue2015collaborative}. We inserted pseudomarkers at 0.1 cM
-intervals to bring the number of genome-wide markers to 20,183. We
-used three data structures: one for genotype data, one for phenotype
-data, and a third for covariates data. For each mouse and each marker,
-we have eight founder allele probabilities. We structured the allele
-probabilities for each chromosome as a 261 by 8 by $m_i$
-three-dimensional array, where $m_i$ denotes the number of markers on
-chromosome $i$. We arranged phenotype data into a 261 by 3 matrix,
-where each column was a single phenotype and each row corresponded to
-a single mouse. We used only the sex covariate in our analyses.
-
-We briefly describe the phenotypes that \citet{logan2013high} and
-\citet{recla2014precise} measured. Both "percent time in light" and
-"distance traveled in light" were measured by placing mice in a
-light-dark box, consisting of an insert dividing an open-field
-apparatus into a light component and a dark component.
-\citet{logan2013high} then measured the percentage of 20 minutes time
-spent in the light component of the light-dark box. "Hot plate
-latency" reflects pain reflexes in response to a thermal stimulus, as
-recorded by a hot plate analgesia meter. Each mouse remained on the
-plate until it performed either of two behaviors regarded as
-indicative of nociception: hindpaw lick or hindpaw shake/flutter.
-
-
-
-
-To determine whether \textit{Hydin} affects "percent time in light",
-we examined a phenotype scatter plot, performed a test of pleiotropy
-vs.\ separate QTL, and created founder allele effects plots. A scatter
-plot revealed that "percent time in light" and "hot plate latency" are
-not highly correlated, with a Pearson correlation coefficient of
-$-0.15$ (Figure~\ref{fig:scatter}).
+underlies a QTL on chr 8 at 57 cM for the "hot plate latency"
+phenotype (a measure of pain tolerance). The phenotype ``percent time in light''
+in a light-dark box (a measure of anxiety) was
+measured on the same set of mice \citep{logan2013high} and also shows a QTL near
+this location, which led us to ask whether \textit{Hydin} affects both traits.
+The two traits show a correlation of $-0.15$ (Figure~\ref{fig:scatter}).
 
 \begin{figure}
 \includegraphics[width = \textwidth]{../Rmd/scatter.eps}
@@ -571,6 +533,12 @@ $-0.15$ (Figure~\ref{fig:scatter}).
 \label{fig:scatter}
 \end{figure}
 
+QTL analysis with the LOCO method, and using sex as an additive
+covariate, showed multiple suggestive QTL for each
+phenotypes (Figure S1 and S2; Table S2). For our investigation of
+pleiotropy, we focused on the interval 53--64~cM on chromosome 8.
+The univariate QTL results for this region are shown in
+Figure~\ref{chr8-lod}.
 
 \begin{figure}
 \includegraphics[width = \textwidth]{../Rmd/chr8-lods.eps}
@@ -583,17 +551,12 @@ $-0.15$ (Figure~\ref{fig:scatter}).
 \end{figure}
 
 
-
-In examining the founder allele effects plot for "percent time in
-light", we see that the purple (WSB) and red (PWK) alleles have high
-effects near 55 cM, while the navy blue (NOD) has a dramatically lower
-value (Figure~\ref{fig:chr8-effects}). The allele effects plot for
-"hot plate latency", on the other hand, features a noticeably distinct
-pattern of allele effects near 55 to 60 cM (Figure~\ref{fig:chr8-effects}).
-Specifically, it has grey (B6) and green
-(CAST) alleles with much lower effects, while the pink (129), yellow
-(AJ), purple (WSB), and light blue (NZO) all show higher allele
-effects in this region.
+The estimated QTL allele effects for the two traits are quite
+different (Figure~\ref{fig:chr8-effects}).
+With the QTL placed at 55~cM, for "percent time in light", the WSB and PWK alleles are associated
+with large phenotypes and NOD with low phenotypes.
+For "hot plate latency", on the other hand,
+CAST and NZO show low phenotypes and NOD and PWK are near the center.
 
 \begin{figure}
 \includegraphics[width = \textwidth]{../Rmd/coefs.eps}
@@ -605,26 +568,13 @@ effects in this region.
 \label{fig:chr8-effects}
 \end{figure}
 
-
-
-
-We then performed a two-dimensional QTL scan for the pair of
+In applying our test for pleiotropy,  we performed a two-dimensional, two-QTL scan for the pair of
 phenotypes. With these results, we created a profile LOD plot
-(Figure~\ref{fig:profiles}). The profile LOD plot for the analysis of "percent
-time in light" and "hot plate latency" displays a peak in the "percent
-time in light" profile LOD trace near 55 cM; in fact, it overlaps
-perfectly with the univariate LOD peak for "percent time in light".
-"Hot plate latency", on the other hand, demonstrates a broad peak in
-the profile LOD trace, with the maximum achieved near 57 cM (Figure~\ref{fig:profiles}A).
-The pleiotropy trace maximum occurs, too, near
-57 cM. The maximal heights of the two profile LOD traces are near 1.2,
-which is the likelihood ratio test statistic value.
-
-Using the two-dimensional QTL scan results, we calculated a likelihood
-ratio test statistic value: 1.20. We also calculated a bootstrap
-p-value with $b = 1000$. The p-value was 0.11, indicating modest
-evidence for distinct QTL for the two traits.
-
+(Figure~\ref{fig:profiles}). The profile LOD for "percent
+time in light" (in brown) peaks near 55 cM, as was seen in the univariate
+analysis.  The profile LOD for "hot plate latency" (in blue) peaks near 57 cM,
+also similar to the univariate analysis.
+The pleiotropy trace (in gray) peaks near 55 cM.
 
 \begin{figure}
 \includegraphics[width = \textwidth]{../Rmd/profile.eps}
@@ -632,12 +582,18 @@ evidence for distinct QTL for the two traits.
   hypothesis test for "percent time in light" and "hot plate latency".
   Gray trace denotes pleiotropy LOD values. Triangles denote the
   univariate LOD maxima, while diamonds denote the profile LOD maxima.
-  For "percent time in light", the yellow triangle obscures the
-  smaller yellow diamond. Likelihood ratio test statistic value
-  corresponds to the height of the blue and yellow traces at their
+  For "percent time in light", the brown triangle obscures the
+  smaller brown diamond. Likelihood ratio test statistic value
+  corresponds to the height of the blue and brown traces at their
   maxima.}
 \label{fig:profiles}
 \end{figure}
+
+The likelihood ratio test statistic for the test of pleiotropy was
+1.2. Based on a parametric bootstrap with 1,000 bootstrap replicates,
+the estimated p-value was 0.11, indicating weak
+evidence for distinct QTL for the two traits.
+
 
 
 
