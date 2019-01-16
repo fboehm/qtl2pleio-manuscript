@@ -465,7 +465,7 @@ three factors were allele effects difference, allele effects
 partitioning, and inter-locus distance. The two levels of allele
 effects difference were 1 and 2. The two levels of allele effects
 partitioning were, as in the type I error rate studies, ABCD:EFGH and
-F:ABCDEGH (Table \ref{table-letters}). The five levels of interlocus
+F:ABCDEGH (Table~S\ref{table-letters}). The five levels of interlocus
 distance were 0, 0.5, 1, 2, and 3 cM. $V_g$ and $V_e$ were both set to
 the 2 by 2 identity matrix in all power study simulations.
 
@@ -496,12 +496,12 @@ type I error rate study above.
 \label{fig:power}
 \end{figure}
 
-We present our power study results in Figure \ref{fig:power}. Each
+We present our power study results in Figure~\ref{fig:power}. Each
 curve tends upward monotonically as interlocus distance increases. The
 curve with both the high value, 2, of allele effects difference and
 even allele partitioning into two groups of four founder alleles
-uniformly has the greatest power (olive green in Figure
-\ref{fig:power}). The purple curve denotes the parameter input sets
+uniformly has the greatest power (olive green in Figure~\ref{fig:power}).
+The purple curve denotes the parameter input sets
 with uneven allele partitioning (F:ABCDEGH) and the high value (2) of
 allele effects difference. The two curves - red and blue - with the
 low value, 1, of allele effects difference are uniformly less powerful
@@ -561,7 +561,7 @@ we examined a phenotype scatter plot, performed a test of pleiotropy
 vs.\ separate QTL, and created founder allele effects plots. A scatter
 plot revealed that "percent time in light" and "hot plate latency" are
 not highly correlated, with a Pearson correlation coefficient of
-$-0.15$ (Figure \ref{fig:scatter}).
+$-0.15$ (Figure~\ref{fig:scatter}).
 
 \begin{figure}
 \includegraphics[width = \textwidth]{../Rmd/scatter.eps}
@@ -587,10 +587,10 @@ $-0.15$ (Figure \ref{fig:scatter}).
 In examining the founder allele effects plot for "percent time in
 light", we see that the purple (WSB) and red (PWK) alleles have high
 effects near 55 cM, while the navy blue (NOD) has a dramatically lower
-value (Figure \ref{fig:chr8-effects}). The allele effects plot for
+value (Figure~\ref{fig:chr8-effects}). The allele effects plot for
 "hot plate latency", on the other hand, features a noticeably distinct
-pattern of allele effects near 55 to 60 cM (Figure
-\ref{fig:chr8-effects}). Specifically, it has grey (B6) and green
+pattern of allele effects near 55 to 60 cM (Figure~\ref{fig:chr8-effects}).
+Specifically, it has grey (B6) and green
 (CAST) alleles with much lower effects, while the pink (129), yellow
 (AJ), purple (WSB), and light blue (NZO) all show higher allele
 effects in this region.
@@ -609,14 +609,14 @@ effects in this region.
 
 
 We then performed a two-dimensional QTL scan for the pair of
-phenotypes. With these results, we created a profile LOD plot (Figure
-\ref{fig:profiles}). The profile LOD plot for the analysis of "percent
+phenotypes. With these results, we created a profile LOD plot
+(Figure~\ref{fig:profiles}). The profile LOD plot for the analysis of "percent
 time in light" and "hot plate latency" displays a peak in the "percent
 time in light" profile LOD trace near 55 cM; in fact, it overlaps
 perfectly with the univariate LOD peak for "percent time in light".
 "Hot plate latency", on the other hand, demonstrates a broad peak in
-the profile LOD trace, with the maximum achieved near 57 cM (Figure
-\ref{fig:profiles}A). The pleiotropy trace maximum occurs, too, near
+the profile LOD trace, with the maximum achieved near 57 cM (Figure~\ref{fig:profiles}A).
+The pleiotropy trace maximum occurs, too, near
 57 cM. The maximal heights of the two profile LOD traces are near 1.2,
 which is the likelihood ratio test statistic value.
 
@@ -654,16 +654,15 @@ multiple alleles and with a linear mixed models to account for
 population structure. Our simulation
 studies indicate that the test has power to detect presence of
 separate loci, especially when univariate trait associations are
-strong (Figure \ref{fig:power}). Type I error rates indicate that our
-test is slightly conservative (Table \ref{table-typeI}).
+strong (Figure~\ref{fig:power}). Type I error rates indicate that our
+test is slightly conservative (Table~\ref{table-typeI}).
 
 In the application of our method to two behavioral phenotypes in a
 study of 261 Diversity Outbred mice
 \citep{recla2014precise,logan2013high}, we obtained weak evidence
 (p=0.11) for the presence of two distinct QTL, with one QTL (which
 contained \textit{Hydin}) affecting only "hot plate latency" and a
-second QTL affecting "percent time in light" (Figure
-\ref{fig:profiles}).
+second QTL affecting "percent time in light" (Figure~\ref{fig:profiles}).
 
 Founder allele effects plots provide further evidence for the presence
 of two distinct loci. As \citet{macdonald2007joint} and
@@ -774,11 +773,16 @@ R01GM070683 (to K.W.B.). \bibliography{research,qtl2pleio-manuscript}
 
 \newpage
 \appendix
-\section{Supplementary tables}
+
+% supplemental tables
+\renewcommand{\thetable}{\textbf{S\arabic{table}}}
+\setcounter{table}{0}
 
 
+\begin{table}[hb]
+  \caption{Eight founder lines and their one-letter abbreviations.}
+  \label{table-letters}
 \begin{center}
-\begin{table}
 \small
   \begin{tabular}{ c | c }
     \hline
@@ -793,13 +797,19 @@ R01GM070683 (to K.W.B.). \bibliography{research,qtl2pleio-manuscript}
     WSB/EiJ & H\\
     \hline
   \end{tabular}
-  \caption{Eight founder lines and their one-letter abbreviations.}
-  \label{table-letters}
+
+\end{center}
   \end{table}
+
+\clearpage
 
   % latex table generated in R 3.5.1 by xtable 1.8-3 package
 % Tue Nov 20 10:28:47 2018
-\begin{table}[ht]
+\begin{table}[hb]
+\caption{Both "hot plate latency" and "percent time in light"
+  demonstrate multiple QTL peaks with LOD scores above 5.}
+  \label{table-peaks}
+\begin{center}
 \begin{tabular}{l|lrr}
   \hline
 lodcolumn & chr & pos & lod \\
@@ -814,31 +824,32 @@ percent time in light & 8 & 55.28 & 5.27 \\
  hot plate latency & 19 & 47.80 & 5.48 \\
    \hline
 \end{tabular}
-  \caption{Both "hot plate latency" and "percent time in light"
-    demonstrate multiple QTL peaks with LOD scores above 5.}
-  \label{table-peaks}
+\end{center}
 \end{table}
 
 
 
-\end{center}
 
 
 
 
+\clearpage
 
 
+% supplemental figures
+\renewcommand{\thefigure}{\textbf{S\arabic{figure}}}
+\setcounter{figure}{0}
 
-\newpage
-\section{Supplementary figures}
-\begin{figure}
+\begin{figure}[hb]
 \includegraphics{../Rmd/genomewide_lod_trait10.eps}
 \caption{Genome-wide QTL scan for percent time in light reveals
   multiple QTL, including one on Chromosome 8.}
 \label{fig:genomewide10}
 \end{figure}
 
-\begin{figure}
+\clearpage
+
+\begin{figure}[hb]
 \includegraphics{../Rmd/genomewide_lod_trait22.eps}
 \caption{Genome-wide QTL scan for hot plate latency reveals multiple
   QTL, including a peak on Chromosome 8.}
