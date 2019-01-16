@@ -278,19 +278,18 @@ H_A: \lambda_1 \neq \lambda_2
 \noindent Our likelihood ratio test statistic is:
 
 \begin{equation}
-- \log_{10} \frac{\max L_0(B, \Sigma, \lambda_1, \lambda_2)}{\max L_A(B, \Sigma, \lambda_1, \lambda_2)}
+\log_{10} \left[ \frac{\max_{\lambda_1, \lambda_2} L(B, \Sigma, \lambda_1, \lambda_2)}{
+    \max_\lambda L(B, \Sigma, \lambda, \lambda)} \right]
 \label{eqn:test-statistic}
 \end{equation}
-where $L_0$ is the likelihood under the null hypothesis (pleiotropy)
-and $L_A$ is the likelihood under the alternative hypothesis (separate
-QTL). We maximize each term in the fraction over its respective
-parameter space.
+where $L$ is the likelihood for fixed QTL positions,
+maximized over all other parameters.
 
 \subsection{Visualizing profile LOD traces}
 
 Following an innovation of \citet{zeng2000genetic} and
-\citet{tian2016dissection}, we plotted three traces: profile LOD$_1$
-trace, profile LOD$_2$ trace, and the pleiotropy trace to aid in
+\citet{tian2016dissection}, we plot three traces: the profile LOD$_1$
+trace, the profile LOD$_2$ trace, and the pleiotropy trace to aid in
 visualizing the two-dimensional likelihood surface. By definition
 (Equation \ref{eq:lodp}), the maximum height of the pleiotropy trace
 is zero. Additionally, the maxima for profile LOD$_1$ trace and
