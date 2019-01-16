@@ -265,20 +265,20 @@ that depends on our estimates of $V_g$ and $V_e$ (Equation \ref{cov}).
 \subsection{Pleiotropy vs.\ separate QTL hypothesis testing framework}
 
 Our test applies to two traits considered simultaneously. Below,
-$\omega_1$ and $\omega_2$ denote putative locus positions for traits
+$\lambda_1$ and $\lambda_2$ denote putative locus positions for traits
 one and two. We quantitatively state the competing hypotheses for our
 test as:
 
 \begin{eqnarray}
-H_0: \omega_1 = \omega_2 \nonumber\\
-H_A: \omega_1 \neq \omega_2
+H_0: \lambda_1 = \lambda_2 \nonumber\\
+H_A: \lambda_1 \neq \lambda_2
 \label{eqn:hypotheses}
 \end{eqnarray}
 
 \noindent Our likelihood ratio test statistic is:
 
 \begin{equation}
-- \log_{10} \frac{\max L_0(B, \Sigma, \omega_1, \omega_2)}{\max L_A(B, \Sigma, \omega_1, \omega_2)}
+- \log_{10} \frac{\max L_0(B, \Sigma, \lambda_1, \lambda_2)}{\max L_A(B, \Sigma, \lambda_1, \lambda_2)}
 \label{eqn:test-statistic}
 \end{equation}
 where $L_0$ is the likelihood under the null hypothesis (pleiotropy)
@@ -300,7 +300,7 @@ profile LOD$_2$ trace are equal and non-negative (Equations
 We define the $LOD$ for our test:
 
 \begin{equation}
-LOD(\omega_1, \omega_2) = ll_{10}(\omega_1, \omega_2) - \max ll_{10}(\omega, \omega)
+LOD(\lambda_1, \lambda_2) = ll_{10}(\lambda_1, \lambda_2) - \max ll_{10}(\lambda, \lambda)
 \label{eq:lodpvl}
 \end{equation}
 where $ll_{10}$ denotes log-likelihood.
@@ -309,16 +309,16 @@ We follow \citet{zeng2000genetic} and \citet{tian2016dissection} in
 defining profile LOD by the equation
 
 \begin{equation}
-\text{profile LOD}_1(\omega_1) = \max_{\omega_2}\text{LOD}_{pvl}(\omega_1, \omega_2)
+\text{profile LOD}_1(\lambda_1) = \max_{\lambda_2}\text{LOD}_{pvl}(\lambda_1, \lambda_2)
 \label{eq:profilelod}
 \end{equation}
-We define profile LOD$_2(\omega_2)$ analogously.
+We define profile LOD$_2(\lambda_2)$ analogously.
 
 We constructed the pleiotropy trace by calculating the log-likelihoods
 for the pleiotropic models at every marker.
 
 \begin{equation}
-LOD_{p}(\omega) = ll_{10}(\omega, \omega) - \max ll_{10}(\omega, \omega)
+LOD_{p}(\lambda) = ll_{10}(\lambda, \lambda) - \max ll_{10}(\lambda, \lambda)
 \label{eq:lodp}
 \end{equation}
 
