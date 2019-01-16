@@ -171,13 +171,15 @@ under test.
 
 \subsection{Statistical Models}
 
-The next step in a pleiotropy vs.\ separate QTL test, after identifying
-two traits and a genomic region of interest, is a two-dimensional QTL
-scan \citep{jiang1995multiple}. in a two-dimensional QTL scan, we fit
+Focusing on a pair of traits and a particular genomic region of
+interest, the next step is a two-dimensional, two-QTL
+scan \citep{jiang1995multiple}. We consider two QTL with each
+affecting a different trait, and consider all possible pairs of
+locations for the two QTL. For each pair of positions, we fit
 the multivariate linear mixed effects model defined in Equation
-\ref{eqn:model1} once for every ordered pair of markers. Note that we
+\ref{eqn:model1}. Note that we have
 assumed an additive genetic model throughout our analyses, but
-extensions to design matrices for dominance models are
+extensions to design matrices that include dominance are
 straightforward.
 
 
@@ -185,9 +187,10 @@ straightforward.
 vec(Y) = X vec(B) + vec(G) + vec(E)
 \label{eqn:model1}
 \end{equation}
-where $Y$ is a $n$ by $2$ matrix of phenotypes values, where each row
-is one mouse and each column is one trait; $X$ is a $2n$ by $2(k + c)$
-matrix that contains two markers' $k$ allele probabilities and $c$
+where $Y$ is the $n$ by $2$ matrix of phenotypes values;
+$X$ is a $2n$ by $2(k + c)$
+matrix that contains the $k$ allele probabilities for the two QTL
+positions and the $c$
 covariates in diagonal blocks; $B$ is a $(k + c)$ by $2$ matrix of
 allele effects and covariate effects; $G$ is a $n$ by $2$ matrix of
 random effects; and $E$ is a $n$ by $2$ matrix of random errors. $n$
@@ -211,7 +214,7 @@ and
 E \sim MN_{nx2}(0, I, V_e)
 \label{eqn:model3}
 \end{equation}
-where $MN_{n x 2}(0, V_r, V_c)$ denotes the matrix-variate (n by 2)
+where $MN_{n x 2}(0, V_r, V_c)$ denotes the matrix-variate ($n$ by 2)
 normal distribution with mean being the $n$ by $2$ matrix with all
 zero entries and row covariance $V_r$ and column covariance $V_c$. We
 assume that $G$ and $E$ are independent.
