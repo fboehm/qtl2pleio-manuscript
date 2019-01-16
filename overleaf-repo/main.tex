@@ -404,9 +404,9 @@ the off-diagonal entry in the 2 by 2 matrix $V_g$.
     probabilities at a single genetic marker to simulate traits for
     all eight sets of parameter inputs. Founder allele one-letter
     abbreviations are listed in Table \ref{table-letters}. In the
-    column "Allele effects partitioning", "ABCD:EFGH" means that lines
+    column ``Allele effects partitioning'', ``ABCD:EFGH'' means that lines
     A, B, C, and D form one group while the other four lines are the
-    second group. "F:ABCDEGH" means that the F allele is one group,
+    second group. ``F:ABCDEGH'' means that the F allele is one group,
     while the seven other lines are a second group. Thus, for run 1,
     we assigned lines A, B, C, and D to have founder allele effects of
     $3$, while E, F, G, and H had founder allele effects of $-3$.}
@@ -418,12 +418,12 @@ the off-diagonal entry in the 2 by 2 matrix $V_g$.
   \begin{tabular}{ c | c | c | c | c}
     \hline
     Run & $\Delta$(Allele effects) & Allele effects partitioning & Genetic correlation & Type I error rate \\ \hline
-    1 & 6 & ABCD:EFGH & 0 & 0.0325\\
+    1 & 6 & ABCD:EFGH & 0 & 0.032\\
     2 & 6 & ABCD:EFGH & 0.6 & 0.035\\
     3 & 6 & F:ABCDEGH & 0 & 0.040\\
     4 & 6 & F:ABCDEGH & 0.6 & 0.045\\
-    5 & 12 & ABCD:EFGH & 0 & 0.0375\\
-    6 & 12 & ABCD:EFGH & 0.6 & 0.0425\\
+    5 & 12 & ABCD:EFGH & 0 & 0.038\\
+    6 & 12 & ABCD:EFGH & 0.6 & 0.042\\
     7 & 12 & F:ABCDEGH & 0 & 0.025\\
     8 & 12 & F:ABCDEGH & 0.6 & 0.025\\
     \hline
@@ -521,7 +521,7 @@ To illustrate our methods, we applied our test to data from
 \citet{logan2013high} and \citet{recla2014precise}, on 261 DO mice
 measured for a set of behavioral phenotypes.
 \citet{recla2014precise} identified \textit{Hydin} as the gene that
-underlies a QTL on chr 8 at 57 cM for the "hot plate latency"
+underlies a QTL on chr 8 at 57 cM for the ``hot plate latency''
 phenotype (a measure of pain tolerance). The phenotype ``percent time in light''
 in a light-dark box (a measure of anxiety) was
 measured on the same set of mice \citep{logan2013high} and also shows a QTL near
@@ -549,9 +549,9 @@ Figure~\ref{fig:chr8-lod}.
 
 The estimated QTL allele effects for the two traits are quite
 different (Figure~\ref{fig:chr8-effects}).
-With the QTL placed at 55~cM, for "percent time in light", the WSB and PWK alleles are associated
+With the QTL placed at 55~cM, for ``percent time in light'', the WSB and PWK alleles are associated
 with large phenotypes and NOD with low phenotypes.
-For "hot plate latency", on the other hand,
+For ``hot plate latency'', on the other hand,
 CAST and NZO show low phenotypes and NOD and PWK are near the center.
 
 \begin{figure}
@@ -566,19 +566,19 @@ CAST and NZO show low phenotypes and NOD and PWK are near the center.
 
 In applying our test for pleiotropy,  we performed a two-dimensional, two-QTL scan for the pair of
 phenotypes. With these results, we created a profile LOD plot
-(Figure~\ref{fig:profiles}). The profile LOD for "percent
-time in light" (in brown) peaks near 55 cM, as was seen in the univariate
-analysis.  The profile LOD for "hot plate latency" (in blue) peaks near 57 cM,
+(Figure~\ref{fig:profiles}). The profile LOD for ``percent
+time in light'' (in brown) peaks near 55 cM, as was seen in the univariate
+analysis.  The profile LOD for ``hot plate latency'' (in blue) peaks near 57 cM,
 also similar to the univariate analysis.
 The pleiotropy trace (in gray) peaks near 55 cM.
 
 \begin{figure}
 \includegraphics[width = \textwidth]{../Rmd/profile.eps}
 \caption{Profile LOD curves for the pleiotropy vs.\ separate QTL
-  hypothesis test for "percent time in light" and "hot plate latency".
+  hypothesis test for ``percent time in light'' and ``hot plate latency''.
   Gray trace denotes pleiotropy LOD values. Triangles denote the
   univariate LOD maxima, while diamonds denote the profile LOD maxima.
-  For "percent time in light", the brown triangle obscures the
+  For ``percent time in light'', the brown triangle obscures the
   smaller brown diamond. Likelihood ratio test statistic value
   corresponds to the height of the blue and brown traces at their
   maxima.}
@@ -613,18 +613,18 @@ In the application of our method to two behavioral phenotypes in a
 study of 261 Diversity Outbred mice
 \citep{recla2014precise,logan2013high}, we obtained weak evidence
 (p=0.11) for the presence of two distinct QTL, with one QTL (which
-contained \textit{Hydin}) affecting only "hot plate latency" and a
-second QTL affecting "percent time in light" (Figure~\ref{fig:profiles}).
+contained \textit{Hydin}) affecting only ``hot plate latency'' and a
+second QTL affecting ``percent time in light'' (Figure~\ref{fig:profiles}).
 
 Founder allele effects plots provide further evidence for the presence
 of two distinct loci. As \citet{macdonald2007joint} and
 \citet{king2012genetic} argue in their analyses of multiparental
 *Drosophila* populations, a biallelic pleiotropic QTL would result in
 allele effects plots that have similar patterns. While we don't know
-that "percent time in light" and "hot plate latency" arise from
+that ``percent time in light'' and ``hot plate latency'' arise from
 biallelic QTL, the dramatic differences that we observe in allele
 effects patterns further support the argument for two distinct loci,
-with *Hydin* affecting only "hot plate latency".
+with *Hydin* affecting only ``hot plate latency''.
 
 Before discussing future directions for our research, we consider
 limitations of our current software and methods. Analyses with
@@ -758,7 +758,7 @@ R01GM070683 (to K.W.B.). \bibliography{research,qtl2pleio-manuscript}
   % latex table generated in R 3.5.1 by xtable 1.8-3 package
 % Tue Nov 20 10:28:47 2018
 \begin{table}
-\caption{Both "hot plate latency" and "percent time in light"
+\caption{Both ``hot plate latency'' and ``percent time in light''
   demonstrate multiple QTL peaks with LOD scores above 5.}
   \label{table-peaks}
 \begin{center}
@@ -794,8 +794,8 @@ percent time in light & 8 & 55.28 & 5.27 \\
 
 \begin{figure}
 \includegraphics[width = \textwidth]{../Rmd/scatter.eps}
-\caption{Scatter plot of "hot plate latency" against "percent time in
-  light", after applying logarithm transformations and winsorizing
+\caption{Scatter plot of ``hot plate latency'' against ``percent time in
+  light'', after applying logarithm transformations and winsorizing
   both traits.}
 \label{fig:scatter}
 \end{figure}
