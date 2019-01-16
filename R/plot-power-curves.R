@@ -12,8 +12,8 @@ tibble(trace, distance, power) -> mytib
 library(ggplot2)
 mytib %>%
   group_by(trace) %>%
-  ggplot() + geom_line(aes(x = distance, y = power, colour = as.factor(trace))) + 
-  broman::theme_karl(legend.position = "none") + 
+  ggplot() + geom_line(aes(x = distance, y = power, colour = as.factor(trace))) +
+  broman::theme_karl(legend.position = "none") +
   xlab("Distance (cM)") + ylab("Power")
-ggsave("R/power-curves.eps")
+ggsave("R/power-curves.eps", height=4, width=7.5)
 ggsave("R/power-curves.png")
