@@ -619,9 +619,8 @@ which is the likelihood ratio test statistic value.
 
 Using the two-dimensional QTL scan results, we calculated a likelihood
 ratio test statistic value: 1.20. We also calculated a bootstrap
-p-value with $b = 1000$. The p-value was 0.109. Having set type I
-error rate $\alpha = 0.05$, this p-values led us to fail to reject the
-null hypothesis of pleiotropy.
+p-value with $b = 1000$. The p-value was 0.11, indicating modest
+evidence for distinct QTL for the two traits.
 
 
 \begin{figure}
@@ -647,21 +646,21 @@ null hypothesis of pleiotropy.
 \section{Discussion}
 
 We developed a test of pleiotropy vs.\ separate QTL for multiparental
-populations, characterized it with simulation studies, and applied it
-to answer a scientific question in behavioral genetics. Our simulation
+populations, extending the work of \citet{jiang1995multiple} for
+multiple alleles and with a linear mixed models to account for
+population structure. Our simulation
 studies indicate that the test has power to detect presence of
 separate loci, especially when univariate trait associations are
 strong (Figure \ref{fig:power}). Type I error rates indicate that our
 test is slightly conservative (Table \ref{table-typeI}).
 
-We applied our test to two behavioral phenotypes in a study of 261
-Diversity Outbred mice \citep{recla2014precise,logan2013high}. Our
-results suggest the presence of two distinct QTL, with one QTL (that
-containing \textit{Hydin}) affecting only "hot plate latency" and a
+In the application of our method to two behavioral phenotypes in a
+study of 261 Diversity Outbred mice
+\citep{recla2014precise,logan2013high}, we obtained weak evidence
+(p=0.11) for the presence of two distinct QTL, with one QTL (which
+contained \textit{Hydin}) affecting only "hot plate latency" and a
 second QTL affecting "percent time in light" (Figure
-\ref{fig:profiles}). While our p-value of 0.109 led us to fail to
-reject the pleiotropy hypothesis, the modest p-value suggests the
-possibility of two distinct loci.
+\ref{fig:profiles}).
 
 Founder allele effects plots provide further evidence for the presence
 of two distinct loci. As \citet{macdonald2007joint} and
