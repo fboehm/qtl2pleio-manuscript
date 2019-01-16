@@ -523,22 +523,15 @@ phenotype (a measure of pain tolerance). The phenotype ``percent time in light''
 in a light-dark box (a measure of anxiety) was
 measured on the same set of mice \citep{logan2013high} and also shows a QTL near
 this location, which led us to ask whether \textit{Hydin} affects both traits.
-The two traits show a correlation of $-0.15$ (Figure~\ref{fig:scatter}).
-
-\begin{figure}
-\includegraphics[width = \textwidth]{../Rmd/scatter.eps}
-\caption{Scatter plot of "hot plate latency" against "percent time in
-  light", after applying logarithm transformations and winsorizing
-  both traits.}
-\label{fig:scatter}
-\end{figure}
+The two traits show a correlation of $-0.15$ (Figure~S\ref{fig:scatter}).
 
 QTL analysis with the LOCO method, and using sex as an additive
 covariate, showed multiple suggestive QTL for each
-phenotypes (Figure S1 and S2; Table S2). For our investigation of
+phenotypes (Figures~S\ref{fig:genomewide10}
+and S\ref{fig:genomewide22}; Table~S\ref{table-peaks}). For our investigation of
 pleiotropy, we focused on the interval 53--64~cM on chromosome 8.
 The univariate QTL results for this region are shown in
-Figure~\ref{chr8-lod}.
+Figure~\ref{fig:chr8-lod}.
 
 \begin{figure}
 \includegraphics[width = \textwidth]{../Rmd/chr8-lods.eps}
@@ -735,7 +728,7 @@ R01GM070683 (to K.W.B.). \bibliography{research,qtl2pleio-manuscript}
 \setcounter{table}{0}
 
 
-\begin{table}[hb]
+\begin{table}
   \caption{Eight founder lines and their one-letter abbreviations.}
   \label{table-letters}
 \begin{center}
@@ -761,7 +754,7 @@ R01GM070683 (to K.W.B.). \bibliography{research,qtl2pleio-manuscript}
 
   % latex table generated in R 3.5.1 by xtable 1.8-3 package
 % Tue Nov 20 10:28:47 2018
-\begin{table}[hb]
+\begin{table}
 \caption{Both "hot plate latency" and "percent time in light"
   demonstrate multiple QTL peaks with LOD scores above 5.}
   \label{table-peaks}
@@ -796,7 +789,16 @@ percent time in light & 8 & 55.28 & 5.27 \\
 \renewcommand{\thefigure}{\textbf{S\arabic{figure}}}
 \setcounter{figure}{0}
 
-\begin{figure}[hb]
+\begin{figure}
+\includegraphics[width = \textwidth]{../Rmd/scatter.eps}
+\caption{Scatter plot of "hot plate latency" against "percent time in
+  light", after applying logarithm transformations and winsorizing
+  both traits.}
+\label{fig:scatter}
+\end{figure}
+
+
+\begin{figure}
 \includegraphics{../Rmd/genomewide_lod_trait10.eps}
 \caption{Genome-wide QTL scan for percent time in light reveals
   multiple QTL, including one on Chromosome 8.}
@@ -805,7 +807,7 @@ percent time in light & 8 & 55.28 & 5.27 \\
 
 \clearpage
 
-\begin{figure}[hb]
+\begin{figure}
 \includegraphics{../Rmd/genomewide_lod_trait22.eps}
 \caption{Genome-wide QTL scan for hot plate latency reveals multiple
   QTL, including a peak on Chromosome 8.}
