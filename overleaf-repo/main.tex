@@ -278,7 +278,7 @@ H_A: \lambda_1 \neq \lambda_2
 \noindent Our likelihood ratio test statistic is:
 
 \begin{equation}
-\log_{10} \left[ \frac{\max_{\lambda_1, \lambda_2} L(B, \Sigma, \lambda_1, \lambda_2)}{
+\text{LOD} = \log_{10} \left[ \frac{\max_{\lambda_1, \lambda_2} L(B, \Sigma, \lambda_1, \lambda_2)}{
     \max_\lambda L(B, \Sigma, \lambda, \lambda)} \right]
 \label{eqn:test-statistic}
 \end{equation}
@@ -287,70 +287,72 @@ maximized over all other parameters.
 
 \subsection{Visualizing profile LOD traces}
 
-Following an innovation of \citet{zeng2000genetic} and
-\citet{tian2016dissection}, we plot three traces: the profile LOD$_1$
-trace, the profile LOD$_2$ trace, and the pleiotropy trace to aid in
-visualizing the two-dimensional likelihood surface. By definition
-(Equation \ref{eq:lodp}), the maximum height of the pleiotropy trace
-is zero. Additionally, the maxima for profile LOD$_1$ trace and
-profile LOD$_2$ trace are equal and non-negative (Equations
-\ref{eq:lodpvl} and \ref{eq:profilelod}).
+The output of the above analysis is a two-dimensional log$_{10}$ likelihood
+surface. To visualize these results, we followed an innovation of \citet{zeng2000genetic} and
+\citet{tian2016dissection}, and plot three traces: the results along the
+diagonal (corresponding to the null hypothesis of pleiotropy), and
+then the profiles derived by fixing one QTL's position
+and maximizing over the other QTL's position.
 
-We define the $LOD$ for our test:
+We define the LOD score for our test:
 
 \begin{equation}
-LOD(\lambda_1, \lambda_2) = ll_{10}(\lambda_1, \lambda_2) - \max ll_{10}(\lambda, \lambda)
+\text{LOD}(\lambda_1, \lambda_2) = ll_{10}(\lambda_1, \lambda_2) - \max ll_{10}(\lambda, \lambda)
 \label{eq:lodpvl}
 \end{equation}
-where $ll_{10}$ denotes log-likelihood.
+where $ll_{10}$ denotes log$_{10}$ likelihood.
 
 We follow \citet{zeng2000genetic} and \citet{tian2016dissection} in
 defining profile LOD by the equation
 
 \begin{equation}
-\text{profile LOD}_1(\lambda_1) = \max_{\lambda_2}\text{LOD}_{pvl}(\lambda_1, \lambda_2)
+\text{profile LOD}_1(\lambda_1) = \max_{\lambda_2}\text{LOD}(\lambda_1, \lambda_2)
 \label{eq:profilelod}
 \end{equation}
 We define profile LOD$_2(\lambda_2)$ analogously.
+The maximum value for the profile LOD$_1$
+profile LOD$_2$ traces the same and are non-negative, and give the
+overall LOD test statistic.
 
-We constructed the pleiotropy trace by calculating the log-likelihoods
-for the pleiotropic models at every marker.
+We construct the pleiotropy trace by calculating the log-likelihoods
+for the pleiotropic models at every position.
 
 \begin{equation}
 LOD_{p}(\lambda) = ll_{10}(\lambda, \lambda) - \max ll_{10}(\lambda, \lambda)
 \label{eq:lodp}
 \end{equation}
+By definition, the maximum value for this pleiotropy trace
+is zero.
+
+
 
 
 
 
 \subsection{Bootstrap for test statistic calibration}
 
-We used a parametric bootstrap to calibrate our test statistic
+We use a parametric bootstrap to calibrate our test statistic
 \citep{efron1979}. While \citet{jiang1995multiple} used quantiles of a
-chi-squared distribution to determine p-values, apparent deviations of
-the test statistic distribution from a chi-squared concerned us. Thus,
-we followed the approach of \citet{tian2016dissection} by identifying
-the marker that maximizes the likelihood under pleiotropy (the null
-hypothesis). We then used the inferred model parameters (under
-pleiotropy) at this marker to create bootstrap data sets, according to
-equations \ref{eqn:model1}, \ref{eqn:model2}, and \ref{eqn:model3}.
-Specifically, we created $b$ bootstrap data sets for each analysis. We
-performed a two-dimensional QTL scan (over the genomic region of
-interest) with each of the $b$ bootstrap samples to get $b$ test
-statistic values. We treated these $b$ test statistics as the
-empirical distribution with which we compared the test statistic for
-the observed data. We calculated the p-value as the proportion of the
-$b$ test statistics ($\Lambda_i$) that equaled or exceeded the test
-statistic value for the true data, $\Lambda$:
+chi-squared distribution to determine p-values, this does not account
+for the two-dimensional search over QTL positions.
+We follow the approach of \citet{tian2016dissection}, and identify
+the maximum likelihood estimate of the QTL position under the null
+hypothesis of pleiotropy.
+We then use the inferred model parameters under that model and with
+the QTL at that position to simulate bootstrap data sets according to
+the model in equations \ref{eqn:model1}--\ref{eqn:model3}.
+For each of $b$ (generally 1000) bootstrap data sets, we
+perform a two-dimensional QTL scan (over the genomic region of
+interest) and derive the test
+statistic value. We treat these $b$ test statistics as the
+empirical null distribution, and calculate a p-value as the
+proportion of the $b$ bootstrap test statistics that equal or exceed
+the observed one, with the original data,
+$p = \# \{ i:\text{LOD}^*_i \geq \text{LOD}\} / b$
+where $\text{LOD}_i^*$ denotes the LOD score for the $i$th bootstrap
+replicate and LOD is the observed test statistic.
 
-\begin{equation}
-p = \frac{\# \lbrace i:\Lambda_i \geq \Lambda\rbrace}{b}
-\end{equation}
-where $\Lambda_{i}$ denotes the likelihood ratio test statistic for
-the $i^{th}$ bootstrap data set and $\Lambda$ denotes the true
-likelihood ratio test statistic, \textit{i.e.}, that for the observed
-data.
+
 
 \subsection{Data \& Software Availability}
 
