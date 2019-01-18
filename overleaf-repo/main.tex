@@ -626,47 +626,36 @@ strategy to estimate variance components for lower-dimensional
 phenotypes before combining bootstrap variance component estimates
 into valid covariance matrices for the full multivariate phenotype.
 
-We view our test for pleiotropy as complementary to the sorts of
+We view tests of pleiotropy as complementary to the sorts of
 mediation tests and related methods that have become popular for
 inferring biomolecular causal relationships
 \citep{chick2016defining,schadt2005integrative,baron1986moderator}. A
 mediation test proceeds by including a putative mediator as a
-covariate in the regression analysis of phenotype and QTL. If a
-putative mediator sufficiently diminishes the LOD score, then the
-putative mediator is declared a mediator of the phenotype-QTL
-relationship.
+covariate in the regression analysis of phenotype and QTL genotype;
+one looks for a substantial reduction in the association between
+genotype and phenotype.
+Mediation and pleiotropy tests have different goals: mediation
+analysis seeks
+to establish causal relationships, while pleiotropy tests examine
+whether two traits share a QTL.
 
-An important distinction lies in the different goals for mediation
-tests and pleiotropy vs.\ separate QTL tests. In a mediation test, we
-seek to identify mediators of a phenotype-QTL relationship from a
-collection of putative mediators. In a pleiotropy vs.\ separate QTL
-test, one examines two (or more) phenotypes and inquires about the
-number of distinct QTL. A pleiotropy vs.\ separate QTL test provides
-information about the number of underlying QTL, while a mediation test
-offers conclusions about the relative ordering of biological
-intermediates within a molecular pathway.
-
-Despite their distinct goals, \citet{schadt2005integrative} argue that
-both a pleiotropy vs.\ separate QTL test and causal inference methods,
+\citet{schadt2005integrative} argued that
+both pleiotropy tests and causal inference methods,
 such as mediation tests, may contribute to gene network
-reconstruction. They develop a model selection strategy, based on
-Akaike information criterion \citep{akaike1974new}, to determine which
-causal model is most compatible with the observed multivariate
-phenotype data \citep{schadt2005integrative}. In this context,
-\citet{schadt2005integrative} extend the methods of
+reconstruction. They developed a model selection strategy, based on
+the Akaike Information Criterion \citep{akaike1974new}, to determine which
+causal model is most compatible with the observed data.
+\citet{schadt2005integrative} extended the methods of
 \citet{jiang1995multiple} to consider more complicated alternative
 hypotheses, such as the possibility of two QTL, one of which
 associates with both traits, and one of which associates with only one
 trait. As envisioned by \citet{schadt2005integrative}, we foresee
-complementary roles emerging for our pleiotropy vs.\ separate QTL test
+complementary roles emerging for our pleiotropy test
 and mediation tests in the dissection of complex trait genetic
 architecture.
 
-Two trends make our scientific contributions especially timely: the
-accelerating ability of biologists to measure tens of thousands of
-traits in model organisms and the proliferation of model organism
-multiparental populations in diverse species. Technological advances
-in mass spectrometry and RNA sequencing enable the acquisition of
+Technological advances
+in mass spectrometry and RNA sequencing have enabled the acquisition of
 high-dimensional biomolecular phenotypes
 \citep{ozsolak2011rna,han2012multi}. Multiparental populations in
 \textit{Arabidopsis}, maize, wheat, oil palm, rice,
@@ -684,20 +673,23 @@ extensions, will contribute to these ongoing efforts.
 
 \subsection*{Acknowledgments}
 
-This research was performed using the compute resources and assistance
+The authors thank Lindsay Traeger, Julia Kemis, and Rene Welch for
+valuable suggestions to improve the manuscript. This work was
+supported in part by National Institutes of Health grant R01GM070683
+(to K.W.B.). The research made use of compute resources and assistance
 of the UW-Madison Center For High Throughput Computing (CHTC) in the
-Department of Computer Sciences. The CHTC is supported by UW-Madison,
+Department of Computer Sciences at UW-Madison, which is supported by
 the Advanced Computing Initiative, the Wisconsin Alumni Research
 Foundation, the Wisconsin Institutes for Discovery, and the National
 Science Foundation, and is an active member of the Open Science Grid,
 which is supported by the National Science Foundation and the U.S.
 Department of Energy's Office of Science.
 
-We thank Lindsay Traeger, Julia Kemis, and Rene Welch for critiquing
-early versions of the manuscript.
 
-This work was supported in part by National Institutes of Health grant
-R01GM070683 (to K.W.B.). \bibliography{research,qtl2pleio-manuscript}
+
+
+
+\bibliography{research,qtl2pleio-manuscript}
 
 \newpage
 \appendix
