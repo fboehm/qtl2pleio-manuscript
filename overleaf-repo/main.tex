@@ -595,46 +595,40 @@ In the application of our method to two behavioral phenotypes in a
 study of 261 Diversity Outbred mice
 \citep{recla2014precise,logan2013high}, we obtained weak evidence
 (p=0.11) for the presence of two distinct QTL, with one QTL (which
-contained \textit{Hydin}) affecting only ``hot plate latency'' and a
+contained the \textit{Hydin} gene) affecting only ``hot plate latency'' and a
 second QTL affecting ``percent time in light'' (Figure~\ref{fig:profiles}).
 
 Founder allele effects plots provide further evidence for the presence
 of two distinct loci. As \citet{macdonald2007joint} and
-\citet{king2012genetic} argue in their analyses of multiparental
-*Drosophila* populations, a biallelic pleiotropic QTL would result in
+\citet{king2012genetic} have demonstrated in their analyses of multiparental
+Drosophila populations, a biallelic pleiotropic QTL would result in
 allele effects plots that have similar patterns. While we don't know
 that ``percent time in light'' and ``hot plate latency'' arise from
 biallelic QTL, the dramatic differences that we observe in allele
 effects patterns further support the argument for two distinct loci,
-with *Hydin* affecting only ``hot plate latency''.
+with \emph{Hydin\/} affecting only ``hot plate latency''.
 
-Before discussing future directions for our research, we consider
-limitations of our current software and methods. Analyses with
-\texttt{qtl2pleio} are slow. One factor contributing to this is the
-fact that we wrote \texttt{qtl2pleio} mostly in R. R, due to its
-design, is slower than many compiled languages, such as C++
-\citep{wickham2014advanced}. To accelerate our multi-dimensional QTL
-scans, we integrated C++ code into \texttt{qtl2pleio}
-\citep{eddelbuettel2011rcpp}.
+We have implemented our methods in an R package
+\texttt{qtl2pleio}, but analyses can be computationally intensive and
+time consuming. \texttt{qtl2pleio} is written mostly in R, and so we
+could likely obtain improved computational speed by porting parts of
+the calculations to a compiled langugage such as C or C++.
+To accelerate our multi-dimensional QTL
+scans, we have integrated C++ code into \texttt{qtl2pleio},
+using the Rcpp package \citep{eddelbuettel2011rcpp}.
 
-Another computational bottleneck is the estimation of variance
-components $V_g$ and $V_e$. In future research, where we may develop
-tests for simultaneous analysis of more than two traits, we will
+Another computational bottleneck is the estimation of the variance
+components $V_g$ and $V_e$. In future research, we hope to extend our
+work for the joint analysis of more than two traits, and we will
 consider other strategies for variance component estimation, including
 that described by \citet{hannah2018limmbo}, who implement a bootstrap
 strategy to estimate variance components for lower-dimensional
 phenotypes before combining bootstrap variance component estimates
 into valid covariance matrices for the full multivariate phenotype.
-We'll add this variance component estimation method to
-\texttt{qtl2pleio} by using the \texttt{reticulate} R package to
-expose objects from the python module \texttt{limmbo}
-\citep{reticulate}.
 
-
-We now contrast pleiotropy vs.\ separate QTL tests with mediation tests
-in efforts to illustrate their complementary roles. Many systems
-genetics investigations apply mediation tests and related methods to
-infer biomolecular causal relationships
+We view our test for pleiotropy as complementary to the sorts of
+mediation tests and related methods that have become popular for
+inferring biomolecular causal relationships
 \citep{chick2016defining,schadt2005integrative,baron1986moderator}. A
 mediation test proceeds by including a putative mediator as a
 covariate in the regression analysis of phenotype and QTL. If a
