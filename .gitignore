@@ -32,3 +32,13 @@ vignettes/*.pdf
 *.utf8.md
 *.knit.md
 .Rproj.user
+
+
+# latex stuff
+overleaf-repo/main.aux
+overleaf-repo/main.bbl
+overleaf-repo/main.blg
+overleaf-repo/main.fdb_latexmk
+overleaf-repo/main.fls
+overleaf-repo/main.log
+overleaf-repo/main.out
