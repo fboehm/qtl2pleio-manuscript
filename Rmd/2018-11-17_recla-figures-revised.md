@@ -1,7 +1,7 @@
 Recla analysis: Updated figures
 ================
 Frederick Boehm
-2018-12-16 20:08:24
+2019-01-19 14:06:02
 
 ## Read pvl scan results from files
 
@@ -72,6 +72,7 @@ sex2 <- matrix(as.numeric(sex == "female"), ncol = 1)
 colnames(sex2) <- "female"
 rownames(sex2) <- rownames(aprobs[[1]])
 out <- scan1(genoprobs = aprobs, pheno = wlph, kinship = kinship, addcovar = sex2, reml = TRUE)
+saveRDS(out, "scan1.rds") # save scan1 results in case we want to tweak figures
 ```
 
 ``` r
@@ -181,8 +182,8 @@ xtable::xtable(find_peaks(out[, c(10, 22)], pseudomap, threshold = 5) %>%
    select(- lodindex))
 ```
 
-    ## % latex table generated in R 3.5.1 by xtable 1.8-3 package
-    ## % Sun Dec 16 20:22:56 2018
+    ## % latex table generated in R 3.5.2 by xtable 1.8-3 package
+    ## % Sat Jan 19 14:20:25 2019
     ## \begin{table}[ht]
     ## \centering
     ## \begin{tabular}{rllrr}
@@ -228,13 +229,13 @@ cor(wlph[ , 7], wlph[ , 22], use = "complete.obs")
 
 ``` r
 library(qtl2pleio)
-colnames(recla$pheno)[c(10, 22)] <- c("Percent time in light", "Hot plate latency")
+colnames(recla$pheno)[c(10, 22)] <- c("percent time in light", "hot plate latency")
 p1022 <- tidy_scan_pvl(pvl1022, pmap = gm) %>%
   add_intercepts(c(as.numeric(pos_LD_light_pct), as.numeric(pos_HP_latency))) %>%
-  plot_pvl(phenames = colnames(recla$pheno)[c(10, 22)]) + ggtitle("Chromosome 8 profile LOD for percent time in light and hot plate latency")
+  plot_pvl(phenames = colnames(recla$pheno)[c(10, 22)]) + ggtitle("percent time in light and hot plate latency")
 ```
 
-    ## Warning: Column `marker1`/`marker` joining factor and character vector,
+    ## Warning: Column `marker`/`marker1` joining character vector and factor,
     ## coercing into character vector
 
     ## Warning: Column `marker2`/`marker` joining factor and character vector,
@@ -259,7 +260,7 @@ ggsave(filename =  "profile.svg", plot = p1022)
 ## Scatter plot of phenotypes
 
 ``` r
-scatter1022 <- ggplot() + geom_point(data = wlph_tib, aes(y = HP_latency, x = LD_light_pct)) + labs(x = "Percent time in light", y = "Hot plate latency") + ggtitle("Scatterplot of hot plate latency vs. percent time in light")
+scatter1022 <- ggplot() + geom_point(data = wlph_tib, aes(y = HP_latency, x = LD_light_pct)) + labs(x = "percent time in light", y = "hot plate latency") + ggtitle("hot plate latency vs. percent time in light")
 ggsave(filename = "scatter.eps", plot = scatter1022)
 ```
 
@@ -280,7 +281,7 @@ ggsave(filename = "scatter.svg", plot = scatter1022)
 ``` r
 setEPS()
 postscript("genomewide_lod_trait10.eps")
-plot(out, map = pseudomap, lodcolumn = 10, main = "Genome-wide LOD for percent time in light")
+plot(out, map = pseudomap, lodcolumn = 10, main = "percent time in light")
 dev.off()
 ```
 
@@ -290,7 +291,7 @@ dev.off()
 ``` r
 setEPS()
 postscript("genomewide_lod_trait22.eps")
-plot(out, map = pseudomap, lodcolumn = 22, main = "Genome-wide LOD for hot plate latency")
+plot(out, map = pseudomap, lodcolumn = 22, main = "hot plate latency")
 dev.off()
 ```
 
@@ -300,7 +301,7 @@ dev.off()
 ``` r
 setEPS()
 postscript("genomewide_lod_trait10.eps")
-plot(out, map = pseudomap, lodcolumn = 10, main = "Genome-wide LOD for percent time in light")
+plot(out, map = pseudomap, lodcolumn = 10, main = "percent time in light")
 dev.off()
 ```
 
@@ -309,7 +310,7 @@ dev.off()
 
 ``` r
 svg("genomewide_lod_trait10.svg")
-plot(out, map = pseudomap, lodcolumn = 10, main = "Genome-wide LOD for percent time in light")
+plot(out, map = pseudomap, lodcolumn = 10, main = "percent time in light")
 dev.off()
 ```
 
@@ -319,7 +320,7 @@ dev.off()
 ``` r
 setEPS()
 postscript("genomewide_lod_trait22.eps")
-plot(out, map = pseudomap, lodcolumn = 22, main = "Genome-wide LOD for hot plate latency")
+plot(out, map = pseudomap, lodcolumn = 22, main = "hot plate latency")
 dev.off()
 ```
 
@@ -328,7 +329,20 @@ dev.off()
 
 ``` r
 svg("genomewide_lod_trait22.svg")
-plot(out, map = pseudomap, lodcolumn = 22, main = "Genome-wide LOD for hot plate latency")
+plot(out, map = pseudomap, lodcolumn = 22, main = "hot plate latency")
+dev.off()
+```
+
+    ## quartz_off_screen 
+    ##                 2
+
+``` r
+# genomewide lod plots for 10 & 22, pct time in light and hot plate latency
+setEPS()
+postscript("genomewide_lods_10-22.eps")
+par(mfrow = c(2, 1))
+plot(out, map = pseudomap, lodcolumn = 10, main = "percent time in light")
+plot(out, map = pseudomap, lodcolumn = 22, main = "hot plate latency")
 dev.off()
 ```
 
@@ -351,8 +365,8 @@ out[(cumsum_map_lengths[7] + 650):(cumsum_map_lengths[7] + 999), ] -> chr8_lods
 setEPS()
 postscript("chr8-lods.eps")
 par(mfrow = c(2, 1))
-plot_scan1(chr8_lods, chr = 8, map = pseudomap, lodcolumn = 10, main = "Chromosome 8 LOD for percent time in light")
-plot_scan1(chr8_lods, chr = 8, map = pseudomap, lodcolumn = 22, main = "Chromosome 8 LOD for hot plate latency")
+plot_scan1(chr8_lods, chr = 8, map = pseudomap, lodcolumn = 10, main = "percent time in light")
+plot_scan1(chr8_lods, chr = 8, map = pseudomap, lodcolumn = 22, main = "hot plate latency")
 dev.off()
 ```
 
@@ -371,6 +385,12 @@ scan1coef(aprobs[ , 8], pheno = wlph[, 22], kinship = kinship$`8`,
 ```
 
 ``` r
+# save scan1coef output objects for fine-tuning of figures
+saveRDS(s1c_10, "s1c_10.rds") # percent time in light
+saveRDS(s1c_22, "s1c_22.rds") # hot plate latency
+```
+
+``` r
 # ensure that subsets are scan1output objects
 s1c_10s <- s1c_10[650:999, 1:8]
 s1c_22s <- s1c_22[650:999, 1:8]
@@ -380,8 +400,8 @@ s1c_22s <- s1c_22[650:999, 1:8]
 setEPS()
 postscript("coefs.eps")
 par(mfrow = c(2, 1))
-plot_coefCC(s1c_10s, map = pseudomap, main = "Allele effects for percent time in light", legend = "topright")
-plot_coefCC(s1c_22s, map = pseudomap, main = "Allele effects for hot plate latency")
+plot_coefCC(s1c_10s, map = pseudomap, main = "percent time in light", legend = "topright")
+plot_coefCC(s1c_22s, map = pseudomap, main = "hot plate latency")
 dev.off()
 ```
 
@@ -391,8 +411,8 @@ dev.off()
 ``` r
 svg("coefs.svg")
 par(mfrow = c(2, 1))
-plot_coefCC(s1c_10s, map = pseudomap, main = "Allele effects for percent time in light", legend = "topright")
-plot_coefCC(s1c_22s, map = pseudomap, main = "Allele effects for hot plate latency")
+plot_coefCC(s1c_10s, map = pseudomap, main = "percent time in light", legend = "topright")
+plot_coefCC(s1c_22s, map = pseudomap, main = "hot plate latency")
 dev.off()
 ```
 
@@ -406,36 +426,35 @@ devtools::session_info()
 ```
 
     ## ─ Session info ──────────────────────────────────────────────────────────
-    ##  setting  value                       
-    ##  version  R version 3.5.1 (2018-07-02)
-    ##  os       macOS  10.14.2              
-    ##  system   x86_64, darwin15.6.0        
-    ##  ui       X11                         
-    ##  language (EN)                        
-    ##  collate  en_US.UTF-8                 
-    ##  ctype    en_US.UTF-8                 
-    ##  tz       America/Chicago             
-    ##  date     2018-12-16                  
+    ##  setting  value                                      
+    ##  version  R version 3.5.2 Patched (2018-12-24 r75893)
+    ##  os       macOS Mojave 10.14.2                       
+    ##  system   x86_64, darwin15.6.0                       
+    ##  ui       X11                                        
+    ##  language (EN)                                       
+    ##  collate  en_US.UTF-8                                
+    ##  ctype    en_US.UTF-8                                
+    ##  tz       America/Chicago                            
+    ##  date     2019-01-19                                 
     ## 
     ## ─ Packages ──────────────────────────────────────────────────────────────
     ##  package     * version    date       lib source                           
     ##  assertthat    0.2.0      2017-04-11 [1] CRAN (R 3.5.0)                   
-    ##  backports     1.1.2      2017-12-13 [1] CRAN (R 3.5.0)                   
-    ##  base64enc     0.1-3      2015-07-28 [1] CRAN (R 3.5.0)                   
+    ##  backports     1.1.3      2018-12-14 [1] CRAN (R 3.5.0)                   
     ##  bindr         0.1.1      2018-03-13 [1] CRAN (R 3.5.0)                   
     ##  bindrcpp    * 0.2.2      2018-03-29 [1] CRAN (R 3.5.0)                   
     ##  bit           1.1-14     2018-05-29 [1] CRAN (R 3.5.0)                   
     ##  bit64         0.9-7      2017-05-08 [1] CRAN (R 3.5.0)                   
     ##  blob          1.1.1      2018-03-25 [1] CRAN (R 3.5.0)                   
     ##  broman        0.68-2     2018-07-25 [1] CRAN (R 3.5.0)                   
-    ##  callr         3.0.0      2018-08-24 [1] CRAN (R 3.5.0)                   
+    ##  callr         3.1.1      2018-12-21 [1] CRAN (R 3.5.0)                   
     ##  cli           1.0.1      2018-09-25 [1] CRAN (R 3.5.0)                   
     ##  colorspace    1.3-2      2016-12-14 [1] CRAN (R 3.5.0)                   
     ##  crayon        1.3.4      2017-09-16 [1] CRAN (R 3.5.0)                   
     ##  data.table    1.11.8     2018-09-30 [1] CRAN (R 3.5.0)                   
     ##  DBI           1.0.0      2018-05-02 [1] CRAN (R 3.5.0)                   
     ##  desc          1.2.0      2018-05-01 [1] CRAN (R 3.5.0)                   
-    ##  devtools      2.0.1      2018-10-26 [1] CRAN (R 3.5.1)                   
+    ##  devtools      2.0.1      2018-10-26 [1] CRAN (R 3.5.2)                   
     ##  digest        0.6.18     2018-10-10 [1] CRAN (R 3.5.0)                   
     ##  dplyr       * 0.7.8      2018-11-10 [1] CRAN (R 3.5.0)                   
     ##  evaluate      0.12       2018-10-09 [1] CRAN (R 3.5.0)                   
@@ -445,30 +464,30 @@ devtools::session_info()
     ##  glue          1.3.0      2018-07-17 [1] CRAN (R 3.5.0)                   
     ##  gtable        0.2.0      2016-02-26 [1] CRAN (R 3.5.0)                   
     ##  htmltools     0.3.6      2017-04-28 [1] CRAN (R 3.5.0)                   
-    ##  jsonlite      1.5        2017-06-01 [1] CRAN (R 3.5.0)                   
-    ##  knitr         1.20       2018-02-20 [1] CRAN (R 3.5.0)                   
+    ##  jsonlite      1.6        2018-12-07 [1] CRAN (R 3.5.0)                   
+    ##  knitr         1.21       2018-12-10 [1] CRAN (R 3.5.2)                   
     ##  labeling      0.3        2014-08-23 [1] CRAN (R 3.5.0)                   
     ##  lazyeval      0.2.1      2017-10-29 [1] CRAN (R 3.5.0)                   
     ##  lubridate     1.7.4      2018-04-11 [1] CRAN (R 3.5.0)                   
     ##  magrittr      1.5        2014-11-22 [1] CRAN (R 3.5.0)                   
     ##  memoise       1.1.0      2017-04-21 [1] CRAN (R 3.5.0)                   
     ##  munsell       0.5.0      2018-06-12 [1] CRAN (R 3.5.0)                   
-    ##  pillar        1.3.0      2018-07-14 [1] CRAN (R 3.5.0)                   
+    ##  pillar        1.3.1      2018-12-15 [1] CRAN (R 3.5.0)                   
     ##  pkgbuild      1.0.2      2018-10-16 [1] CRAN (R 3.5.0)                   
     ##  pkgconfig     2.0.2      2018-08-16 [1] CRAN (R 3.5.0)                   
     ##  pkgload       1.0.2      2018-10-29 [1] CRAN (R 3.5.0)                   
     ##  plyr          1.8.4      2016-06-08 [1] CRAN (R 3.5.0)                   
     ##  prettyunits   1.0.2      2015-07-13 [1] CRAN (R 3.5.0)                   
-    ##  processx      3.2.0      2018-08-16 [1] CRAN (R 3.5.0)                   
-    ##  ps            1.2.1      2018-11-06 [1] CRAN (R 3.5.0)                   
+    ##  processx      3.2.1      2018-12-05 [1] CRAN (R 3.5.0)                   
+    ##  ps            1.3.0      2018-12-21 [1] CRAN (R 3.5.0)                   
     ##  purrr         0.2.5      2018-05-29 [1] CRAN (R 3.5.0)                   
-    ##  qtl2        * 0.17-9     2018-11-18 [1] Github (rqtl/qtl2@1c007a2)       
-    ##  qtl2pleio   * 0.1.2.9000 2018-11-25 [1] Github (fboehm/qtl2pleio@2cd6f40)
+    ##  qtl2        * 0.17-9     2018-12-25 [1] Github (rqtl/qtl2@1c007a2)       
+    ##  qtl2pleio   * 0.1.2.9000 2018-12-31 [1] Github (fboehm/qtl2pleio@be41d66)
     ##  R6            2.3.0      2018-10-04 [1] CRAN (R 3.5.0)                   
-    ##  Rcpp          1.0.0.1    2018-11-18 [1] Github (RcppCore/Rcpp@4f168e6)   
+    ##  Rcpp          1.0.0.1    2018-12-28 [1] Github (RcppCore/Rcpp@0c9f683)   
     ##  remotes       2.0.2      2018-10-30 [1] CRAN (R 3.5.0)                   
     ##  rlang         0.3.0.1    2018-10-25 [1] CRAN (R 3.5.0)                   
-    ##  rmarkdown     1.10       2018-06-11 [1] CRAN (R 3.5.0)                   
+    ##  rmarkdown     1.11       2018-12-08 [1] CRAN (R 3.5.0)                   
     ##  rprojroot     1.3-2      2018-01-03 [1] CRAN (R 3.5.0)                   
     ##  RSQLite       2.1.1      2018-05-06 [1] CRAN (R 3.5.0)                   
     ##  scales        1.0.0      2018-08-09 [1] CRAN (R 3.5.0)                   
@@ -481,6 +500,7 @@ devtools::session_info()
     ##  tidyselect    0.2.5      2018-10-11 [1] CRAN (R 3.5.0)                   
     ##  usethis       1.4.0      2018-08-14 [1] CRAN (R 3.5.0)                   
     ##  withr         2.1.2      2018-03-15 [1] CRAN (R 3.5.0)                   
+    ##  xfun          0.4        2018-10-23 [1] CRAN (R 3.5.0)                   
     ##  xtable        1.8-3      2018-08-29 [1] CRAN (R 3.5.0)                   
     ##  yaml          2.2.0      2018-07-25 [1] CRAN (R 3.5.0)                   
     ## 

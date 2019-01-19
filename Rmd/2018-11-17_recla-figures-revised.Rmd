@@ -68,6 +68,7 @@ sex2 <- matrix(as.numeric(sex == "female"), ncol = 1)
 colnames(sex2) <- "female"
 rownames(sex2) <- rownames(aprobs[[1]])
 out <- scan1(genoprobs = aprobs, pheno = wlph, kinship = kinship, addcovar = sex2, reml = TRUE)
+saveRDS(out, "scan1.rds") # save scan1 results in case we want to tweak figures
 ```
 
 
@@ -114,10 +115,10 @@ cor(wlph[ , 7], wlph[ , 22], use = "complete.obs")
 
 ```{r}
 library(qtl2pleio)
-colnames(recla$pheno)[c(10, 22)] <- c("Percent time in light", "Hot plate latency")
+colnames(recla$pheno)[c(10, 22)] <- c("percent time in light", "hot plate latency")
 p1022 <- tidy_scan_pvl(pvl1022, pmap = gm) %>%
   add_intercepts(c(as.numeric(pos_LD_light_pct), as.numeric(pos_HP_latency))) %>%
-  plot_pvl(phenames = colnames(recla$pheno)[c(10, 22)]) + ggtitle("Chromosome 8 profile LOD for percent time in light and hot plate latency")
+  plot_pvl(phenames = colnames(recla$pheno)[c(10, 22)]) + ggtitle("percent time in light and hot plate latency")
 ggsave(filename = "profile.eps", plot = p1022)
 ggsave(filename =  "profile.svg", plot = p1022)
 ```
@@ -127,7 +128,7 @@ ggsave(filename =  "profile.svg", plot = p1022)
 ## Scatter plot of phenotypes
 
 ```{r}
-scatter1022 <- ggplot() + geom_point(data = wlph_tib, aes(y = HP_latency, x = LD_light_pct)) + labs(x = "Percent time in light", y = "Hot plate latency") + ggtitle("Scatterplot of hot plate latency vs. percent time in light")
+scatter1022 <- ggplot() + geom_point(data = wlph_tib, aes(y = HP_latency, x = LD_light_pct)) + labs(x = "percent time in light", y = "hot plate latency") + ggtitle("hot plate latency vs. percent time in light")
 ggsave(filename = "scatter.eps", plot = scatter1022)
 ggsave(filename = "scatter.svg", plot = scatter1022)
 ```
@@ -137,24 +138,24 @@ ggsave(filename = "scatter.svg", plot = scatter1022)
 ```{r}
 setEPS()
 postscript("genomewide_lod_trait10.eps")
-plot(out, map = pseudomap, lodcolumn = 10, main = "Genome-wide LOD for percent time in light")
+plot(out, map = pseudomap, lodcolumn = 10, main = "percent time in light")
 dev.off()
 ```
 
 ```{r}
 setEPS()
 postscript("genomewide_lod_trait22.eps")
-plot(out, map = pseudomap, lodcolumn = 22, main = "Genome-wide LOD for hot plate latency")
+plot(out, map = pseudomap, lodcolumn = 22, main = "hot plate latency")
 dev.off()
 ```
 
 ```{r}
 setEPS()
 postscript("genomewide_lod_trait10.eps")
-plot(out, map = pseudomap, lodcolumn = 10, main = "Genome-wide LOD for percent time in light")
+plot(out, map = pseudomap, lodcolumn = 10, main = "percent time in light")
 dev.off()
 svg("genomewide_lod_trait10.svg")
-plot(out, map = pseudomap, lodcolumn = 10, main = "Genome-wide LOD for percent time in light")
+plot(out, map = pseudomap, lodcolumn = 10, main = "percent time in light")
 dev.off()
 
 ```
@@ -162,12 +163,25 @@ dev.off()
 ```{r}
 setEPS()
 postscript("genomewide_lod_trait22.eps")
-plot(out, map = pseudomap, lodcolumn = 22, main = "Genome-wide LOD for hot plate latency")
+plot(out, map = pseudomap, lodcolumn = 22, main = "hot plate latency")
 dev.off()
 svg("genomewide_lod_trait22.svg")
-plot(out, map = pseudomap, lodcolumn = 22, main = "Genome-wide LOD for hot plate latency")
+plot(out, map = pseudomap, lodcolumn = 22, main = "hot plate latency")
 dev.off()
 ```
+
+```{r}
+# genomewide lod plots for 10 & 22, pct time in light and hot plate latency
+setEPS()
+postscript("genomewide_lods_10-22.eps")
+par(mfrow = c(2, 1))
+plot(out, map = pseudomap, lodcolumn = 10, main = "percent time in light")
+plot(out, map = pseudomap, lodcolumn = 22, main = "hot plate latency")
+dev.off()
+
+```
+
+
 
 
 ## LOD plots for both traits on Chromosome 8
@@ -181,8 +195,8 @@ out[(cumsum_map_lengths[7] + 650):(cumsum_map_lengths[7] + 999), ] -> chr8_lods
 setEPS()
 postscript("chr8-lods.eps")
 par(mfrow = c(2, 1))
-plot_scan1(chr8_lods, chr = 8, map = pseudomap, lodcolumn = 10, main = "Chromosome 8 LOD for percent time in light")
-plot_scan1(chr8_lods, chr = 8, map = pseudomap, lodcolumn = 22, main = "Chromosome 8 LOD for hot plate latency")
+plot_scan1(chr8_lods, chr = 8, map = pseudomap, lodcolumn = 10, main = "percent time in light")
+plot_scan1(chr8_lods, chr = 8, map = pseudomap, lodcolumn = 22, main = "hot plate latency")
 dev.off()
 ```
 
@@ -206,6 +220,15 @@ scan1coef(aprobs[ , 8], pheno = wlph[, 22], kinship = kinship$`8`,
 ```
 
 ```{r}
+# save scan1coef output objects for fine-tuning of figures
+saveRDS(s1c_10, "s1c_10.rds") # percent time in light
+saveRDS(s1c_22, "s1c_22.rds") # hot plate latency
+```
+
+
+
+
+```{r}
 # ensure that subsets are scan1output objects
 s1c_10s <- s1c_10[650:999, 1:8]
 s1c_22s <- s1c_22[650:999, 1:8]
@@ -216,16 +239,16 @@ s1c_22s <- s1c_22[650:999, 1:8]
 setEPS()
 postscript("coefs.eps")
 par(mfrow = c(2, 1))
-plot_coefCC(s1c_10s, map = pseudomap, main = "Allele effects for percent time in light", legend = "topright")
-plot_coefCC(s1c_22s, map = pseudomap, main = "Allele effects for hot plate latency")
+plot_coefCC(s1c_10s, map = pseudomap, main = "percent time in light", legend = "topright")
+plot_coefCC(s1c_22s, map = pseudomap, main = "hot plate latency")
 dev.off()
 ```
 
 ```{r}
 svg("coefs.svg")
 par(mfrow = c(2, 1))
-plot_coefCC(s1c_10s, map = pseudomap, main = "Allele effects for percent time in light", legend = "topright")
-plot_coefCC(s1c_22s, map = pseudomap, main = "Allele effects for hot plate latency")
+plot_coefCC(s1c_10s, map = pseudomap, main = "percent time in light", legend = "topright")
+plot_coefCC(s1c_22s, map = pseudomap, main = "hot plate latency")
 dev.off()
 ```
 

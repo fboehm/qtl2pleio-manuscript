@@ -601,7 +601,7 @@ body {
 <body>
 
 <h1 id="recla-analysis-updated-figures">Recla analysis: Updated figures</h1>
-<p>Frederick Boehm 2018-12-16 20:08:24</p>
+<p>Frederick Boehm 2019-01-19 14:06:02</p>
 <h2 id="read-pvl-scan-results-from-files">Read pvl scan results from files</h2>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(dplyr)</a></code></pre></div>
 <pre><code>## 
@@ -643,7 +643,8 @@ body {
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">sex2 &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">as.numeric</span>(sex <span class="op">==</span><span class="st"> &quot;female&quot;</span>), <span class="dt">ncol =</span> <span class="dv">1</span>)</a>
 <a class="sourceLine" id="cb9-2" data-line-number="2"><span class="kw">colnames</span>(sex2) &lt;-<span class="st"> &quot;female&quot;</span></a>
 <a class="sourceLine" id="cb9-3" data-line-number="3"><span class="kw">rownames</span>(sex2) &lt;-<span class="st"> </span><span class="kw">rownames</span>(aprobs[[<span class="dv">1</span>]])</a>
-<a class="sourceLine" id="cb9-4" data-line-number="4">out &lt;-<span class="st"> </span><span class="kw">scan1</span>(<span class="dt">genoprobs =</span> aprobs, <span class="dt">pheno =</span> wlph, <span class="dt">kinship =</span> kinship, <span class="dt">addcovar =</span> sex2, <span class="dt">reml =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb9-4" data-line-number="4">out &lt;-<span class="st"> </span><span class="kw">scan1</span>(<span class="dt">genoprobs =</span> aprobs, <span class="dt">pheno =</span> wlph, <span class="dt">kinship =</span> kinship, <span class="dt">addcovar =</span> sex2, <span class="dt">reml =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="kw">saveRDS</span>(out, <span class="st">&quot;scan1.rds&quot;</span>) <span class="co"># save scan1 results in case we want to tweak figures</span></a></code></pre></div>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">(peaks &lt;-<span class="st"> </span><span class="kw">find_peaks</span>(out, pseudomap, <span class="dt">threshold =</span> <span class="dv">5</span>) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb10-2" data-line-number="2"><span class="st">  </span><span class="kw">arrange</span>(chr, pos) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb10-3" data-line-number="3"><span class="st">   </span><span class="kw">select</span>(<span class="op">-</span><span class="st"> </span>lodindex))</a></code></pre></div>
@@ -739,8 +740,8 @@ body {
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">xtable<span class="op">::</span><span class="kw">xtable</span>(<span class="kw">find_peaks</span>(out[, <span class="kw">c</span>(<span class="dv">10</span>, <span class="dv">22</span>)], pseudomap, <span class="dt">threshold =</span> <span class="dv">5</span>) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb13-2" data-line-number="2"><span class="st">  </span><span class="kw">arrange</span>(chr, pos) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb13-3" data-line-number="3"><span class="st">   </span><span class="kw">select</span>(<span class="op">-</span><span class="st"> </span>lodindex))</a></code></pre></div>
-<pre><code>## % latex table generated in R 3.5.1 by xtable 1.8-3 package
-## % Sun Dec 16 20:22:56 2018
+<pre><code>## % latex table generated in R 3.5.2 by xtable 1.8-3 package
+## % Sat Jan 19 14:20:25 2019
 ## \begin{table}[ht]
 ## \centering
 ## \begin{tabular}{rllrr}
@@ -772,11 +773,11 @@ body {
 </code></pre>
 <h2 id="plots">Plots</h2>
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="kw">library</span>(qtl2pleio)</a>
-<a class="sourceLine" id="cb21-2" data-line-number="2"><span class="kw">colnames</span>(recla<span class="op">$</span>pheno)[<span class="kw">c</span>(<span class="dv">10</span>, <span class="dv">22</span>)] &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Percent time in light&quot;</span>, <span class="st">&quot;Hot plate latency&quot;</span>)</a>
+<a class="sourceLine" id="cb21-2" data-line-number="2"><span class="kw">colnames</span>(recla<span class="op">$</span>pheno)[<span class="kw">c</span>(<span class="dv">10</span>, <span class="dv">22</span>)] &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;percent time in light&quot;</span>, <span class="st">&quot;hot plate latency&quot;</span>)</a>
 <a class="sourceLine" id="cb21-3" data-line-number="3">p1022 &lt;-<span class="st"> </span><span class="kw">tidy_scan_pvl</span>(pvl1022, <span class="dt">pmap =</span> gm) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb21-4" data-line-number="4"><span class="st">  </span><span class="kw">add_intercepts</span>(<span class="kw">c</span>(<span class="kw">as.numeric</span>(pos_LD_light_pct), <span class="kw">as.numeric</span>(pos_HP_latency))) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb21-5" data-line-number="5"><span class="st">  </span><span class="kw">plot_pvl</span>(<span class="dt">phenames =</span> <span class="kw">colnames</span>(recla<span class="op">$</span>pheno)[<span class="kw">c</span>(<span class="dv">10</span>, <span class="dv">22</span>)]) <span class="op">+</span><span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">&quot;Chromosome 8 profile LOD for percent time in light and hot plate latency&quot;</span>)</a></code></pre></div>
-<pre><code>## Warning: Column `marker1`/`marker` joining factor and character vector,
+<a class="sourceLine" id="cb21-5" data-line-number="5"><span class="st">  </span><span class="kw">plot_pvl</span>(<span class="dt">phenames =</span> <span class="kw">colnames</span>(recla<span class="op">$</span>pheno)[<span class="kw">c</span>(<span class="dv">10</span>, <span class="dv">22</span>)]) <span class="op">+</span><span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">&quot;percent time in light and hot plate latency&quot;</span>)</a></code></pre></div>
+<pre><code>## Warning: Column `marker`/`marker1` joining character vector and factor,
 ## coercing into character vector
 
 ## Warning: Column `marker2`/`marker` joining factor and character vector,
@@ -793,7 +794,7 @@ body {
 ## Warning: Removed 208 rows containing missing values (geom_path).
 </code></pre>
 <h2 id="scatter-plot-of-phenotypes">Scatter plot of phenotypes</h2>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1">scatter1022 &lt;-<span class="st"> </span><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="dt">data =</span> wlph_tib, <span class="kw">aes</span>(<span class="dt">y =</span> HP_latency, <span class="dt">x =</span> LD_light_pct)) <span class="op">+</span><span class="st"> </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Percent time in light&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Hot plate latency&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">&quot;Scatterplot of hot plate latency vs. percent time in light&quot;</span>)</a>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1">scatter1022 &lt;-<span class="st"> </span><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_point</span>(<span class="dt">data =</span> wlph_tib, <span class="kw">aes</span>(<span class="dt">y =</span> HP_latency, <span class="dt">x =</span> LD_light_pct)) <span class="op">+</span><span class="st"> </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;percent time in light&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;hot plate latency&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">&quot;hot plate latency vs. percent time in light&quot;</span>)</a>
 <a class="sourceLine" id="cb27-2" data-line-number="2"><span class="kw">ggsave</span>(<span class="dt">filename =</span> <span class="st">&quot;scatter.eps&quot;</span>, <span class="dt">plot =</span> scatter1022)</a></code></pre></div>
 <pre><code>## Saving 7 x 5 in image
 
@@ -807,121 +808,133 @@ body {
 <h2 id="genome-wide-lod-plots-for-the-traits-from-recla">Genome-wide LOD plots for the traits from Recla</h2>
 <div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1"><span class="kw">setEPS</span>()</a>
 <a class="sourceLine" id="cb31-2" data-line-number="2"><span class="kw">postscript</span>(<span class="st">&quot;genomewide_lod_trait10.eps&quot;</span>)</a>
-<a class="sourceLine" id="cb31-3" data-line-number="3"><span class="kw">plot</span>(out, <span class="dt">map =</span> pseudomap, <span class="dt">lodcolumn =</span> <span class="dv">10</span>, <span class="dt">main =</span> <span class="st">&quot;Genome-wide LOD for percent time in light&quot;</span>)</a>
+<a class="sourceLine" id="cb31-3" data-line-number="3"><span class="kw">plot</span>(out, <span class="dt">map =</span> pseudomap, <span class="dt">lodcolumn =</span> <span class="dv">10</span>, <span class="dt">main =</span> <span class="st">&quot;percent time in light&quot;</span>)</a>
 <a class="sourceLine" id="cb31-4" data-line-number="4"><span class="kw">dev.off</span>()</a></code></pre></div>
 <pre><code>## quartz_off_screen 
 ##                 2
 </code></pre>
 <div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" data-line-number="1"><span class="kw">setEPS</span>()</a>
 <a class="sourceLine" id="cb33-2" data-line-number="2"><span class="kw">postscript</span>(<span class="st">&quot;genomewide_lod_trait22.eps&quot;</span>)</a>
-<a class="sourceLine" id="cb33-3" data-line-number="3"><span class="kw">plot</span>(out, <span class="dt">map =</span> pseudomap, <span class="dt">lodcolumn =</span> <span class="dv">22</span>, <span class="dt">main =</span> <span class="st">&quot;Genome-wide LOD for hot plate latency&quot;</span>)</a>
+<a class="sourceLine" id="cb33-3" data-line-number="3"><span class="kw">plot</span>(out, <span class="dt">map =</span> pseudomap, <span class="dt">lodcolumn =</span> <span class="dv">22</span>, <span class="dt">main =</span> <span class="st">&quot;hot plate latency&quot;</span>)</a>
 <a class="sourceLine" id="cb33-4" data-line-number="4"><span class="kw">dev.off</span>()</a></code></pre></div>
 <pre><code>## quartz_off_screen 
 ##                 2
 </code></pre>
 <div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" data-line-number="1"><span class="kw">setEPS</span>()</a>
 <a class="sourceLine" id="cb35-2" data-line-number="2"><span class="kw">postscript</span>(<span class="st">&quot;genomewide_lod_trait10.eps&quot;</span>)</a>
-<a class="sourceLine" id="cb35-3" data-line-number="3"><span class="kw">plot</span>(out, <span class="dt">map =</span> pseudomap, <span class="dt">lodcolumn =</span> <span class="dv">10</span>, <span class="dt">main =</span> <span class="st">&quot;Genome-wide LOD for percent time in light&quot;</span>)</a>
+<a class="sourceLine" id="cb35-3" data-line-number="3"><span class="kw">plot</span>(out, <span class="dt">map =</span> pseudomap, <span class="dt">lodcolumn =</span> <span class="dv">10</span>, <span class="dt">main =</span> <span class="st">&quot;percent time in light&quot;</span>)</a>
 <a class="sourceLine" id="cb35-4" data-line-number="4"><span class="kw">dev.off</span>()</a></code></pre></div>
 <pre><code>## quartz_off_screen 
 ##                 2
 </code></pre>
 <div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" data-line-number="1"><span class="kw">svg</span>(<span class="st">&quot;genomewide_lod_trait10.svg&quot;</span>)</a>
-<a class="sourceLine" id="cb37-2" data-line-number="2"><span class="kw">plot</span>(out, <span class="dt">map =</span> pseudomap, <span class="dt">lodcolumn =</span> <span class="dv">10</span>, <span class="dt">main =</span> <span class="st">&quot;Genome-wide LOD for percent time in light&quot;</span>)</a>
+<a class="sourceLine" id="cb37-2" data-line-number="2"><span class="kw">plot</span>(out, <span class="dt">map =</span> pseudomap, <span class="dt">lodcolumn =</span> <span class="dv">10</span>, <span class="dt">main =</span> <span class="st">&quot;percent time in light&quot;</span>)</a>
 <a class="sourceLine" id="cb37-3" data-line-number="3"><span class="kw">dev.off</span>()</a></code></pre></div>
 <pre><code>## quartz_off_screen 
 ##                 2
 </code></pre>
 <div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" data-line-number="1"><span class="kw">setEPS</span>()</a>
 <a class="sourceLine" id="cb39-2" data-line-number="2"><span class="kw">postscript</span>(<span class="st">&quot;genomewide_lod_trait22.eps&quot;</span>)</a>
-<a class="sourceLine" id="cb39-3" data-line-number="3"><span class="kw">plot</span>(out, <span class="dt">map =</span> pseudomap, <span class="dt">lodcolumn =</span> <span class="dv">22</span>, <span class="dt">main =</span> <span class="st">&quot;Genome-wide LOD for hot plate latency&quot;</span>)</a>
+<a class="sourceLine" id="cb39-3" data-line-number="3"><span class="kw">plot</span>(out, <span class="dt">map =</span> pseudomap, <span class="dt">lodcolumn =</span> <span class="dv">22</span>, <span class="dt">main =</span> <span class="st">&quot;hot plate latency&quot;</span>)</a>
 <a class="sourceLine" id="cb39-4" data-line-number="4"><span class="kw">dev.off</span>()</a></code></pre></div>
 <pre><code>## quartz_off_screen 
 ##                 2
 </code></pre>
 <div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" data-line-number="1"><span class="kw">svg</span>(<span class="st">&quot;genomewide_lod_trait22.svg&quot;</span>)</a>
-<a class="sourceLine" id="cb41-2" data-line-number="2"><span class="kw">plot</span>(out, <span class="dt">map =</span> pseudomap, <span class="dt">lodcolumn =</span> <span class="dv">22</span>, <span class="dt">main =</span> <span class="st">&quot;Genome-wide LOD for hot plate latency&quot;</span>)</a>
+<a class="sourceLine" id="cb41-2" data-line-number="2"><span class="kw">plot</span>(out, <span class="dt">map =</span> pseudomap, <span class="dt">lodcolumn =</span> <span class="dv">22</span>, <span class="dt">main =</span> <span class="st">&quot;hot plate latency&quot;</span>)</a>
 <a class="sourceLine" id="cb41-3" data-line-number="3"><span class="kw">dev.off</span>()</a></code></pre></div>
 <pre><code>## quartz_off_screen 
 ##                 2
 </code></pre>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" data-line-number="1"><span class="co"># genomewide lod plots for 10 &amp; 22, pct time in light and hot plate latency</span></a>
+<a class="sourceLine" id="cb43-2" data-line-number="2"><span class="kw">setEPS</span>()</a>
+<a class="sourceLine" id="cb43-3" data-line-number="3"><span class="kw">postscript</span>(<span class="st">&quot;genomewide_lods_10-22.eps&quot;</span>)</a>
+<a class="sourceLine" id="cb43-4" data-line-number="4"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">1</span>))</a>
+<a class="sourceLine" id="cb43-5" data-line-number="5"><span class="kw">plot</span>(out, <span class="dt">map =</span> pseudomap, <span class="dt">lodcolumn =</span> <span class="dv">10</span>, <span class="dt">main =</span> <span class="st">&quot;percent time in light&quot;</span>)</a>
+<a class="sourceLine" id="cb43-6" data-line-number="6"><span class="kw">plot</span>(out, <span class="dt">map =</span> pseudomap, <span class="dt">lodcolumn =</span> <span class="dv">22</span>, <span class="dt">main =</span> <span class="st">&quot;hot plate latency&quot;</span>)</a>
+<a class="sourceLine" id="cb43-7" data-line-number="7"><span class="kw">dev.off</span>()</a></code></pre></div>
+<pre><code>## quartz_off_screen 
+##                 2
+</code></pre>
 <h2 id="lod-plots-for-both-traits-on-chromosome-8">LOD plots for both traits on Chromosome 8</h2>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" data-line-number="1"><span class="co"># first, look at dimensions of `out`</span></a>
-<a class="sourceLine" id="cb43-2" data-line-number="2"><span class="kw">dim</span>(out)</a></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" data-line-number="1"><span class="co"># first, look at dimensions of `out`</span></a>
+<a class="sourceLine" id="cb45-2" data-line-number="2"><span class="kw">dim</span>(out)</a></code></pre></div>
 <pre><code>## [1] 20205    26
 </code></pre>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" data-line-number="1">cumsum_map_lengths &lt;-<span class="st"> </span><span class="kw">sapply</span>(<span class="dt">FUN =</span> length, <span class="dt">X =</span> pseudomap) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb45-2" data-line-number="2"><span class="st">  </span><span class="kw">cumsum</span>()</a>
-<a class="sourceLine" id="cb45-3" data-line-number="3">out[(cumsum_map_lengths[<span class="dv">7</span>] <span class="op">+</span><span class="st"> </span><span class="dv">650</span>)<span class="op">:</span>(cumsum_map_lengths[<span class="dv">7</span>] <span class="op">+</span><span class="st"> </span><span class="dv">999</span>), ] -&gt;<span class="st"> </span>chr8_lods</a>
-<a class="sourceLine" id="cb45-4" data-line-number="4"><span class="kw">setEPS</span>()</a>
-<a class="sourceLine" id="cb45-5" data-line-number="5"><span class="kw">postscript</span>(<span class="st">&quot;chr8-lods.eps&quot;</span>)</a>
-<a class="sourceLine" id="cb45-6" data-line-number="6"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">1</span>))</a>
-<a class="sourceLine" id="cb45-7" data-line-number="7"><span class="kw">plot_scan1</span>(chr8_lods, <span class="dt">chr =</span> <span class="dv">8</span>, <span class="dt">map =</span> pseudomap, <span class="dt">lodcolumn =</span> <span class="dv">10</span>, <span class="dt">main =</span> <span class="st">&quot;Chromosome 8 LOD for percent time in light&quot;</span>)</a>
-<a class="sourceLine" id="cb45-8" data-line-number="8"><span class="kw">plot_scan1</span>(chr8_lods, <span class="dt">chr =</span> <span class="dv">8</span>, <span class="dt">map =</span> pseudomap, <span class="dt">lodcolumn =</span> <span class="dv">22</span>, <span class="dt">main =</span> <span class="st">&quot;Chromosome 8 LOD for hot plate latency&quot;</span>)</a>
-<a class="sourceLine" id="cb45-9" data-line-number="9"><span class="kw">dev.off</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1">cumsum_map_lengths &lt;-<span class="st"> </span><span class="kw">sapply</span>(<span class="dt">FUN =</span> length, <span class="dt">X =</span> pseudomap) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb47-2" data-line-number="2"><span class="st">  </span><span class="kw">cumsum</span>()</a>
+<a class="sourceLine" id="cb47-3" data-line-number="3">out[(cumsum_map_lengths[<span class="dv">7</span>] <span class="op">+</span><span class="st"> </span><span class="dv">650</span>)<span class="op">:</span>(cumsum_map_lengths[<span class="dv">7</span>] <span class="op">+</span><span class="st"> </span><span class="dv">999</span>), ] -&gt;<span class="st"> </span>chr8_lods</a>
+<a class="sourceLine" id="cb47-4" data-line-number="4"><span class="kw">setEPS</span>()</a>
+<a class="sourceLine" id="cb47-5" data-line-number="5"><span class="kw">postscript</span>(<span class="st">&quot;chr8-lods.eps&quot;</span>)</a>
+<a class="sourceLine" id="cb47-6" data-line-number="6"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">1</span>))</a>
+<a class="sourceLine" id="cb47-7" data-line-number="7"><span class="kw">plot_scan1</span>(chr8_lods, <span class="dt">chr =</span> <span class="dv">8</span>, <span class="dt">map =</span> pseudomap, <span class="dt">lodcolumn =</span> <span class="dv">10</span>, <span class="dt">main =</span> <span class="st">&quot;percent time in light&quot;</span>)</a>
+<a class="sourceLine" id="cb47-8" data-line-number="8"><span class="kw">plot_scan1</span>(chr8_lods, <span class="dt">chr =</span> <span class="dv">8</span>, <span class="dt">map =</span> pseudomap, <span class="dt">lodcolumn =</span> <span class="dv">22</span>, <span class="dt">main =</span> <span class="st">&quot;hot plate latency&quot;</span>)</a>
+<a class="sourceLine" id="cb47-9" data-line-number="9"><span class="kw">dev.off</span>()</a></code></pre></div>
 <pre><code>## quartz_off_screen 
 ##                 2
 </code></pre>
 <h2 id="allele-effects-plots-on-chr-8-for-recla-traits">Allele effects plots on chr 8 for Recla traits</h2>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1"><span class="kw">scan1coef</span>(aprobs[ , <span class="dv">8</span>], <span class="dt">pheno =</span> wlph[, <span class="dv">10</span>], <span class="dt">kinship =</span> kinship<span class="op">$</span><span class="st">`</span><span class="dt">8</span><span class="st">`</span>, </a>
-<a class="sourceLine" id="cb47-2" data-line-number="2">          <span class="dt">reml =</span> <span class="ot">TRUE</span>,</a>
-<a class="sourceLine" id="cb47-3" data-line-number="3">          <span class="dt">addcovar =</span> sex2) -&gt;<span class="st"> </span>s1c_<span class="dv">10</span></a>
-<a class="sourceLine" id="cb47-4" data-line-number="4"><span class="kw">scan1coef</span>(aprobs[ , <span class="dv">8</span>], <span class="dt">pheno =</span> wlph[, <span class="dv">22</span>], <span class="dt">kinship =</span> kinship<span class="op">$</span><span class="st">`</span><span class="dt">8</span><span class="st">`</span>, </a>
-<a class="sourceLine" id="cb47-5" data-line-number="5">          <span class="dt">reml =</span> <span class="ot">TRUE</span>,</a>
-<a class="sourceLine" id="cb47-6" data-line-number="6">          <span class="dt">addcovar =</span> sex2) -&gt;<span class="st"> </span>s1c_<span class="dv">22</span></a></code></pre></div>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb48-1" data-line-number="1"><span class="co"># ensure that subsets are scan1output objects</span></a>
-<a class="sourceLine" id="cb48-2" data-line-number="2">s1c_10s &lt;-<span class="st"> </span>s1c_<span class="dv">10</span>[<span class="dv">650</span><span class="op">:</span><span class="dv">999</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">8</span>]</a>
-<a class="sourceLine" id="cb48-3" data-line-number="3">s1c_22s &lt;-<span class="st"> </span>s1c_<span class="dv">22</span>[<span class="dv">650</span><span class="op">:</span><span class="dv">999</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">8</span>]</a></code></pre></div>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" data-line-number="1"><span class="kw">setEPS</span>()</a>
-<a class="sourceLine" id="cb49-2" data-line-number="2"><span class="kw">postscript</span>(<span class="st">&quot;coefs.eps&quot;</span>)</a>
-<a class="sourceLine" id="cb49-3" data-line-number="3"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">1</span>))</a>
-<a class="sourceLine" id="cb49-4" data-line-number="4"><span class="kw">plot_coefCC</span>(s1c_10s, <span class="dt">map =</span> pseudomap, <span class="dt">main =</span> <span class="st">&quot;Allele effects for percent time in light&quot;</span>, <span class="dt">legend =</span> <span class="st">&quot;topright&quot;</span>)</a>
-<a class="sourceLine" id="cb49-5" data-line-number="5"><span class="kw">plot_coefCC</span>(s1c_22s, <span class="dt">map =</span> pseudomap, <span class="dt">main =</span> <span class="st">&quot;Allele effects for hot plate latency&quot;</span>)</a>
-<a class="sourceLine" id="cb49-6" data-line-number="6"><span class="kw">dev.off</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" data-line-number="1"><span class="kw">scan1coef</span>(aprobs[ , <span class="dv">8</span>], <span class="dt">pheno =</span> wlph[, <span class="dv">10</span>], <span class="dt">kinship =</span> kinship<span class="op">$</span><span class="st">`</span><span class="dt">8</span><span class="st">`</span>, </a>
+<a class="sourceLine" id="cb49-2" data-line-number="2">          <span class="dt">reml =</span> <span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb49-3" data-line-number="3">          <span class="dt">addcovar =</span> sex2) -&gt;<span class="st"> </span>s1c_<span class="dv">10</span></a>
+<a class="sourceLine" id="cb49-4" data-line-number="4"><span class="kw">scan1coef</span>(aprobs[ , <span class="dv">8</span>], <span class="dt">pheno =</span> wlph[, <span class="dv">22</span>], <span class="dt">kinship =</span> kinship<span class="op">$</span><span class="st">`</span><span class="dt">8</span><span class="st">`</span>, </a>
+<a class="sourceLine" id="cb49-5" data-line-number="5">          <span class="dt">reml =</span> <span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb49-6" data-line-number="6">          <span class="dt">addcovar =</span> sex2) -&gt;<span class="st"> </span>s1c_<span class="dv">22</span></a></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb50-1" data-line-number="1"><span class="co"># save scan1coef output objects for fine-tuning of figures</span></a>
+<a class="sourceLine" id="cb50-2" data-line-number="2"><span class="kw">saveRDS</span>(s1c_<span class="dv">10</span>, <span class="st">&quot;s1c_10.rds&quot;</span>) <span class="co"># percent time in light</span></a>
+<a class="sourceLine" id="cb50-3" data-line-number="3"><span class="kw">saveRDS</span>(s1c_<span class="dv">22</span>, <span class="st">&quot;s1c_22.rds&quot;</span>) <span class="co"># hot plate latency</span></a></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" data-line-number="1"><span class="co"># ensure that subsets are scan1output objects</span></a>
+<a class="sourceLine" id="cb51-2" data-line-number="2">s1c_10s &lt;-<span class="st"> </span>s1c_<span class="dv">10</span>[<span class="dv">650</span><span class="op">:</span><span class="dv">999</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">8</span>]</a>
+<a class="sourceLine" id="cb51-3" data-line-number="3">s1c_22s &lt;-<span class="st"> </span>s1c_<span class="dv">22</span>[<span class="dv">650</span><span class="op">:</span><span class="dv">999</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">8</span>]</a></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb52-1" data-line-number="1"><span class="kw">setEPS</span>()</a>
+<a class="sourceLine" id="cb52-2" data-line-number="2"><span class="kw">postscript</span>(<span class="st">&quot;coefs.eps&quot;</span>)</a>
+<a class="sourceLine" id="cb52-3" data-line-number="3"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">1</span>))</a>
+<a class="sourceLine" id="cb52-4" data-line-number="4"><span class="kw">plot_coefCC</span>(s1c_10s, <span class="dt">map =</span> pseudomap, <span class="dt">main =</span> <span class="st">&quot;percent time in light&quot;</span>, <span class="dt">legend =</span> <span class="st">&quot;topright&quot;</span>)</a>
+<a class="sourceLine" id="cb52-5" data-line-number="5"><span class="kw">plot_coefCC</span>(s1c_22s, <span class="dt">map =</span> pseudomap, <span class="dt">main =</span> <span class="st">&quot;hot plate latency&quot;</span>)</a>
+<a class="sourceLine" id="cb52-6" data-line-number="6"><span class="kw">dev.off</span>()</a></code></pre></div>
 <pre><code>## quartz_off_screen 
 ##                 2
 </code></pre>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" data-line-number="1"><span class="kw">svg</span>(<span class="st">&quot;coefs.svg&quot;</span>)</a>
-<a class="sourceLine" id="cb51-2" data-line-number="2"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">1</span>))</a>
-<a class="sourceLine" id="cb51-3" data-line-number="3"><span class="kw">plot_coefCC</span>(s1c_10s, <span class="dt">map =</span> pseudomap, <span class="dt">main =</span> <span class="st">&quot;Allele effects for percent time in light&quot;</span>, <span class="dt">legend =</span> <span class="st">&quot;topright&quot;</span>)</a>
-<a class="sourceLine" id="cb51-4" data-line-number="4"><span class="kw">plot_coefCC</span>(s1c_22s, <span class="dt">map =</span> pseudomap, <span class="dt">main =</span> <span class="st">&quot;Allele effects for hot plate latency&quot;</span>)</a>
-<a class="sourceLine" id="cb51-5" data-line-number="5"><span class="kw">dev.off</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb54-1" data-line-number="1"><span class="kw">svg</span>(<span class="st">&quot;coefs.svg&quot;</span>)</a>
+<a class="sourceLine" id="cb54-2" data-line-number="2"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">1</span>))</a>
+<a class="sourceLine" id="cb54-3" data-line-number="3"><span class="kw">plot_coefCC</span>(s1c_10s, <span class="dt">map =</span> pseudomap, <span class="dt">main =</span> <span class="st">&quot;percent time in light&quot;</span>, <span class="dt">legend =</span> <span class="st">&quot;topright&quot;</span>)</a>
+<a class="sourceLine" id="cb54-4" data-line-number="4"><span class="kw">plot_coefCC</span>(s1c_22s, <span class="dt">map =</span> pseudomap, <span class="dt">main =</span> <span class="st">&quot;hot plate latency&quot;</span>)</a>
+<a class="sourceLine" id="cb54-5" data-line-number="5"><span class="kw">dev.off</span>()</a></code></pre></div>
 <pre><code>## quartz_off_screen 
 ##                 2
 </code></pre>
 <h2 id="session-info">Session info</h2>
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb53-1" data-line-number="1">devtools<span class="op">::</span><span class="kw">session_info</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb56-1" data-line-number="1">devtools<span class="op">::</span><span class="kw">session_info</span>()</a></code></pre></div>
 <pre><code>## ─ Session info ──────────────────────────────────────────────────────────
-##  setting  value                       
-##  version  R version 3.5.1 (2018-07-02)
-##  os       macOS  10.14.2              
-##  system   x86_64, darwin15.6.0        
-##  ui       X11                         
-##  language (EN)                        
-##  collate  en_US.UTF-8                 
-##  ctype    en_US.UTF-8                 
-##  tz       America/Chicago             
-##  date     2018-12-16                  
+##  setting  value                                      
+##  version  R version 3.5.2 Patched (2018-12-24 r75893)
+##  os       macOS Mojave 10.14.2                       
+##  system   x86_64, darwin15.6.0                       
+##  ui       X11                                        
+##  language (EN)                                       
+##  collate  en_US.UTF-8                                
+##  ctype    en_US.UTF-8                                
+##  tz       America/Chicago                            
+##  date     2019-01-19                                 
 ## 
 ## ─ Packages ──────────────────────────────────────────────────────────────
 ##  package     * version    date       lib source                           
 ##  assertthat    0.2.0      2017-04-11 [1] CRAN (R 3.5.0)                   
-##  backports     1.1.2      2017-12-13 [1] CRAN (R 3.5.0)                   
-##  base64enc     0.1-3      2015-07-28 [1] CRAN (R 3.5.0)                   
+##  backports     1.1.3      2018-12-14 [1] CRAN (R 3.5.0)                   
 ##  bindr         0.1.1      2018-03-13 [1] CRAN (R 3.5.0)                   
 ##  bindrcpp    * 0.2.2      2018-03-29 [1] CRAN (R 3.5.0)                   
 ##  bit           1.1-14     2018-05-29 [1] CRAN (R 3.5.0)                   
 ##  bit64         0.9-7      2017-05-08 [1] CRAN (R 3.5.0)                   
 ##  blob          1.1.1      2018-03-25 [1] CRAN (R 3.5.0)                   
 ##  broman        0.68-2     2018-07-25 [1] CRAN (R 3.5.0)                   
-##  callr         3.0.0      2018-08-24 [1] CRAN (R 3.5.0)                   
+##  callr         3.1.1      2018-12-21 [1] CRAN (R 3.5.0)                   
 ##  cli           1.0.1      2018-09-25 [1] CRAN (R 3.5.0)                   
 ##  colorspace    1.3-2      2016-12-14 [1] CRAN (R 3.5.0)                   
 ##  crayon        1.3.4      2017-09-16 [1] CRAN (R 3.5.0)                   
 ##  data.table    1.11.8     2018-09-30 [1] CRAN (R 3.5.0)                   
 ##  DBI           1.0.0      2018-05-02 [1] CRAN (R 3.5.0)                   
 ##  desc          1.2.0      2018-05-01 [1] CRAN (R 3.5.0)                   
-##  devtools      2.0.1      2018-10-26 [1] CRAN (R 3.5.1)                   
+##  devtools      2.0.1      2018-10-26 [1] CRAN (R 3.5.2)                   
 ##  digest        0.6.18     2018-10-10 [1] CRAN (R 3.5.0)                   
 ##  dplyr       * 0.7.8      2018-11-10 [1] CRAN (R 3.5.0)                   
 ##  evaluate      0.12       2018-10-09 [1] CRAN (R 3.5.0)                   
@@ -931,30 +944,30 @@ body {
 ##  glue          1.3.0      2018-07-17 [1] CRAN (R 3.5.0)                   
 ##  gtable        0.2.0      2016-02-26 [1] CRAN (R 3.5.0)                   
 ##  htmltools     0.3.6      2017-04-28 [1] CRAN (R 3.5.0)                   
-##  jsonlite      1.5        2017-06-01 [1] CRAN (R 3.5.0)                   
-##  knitr         1.20       2018-02-20 [1] CRAN (R 3.5.0)                   
+##  jsonlite      1.6        2018-12-07 [1] CRAN (R 3.5.0)                   
+##  knitr         1.21       2018-12-10 [1] CRAN (R 3.5.2)                   
 ##  labeling      0.3        2014-08-23 [1] CRAN (R 3.5.0)                   
 ##  lazyeval      0.2.1      2017-10-29 [1] CRAN (R 3.5.0)                   
 ##  lubridate     1.7.4      2018-04-11 [1] CRAN (R 3.5.0)                   
 ##  magrittr      1.5        2014-11-22 [1] CRAN (R 3.5.0)                   
 ##  memoise       1.1.0      2017-04-21 [1] CRAN (R 3.5.0)                   
 ##  munsell       0.5.0      2018-06-12 [1] CRAN (R 3.5.0)                   
-##  pillar        1.3.0      2018-07-14 [1] CRAN (R 3.5.0)                   
+##  pillar        1.3.1      2018-12-15 [1] CRAN (R 3.5.0)                   
 ##  pkgbuild      1.0.2      2018-10-16 [1] CRAN (R 3.5.0)                   
 ##  pkgconfig     2.0.2      2018-08-16 [1] CRAN (R 3.5.0)                   
 ##  pkgload       1.0.2      2018-10-29 [1] CRAN (R 3.5.0)                   
 ##  plyr          1.8.4      2016-06-08 [1] CRAN (R 3.5.0)                   
 ##  prettyunits   1.0.2      2015-07-13 [1] CRAN (R 3.5.0)                   
-##  processx      3.2.0      2018-08-16 [1] CRAN (R 3.5.0)                   
-##  ps            1.2.1      2018-11-06 [1] CRAN (R 3.5.0)                   
+##  processx      3.2.1      2018-12-05 [1] CRAN (R 3.5.0)                   
+##  ps            1.3.0      2018-12-21 [1] CRAN (R 3.5.0)                   
 ##  purrr         0.2.5      2018-05-29 [1] CRAN (R 3.5.0)                   
-##  qtl2        * 0.17-9     2018-11-18 [1] Github (rqtl/qtl2@1c007a2)       
-##  qtl2pleio   * 0.1.2.9000 2018-11-25 [1] Github (fboehm/qtl2pleio@2cd6f40)
+##  qtl2        * 0.17-9     2018-12-25 [1] Github (rqtl/qtl2@1c007a2)       
+##  qtl2pleio   * 0.1.2.9000 2018-12-31 [1] Github (fboehm/qtl2pleio@be41d66)
 ##  R6            2.3.0      2018-10-04 [1] CRAN (R 3.5.0)                   
-##  Rcpp          1.0.0.1    2018-11-18 [1] Github (RcppCore/Rcpp@4f168e6)   
+##  Rcpp          1.0.0.1    2018-12-28 [1] Github (RcppCore/Rcpp@0c9f683)   
 ##  remotes       2.0.2      2018-10-30 [1] CRAN (R 3.5.0)                   
 ##  rlang         0.3.0.1    2018-10-25 [1] CRAN (R 3.5.0)                   
-##  rmarkdown     1.10       2018-06-11 [1] CRAN (R 3.5.0)                   
+##  rmarkdown     1.11       2018-12-08 [1] CRAN (R 3.5.0)                   
 ##  rprojroot     1.3-2      2018-01-03 [1] CRAN (R 3.5.0)                   
 ##  RSQLite       2.1.1      2018-05-06 [1] CRAN (R 3.5.0)                   
 ##  scales        1.0.0      2018-08-09 [1] CRAN (R 3.5.0)                   
@@ -967,6 +980,7 @@ body {
 ##  tidyselect    0.2.5      2018-10-11 [1] CRAN (R 3.5.0)                   
 ##  usethis       1.4.0      2018-08-14 [1] CRAN (R 3.5.0)                   
 ##  withr         2.1.2      2018-03-15 [1] CRAN (R 3.5.0)                   
+##  xfun          0.4        2018-10-23 [1] CRAN (R 3.5.0)                   
 ##  xtable        1.8-3      2018-08-29 [1] CRAN (R 3.5.0)                   
 ##  yaml          2.2.0      2018-07-25 [1] CRAN (R 3.5.0)                   
 ## 

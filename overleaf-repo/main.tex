@@ -130,7 +130,7 @@ the univariate LOD peaks are strong. We further illustrate our
 approach with an application to data on a pair of behavior traits in
 a population of 261 DO mice \citep{logan2013high,recla2014precise}.
 We find modest evidence for distinct QTL in a 2.5-cM region on mouse
-chromosome 8.
+Chromosome 8.
 
 
 \section{Methods}
@@ -225,7 +225,7 @@ assume that $G$ and $E$ are independent.
 Inference for parameters in multivariate linear mixed effects models
 is notoriously difficult and can be computationally intense
 \citep{meyer1989restricted,meyer1991estimating}. Thus, we estimate
-$V_g$ and $V_e$ under the null hypothesis of no QTL, and then taken
+$V_g$ and $V_e$ under the null hypothesis of no QTL, and then take
 them as fixed and known in our two-dimensional, two-QTL genome scan.
 We use restricted maximum likelihood methods to fit the
 model:
@@ -235,7 +235,7 @@ vec(Y) = X_0vec(B) + vec(G) + vec(E)
 \label{model}
 \end{equation}
 where $X_0$ is a $2n$ by $2(c + 1)$ matrix whose first column of each
-diagonal block $X_0$ has all entries equal to one (for an intercept); the remaining
+diagonal block in $X_0$ has all entries equal to one (for an intercept); the remaining
 columns are the covariates.
 
 We draw on our R implementation \citep{gemma2} of the
@@ -512,9 +512,8 @@ The two traits show a correlation of $-0.15$ (Figure~\ref{fig:scatter}).
 
 QTL analysis with the LOCO method, and using sex as an additive
 covariate, showed multiple suggestive QTL for each
-phenotypes (Figures~\ref{fig:genomewide10}
-and \ref{fig:genomewide22}; Table~\ref{table-peaks}). For our investigation of
-pleiotropy, we focused on the interval 53--64~cM on chromosome 8.
+phenotype (Figure~\ref{fig:genomewide10-22}; Table~\ref{table-peaks}). For our investigation of
+pleiotropy, we focused on the interval 53--64~cM on Chromosome 8.
 The univariate QTL results for this region are shown in
 Figure~\ref{fig:chr8-lod}.
 
@@ -770,20 +769,12 @@ percent time in light & 8 & 55.28 & 5.27 \\
 
 
 \begin{figure}
-\includegraphics{../Rmd/genomewide_lod_trait10.eps}
+\includegraphics{../Rmd/genomewide_lods_10-22.eps}
 \caption{Genome-wide QTL scan for percent time in light reveals
   multiple QTL, including one on Chromosome 8.}
-\label{fig:genomewide10}
+\label{fig:genomewide10-22}
 \end{figure}
 
-\clearpage
-
-\begin{figure}
-\includegraphics{../Rmd/genomewide_lod_trait22.eps}
-\caption{Genome-wide QTL scan for hot plate latency reveals multiple
-  QTL, including a peak on Chromosome 8.}
-\label{fig:genomewide22}
-\end{figure}
 
 
 

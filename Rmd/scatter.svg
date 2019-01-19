@@ -318,7 +318,7 @@
 <g clip-path='url(#cpMHw1MDR8MzYwfDA=)'><text x='239.55' y='338.84' style='font-size: 8.80px; fill: #4D4D4D; font-family: Arial;' textLength='5.01px' lengthAdjust='spacingAndGlyphs'>2</text></g>
 <g clip-path='url(#cpMHw1MDR8MzYwfDA=)'><text x='343.03' y='338.84' style='font-size: 8.80px; fill: #4D4D4D; font-family: Arial;' textLength='5.01px' lengthAdjust='spacingAndGlyphs'>3</text></g>
 <g clip-path='url(#cpMHw1MDR8MzYwfDA=)'><text x='446.51' y='338.84' style='font-size: 8.80px; fill: #4D4D4D; font-family: Arial;' textLength='5.01px' lengthAdjust='spacingAndGlyphs'>4</text></g>
-<g clip-path='url(#cpMHw1MDR8MzYwfDA=)'><text x='218.99' y='351.99' style='font-size: 11.00px; font-family: Arial;' textLength='96.60px' lengthAdjust='spacingAndGlyphs'>Percent time in light</text></g>
-<g clip-path='url(#cpMHw1MDR8MzYwfDA=)'><text transform='translate(13.35,216.11) rotate(-90)' style='font-size: 11.00px; font-family: Arial;' textLength='81.94px' lengthAdjust='spacingAndGlyphs'>Hot plate latency</text></g>
-<g clip-path='url(#cpMHw1MDR8MzYwfDA=)'><text x='36.07' y='14.79' style='font-size: 13.20px; font-family: Arial;' textLength='311.44px' lengthAdjust='spacingAndGlyphs'>Scatterplot of hot plate latency vs. percent time in light</text></g>
+<g clip-path='url(#cpMHw1MDR8MzYwfDA=)'><text x='219.60' y='351.99' style='font-size: 11.00px; font-family: Arial;' textLength='95.38px' lengthAdjust='spacingAndGlyphs'>percent time in light</text></g>
+<g clip-path='url(#cpMHw1MDR8MzYwfDA=)'><text transform='translate(13.35,215.19) rotate(-90)' style='font-size: 11.00px; font-family: Arial;' textLength='80.11px' lengthAdjust='spacingAndGlyphs'>hot plate latency</text></g>
+<g clip-path='url(#cpMHw1MDR8MzYwfDA=)'><text x='36.07' y='14.79' style='font-size: 13.20px; font-family: Arial;' textLength='231.23px' lengthAdjust='spacingAndGlyphs'>hot plate latency vs. percent time in light</text></g>
 </svg>
