@@ -1,7 +1,7 @@
 Recla analysis: Updated figures
 ================
 Frederick Boehm
-2019-01-19 14:06:02
+2019-01-20 11:14:16
 
 ## Read pvl scan results from files
 
@@ -183,7 +183,7 @@ xtable::xtable(find_peaks(out[, c(10, 22)], pseudomap, threshold = 5) %>%
 ```
 
     ## % latex table generated in R 3.5.2 by xtable 1.8-3 package
-    ## % Sat Jan 19 14:20:25 2019
+    ## % Sun Jan 20 11:27:11 2019
     ## \begin{table}[ht]
     ## \centering
     ## \begin{tabular}{rllrr}
@@ -365,8 +365,8 @@ out[(cumsum_map_lengths[7] + 650):(cumsum_map_lengths[7] + 999), ] -> chr8_lods
 setEPS()
 postscript("chr8-lods.eps")
 par(mfrow = c(2, 1))
-plot_scan1(chr8_lods, chr = 8, map = pseudomap, lodcolumn = 10, main = "percent time in light")
-plot_scan1(chr8_lods, chr = 8, map = pseudomap, lodcolumn = 22, main = "hot plate latency")
+plot_scan1(chr8_lods, chr = 8, map = pseudomap, lodcolumn = 10, main = "percent time in light", ylim = c(0, 6.5))
+plot_scan1(chr8_lods, chr = 8, map = pseudomap, lodcolumn = 22, main = "hot plate latency", ylim = c(0, 6.5))
 dev.off()
 ```
 
@@ -435,7 +435,7 @@ devtools::session_info()
     ##  collate  en_US.UTF-8                                
     ##  ctype    en_US.UTF-8                                
     ##  tz       America/Chicago                            
-    ##  date     2019-01-19                                 
+    ##  date     2019-01-20                                 
     ## 
     ## ─ Packages ──────────────────────────────────────────────────────────────
     ##  package     * version    date       lib source                           

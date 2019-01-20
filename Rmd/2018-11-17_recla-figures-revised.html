@@ -601,7 +601,7 @@ body {
 <body>
 
 <h1 id="recla-analysis-updated-figures">Recla analysis: Updated figures</h1>
-<p>Frederick Boehm 2019-01-19 14:06:02</p>
+<p>Frederick Boehm 2019-01-20 11:14:16</p>
 <h2 id="read-pvl-scan-results-from-files">Read pvl scan results from files</h2>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(dplyr)</a></code></pre></div>
 <pre><code>## 
@@ -741,7 +741,7 @@ body {
 <a class="sourceLine" id="cb13-2" data-line-number="2"><span class="st">  </span><span class="kw">arrange</span>(chr, pos) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb13-3" data-line-number="3"><span class="st">   </span><span class="kw">select</span>(<span class="op">-</span><span class="st"> </span>lodindex))</a></code></pre></div>
 <pre><code>## % latex table generated in R 3.5.2 by xtable 1.8-3 package
-## % Sat Jan 19 14:20:25 2019
+## % Sun Jan 20 11:27:11 2019
 ## \begin{table}[ht]
 ## \centering
 ## \begin{tabular}{rllrr}
@@ -867,8 +867,8 @@ body {
 <a class="sourceLine" id="cb47-4" data-line-number="4"><span class="kw">setEPS</span>()</a>
 <a class="sourceLine" id="cb47-5" data-line-number="5"><span class="kw">postscript</span>(<span class="st">&quot;chr8-lods.eps&quot;</span>)</a>
 <a class="sourceLine" id="cb47-6" data-line-number="6"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">1</span>))</a>
-<a class="sourceLine" id="cb47-7" data-line-number="7"><span class="kw">plot_scan1</span>(chr8_lods, <span class="dt">chr =</span> <span class="dv">8</span>, <span class="dt">map =</span> pseudomap, <span class="dt">lodcolumn =</span> <span class="dv">10</span>, <span class="dt">main =</span> <span class="st">&quot;percent time in light&quot;</span>)</a>
-<a class="sourceLine" id="cb47-8" data-line-number="8"><span class="kw">plot_scan1</span>(chr8_lods, <span class="dt">chr =</span> <span class="dv">8</span>, <span class="dt">map =</span> pseudomap, <span class="dt">lodcolumn =</span> <span class="dv">22</span>, <span class="dt">main =</span> <span class="st">&quot;hot plate latency&quot;</span>)</a>
+<a class="sourceLine" id="cb47-7" data-line-number="7"><span class="kw">plot_scan1</span>(chr8_lods, <span class="dt">chr =</span> <span class="dv">8</span>, <span class="dt">map =</span> pseudomap, <span class="dt">lodcolumn =</span> <span class="dv">10</span>, <span class="dt">main =</span> <span class="st">&quot;percent time in light&quot;</span>, <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="fl">6.5</span>))</a>
+<a class="sourceLine" id="cb47-8" data-line-number="8"><span class="kw">plot_scan1</span>(chr8_lods, <span class="dt">chr =</span> <span class="dv">8</span>, <span class="dt">map =</span> pseudomap, <span class="dt">lodcolumn =</span> <span class="dv">22</span>, <span class="dt">main =</span> <span class="st">&quot;hot plate latency&quot;</span>, <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="fl">6.5</span>))</a>
 <a class="sourceLine" id="cb47-9" data-line-number="9"><span class="kw">dev.off</span>()</a></code></pre></div>
 <pre><code>## quartz_off_screen 
 ##                 2
@@ -915,7 +915,7 @@ body {
 ##  collate  en_US.UTF-8                                
 ##  ctype    en_US.UTF-8                                
 ##  tz       America/Chicago                            
-##  date     2019-01-19                                 
+##  date     2019-01-20                                 
 ## 
 ## ─ Packages ──────────────────────────────────────────────────────────────
 ##  package     * version    date       lib source                           
