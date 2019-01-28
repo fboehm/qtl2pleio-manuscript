@@ -32,12 +32,11 @@ an opportunity for quantitative methods to enhance understanding of
 the genetic architecture of complex traits. When multiple traits map
 to a common genomic region, knowledge of the number of distinct loci
 provides important insight into the underlying mechanism and can
-assist planning for subsequent experiments. We extend the work of
-\citet{jiang1995multiple} to develop a likelihood ratio test, for a
-pair of traits, of the null hypothesis of pleiotropy against the
-alternative hypothesis of separate QTL, for the case of more than two
-alleles. We also incorporate polygenic random effects to account for
-variable relatedness among subjects. We use a parametric bootstrap to
+assist planning for subsequent experiments. We extend the work of 
+\citet{jiang1995multiple} to develop a likelihood ratio test for the case of more than two alleles, for a pair of traits, to test the null hypothesis of pleiotropy against the alternative hypothesis of separate QTL.
+
+We also incorporate polygenic random effects to account for
+variation in relatedness among subjects. We use a parametric bootstrap to
 determine statistical significance. We apply our methods to a
 behavioral genetics data set from Diversity Outbred mice, where we
 find evidence for presence of two distinct loci in a 2.5~cM region.
@@ -91,6 +90,8 @@ approximation to the test of \citet{jiang1995multiple}, while
 \citet{tian2016dissection} used the methods from
 \citet{knott2000multitrait} to dissect QTL hotspots in a F$_2$
 population.
+
+
 
 
 Multiparental populations, such
@@ -311,7 +312,7 @@ defining profile LOD by the equation
 \end{equation}
 We define profile LOD$_2(\lambda_2)$ analogously.
 The maximum value for the profile LOD$_1$
-profile LOD$_2$ traces the same and are non-negative, and give the
+profile LOD$_2$ traces are the same and are non-negative, and give the
 overall LOD test statistic.
 
 We construct the pleiotropy trace by calculating the log-likelihoods
@@ -502,7 +503,7 @@ underlies a QTL on Chromosome 8 at 57 cM for the ``hot plate latency''
 phenotype (a measure of pain tolerance). The phenotype ``percent time in light''
 in a light-dark box (a measure of anxiety) was
 measured on the same set of mice \citep{logan2013high} and also shows a QTL near
-this location, which led us to ask whether \textit{Hydin} affects both traits.
+this location, which led us to ask whether the same locus affects both traits.
 The two traits show a correlation of $-0.15$ (Figure~\ref{fig:scatter}).
 
 QTL analysis with the LOCO method, and using sex as an additive
@@ -578,8 +579,8 @@ evidence for distinct QTL for the two traits.
 
 We developed a test of pleiotropy vs.\ separate QTL for multiparental
 populations, extending the work of \citet{jiang1995multiple} for
-multiple alleles and with a linear mixed models to account for
-population structure. Our simulation
+multiple alleles and with a linear mixed model to account for
+population structure \citep{kang2010variance, yang2014advantages}. Our simulation
 studies indicate that the test has power to detect presence of
 separate loci, especially when univariate trait associations are
 strong (Figure~\ref{fig:power}). Type I error rates indicate that our
@@ -595,12 +596,11 @@ second QTL affecting ``percent time in light'' (Figure~\ref{fig:profiles}).
 Founder allele effects plots provide further evidence for the presence
 of two distinct loci. As \citet{macdonald2007joint} and
 \citet{king2012genetic} have demonstrated in their analyses of multiparental
-Drosophila populations, a biallelic pleiotropic QTL would result in
+\emph{Drosophila} populations, a biallelic pleiotropic QTL would result in
 allele effects plots that have similar patterns. While we don't know
 that ``percent time in light'' and ``hot plate latency'' arise from
 biallelic QTL, the dramatic differences that we observe in allele
-effects patterns further support the argument for two distinct loci,
-with \emph{Hydin\/} affecting only ``hot plate latency''.
+effects patterns further support the argument for two distinct loci.
 
 We have implemented our methods in an R package
 \texttt{qtl2pleio}, but analyses can be computationally intensive and
@@ -620,22 +620,21 @@ strategy to estimate variance components for lower-dimensional
 phenotypes before combining bootstrap variance component estimates
 into valid covariance matrices for the full multivariate phenotype.
 
-We view tests of pleiotropy as complementary to the sorts of
+
+We view tests of pleiotropy as complementary to 
 mediation tests and related methods that have become popular for
 inferring biomolecular causal relationships
 \citep{chick2016defining,schadt2005integrative,baron1986moderator}. A
 mediation test proceeds by including a putative mediator as a
 covariate in the regression analysis of phenotype and QTL genotype;
-one looks for a substantial reduction in the association between
-genotype and phenotype.
-Mediation and pleiotropy tests have different goals: mediation
-analysis seeks
-to establish causal relationships, while pleiotropy tests examine
-whether two traits share a QTL.
+a substantial reduction in the association between
+genotype and phenotype corresponds to evidence of mediation. 
+
+
+Mediation analyses and our pleiotropy test ask distinct, but related, questions. Mediation analysis seeks to establish causal relationships among traits, including molecular traits, or dependent biological and behavioral processes. Pleiotropy tests examine whether two traits share a single source of genetic variation, which may act in parallel or in a causal network. Pleiotropy is required for causal relations among traits. In many cases, the pleiotropy hypothesis is the only reasonable one. 
 
 \citet{schadt2005integrative} argued that
-both pleiotropy tests and causal inference methods,
-such as mediation tests, may contribute to gene network
+both pleiotropy tests and causal inference methods may contribute to gene network
 reconstruction. They developed a model selection strategy, based on
 the Akaike Information Criterion \citep{akaike1974new}, to determine which
 causal model is most compatible with the observed data.
@@ -647,6 +646,12 @@ trait. As envisioned by \citet{schadt2005integrative}, we foresee
 complementary roles emerging for our pleiotropy test
 and mediation tests in the dissection of complex trait genetic
 architecture.
+
+CAPE (Combinatorial Analysis of Pleiotropy and Epistasis) is a strategy for identifying higher-order relationships among traits and marker genotypes \citep{tyler2013cape}. \citet{tyler2017epistatic} used CAPE to identify epistatic gene networks in Diversity Outbred mice. \citet{tyler2016} found evidence for weak epistasis in a large intercross population. 
+
+CAPE uses univariate linear models that are distinct from those in our pleiotropy test. A CAPE starts with founder allele probabilities at all markers and a collection of two or more traits \citep{tyler2017epistatic}. After eigendecomposition to get two or more eigentraits, univariate QTL scans are performed and founder allele effects are estimated at all markers (or a subset of all markers). Next, you identify markers with sufficiently strong effects of at least one founder allele. The \texttt{cape} R package provides options to examine only those markers that have little pairwise linkage disequilibrium. Resulting eigentrait - marker - founder allele triples are then subjected to a second model fitting. This second round of modeling involves two eigentrait - marker - founder allele triples that share an eigentrait. The shared (univariate) eigentrait is modeled as a linear function of the two founder allele dosages and their interaction. 
+
+In comparing CAPE and our pleiotropy test, it's important to recognize that the two methods ask fundamentally different questions. CAPE enables assessment of interactions among specific founder allele dosages at two (possibly identical) markers while examining one eigentrait at a time. Our pleiotropy test, on the other hand, jointly models two phenotypes and quantifies the evidence against the pleiotropy hypothesis by performing a two-dimensional QTL scan over a genomic region. Our multivariate linear models accommodate interactions between founder allele dosages at two markers, but we haven't yet incorporated this functionality into our software. It is one direction for future research.
 
 Technological advances
 in mass spectrometry and RNA sequencing have enabled the acquisition of
