@@ -606,19 +606,21 @@ We have implemented our methods in an R package
 \texttt{qtl2pleio}, but analyses can be computationally intensive and
 time consuming. \texttt{qtl2pleio} is written mostly in R, and so we
 could likely obtain improved computational speed by porting parts of
-the calculations to a compiled langugage such as C or C++.
+the calculations to a compiled language such as C or C++.
 To accelerate our multi-dimensional QTL
 scans, we have integrated C++ code into \texttt{qtl2pleio},
 using the Rcpp package \citep{eddelbuettel2011rcpp}.
 
 Another computational bottleneck is the estimation of the variance
-components $V_g$ and $V_e$. In future research, we hope to extend our
-work for the joint analysis of more than two traits, and we will
+components $V_g$ and $V_e$. To accelerate this procedure, 
+especially for the joint analysis of more than two traits, we will
 consider other strategies for variance component estimation, including
-that described by \citet{hannah2018limmbo}, who implement a bootstrap
+that described by \citet{hannah2018limmbo}. \citet{hannah2018limmbo}, in joint analysis of dozens of traits, implement a bootstrap
 strategy to estimate variance components for lower-dimensional
 phenotypes before combining bootstrap variance component estimates
-into valid covariance matrices for the full multivariate phenotype.
+into valid covariance matrices for the full multivariate phenotype. 
+Such an approach may ease the computational burdens that we encountered in variance
+component estimation. 
 
 
 We view tests of pleiotropy as complementary to 
@@ -651,7 +653,7 @@ CAPE (Combinatorial Analysis of Pleiotropy and Epistasis) is a strategy for iden
 
 CAPE uses univariate linear models that are distinct from those in our pleiotropy test. A CAPE starts with founder allele probabilities at all markers and a collection of two or more traits \citep{tyler2017epistatic}. After eigendecomposition to get two or more eigentraits, univariate QTL scans are performed and founder allele effects are estimated at all markers (or a subset of all markers). Next, you identify markers with sufficiently strong effects of at least one founder allele. The \texttt{cape} R package provides options to examine only those markers that have little pairwise linkage disequilibrium. Resulting eigentrait - marker - founder allele triples are then subjected to a second model fitting. This second round of modeling involves two eigentrait - marker - founder allele triples that share an eigentrait. The shared (univariate) eigentrait is modeled as a linear function of the two founder allele dosages and their interaction. 
 
-In comparing CAPE and our pleiotropy test, it's important to recognize that the two methods ask fundamentally different questions. CAPE enables assessment of interactions among specific founder allele dosages at two (possibly identical) markers while examining one eigentrait at a time. Our pleiotropy test, on the other hand, jointly models two phenotypes and quantifies the evidence against the pleiotropy hypothesis by performing a two-dimensional QTL scan over a genomic region. One limitation of CAPE is its failure to account for population structure. Incorporation of a polygenic random effect into CAPE's linear models may improve its performance in multiparental populations. CAPE's methods also highlight a current limitation of our pleiotropy test. While our multivariate linear models accommodate interactions between founder allele dosages at two markers, we haven't yet incorporated this functionality into our software. It is one direction for future research.
+In comparing CAPE and our pleiotropy test, it's important to recognize that the two methods ask fundamentally different questions. CAPE enables assessment of interactions among specific founder allele dosages at two (possibly identical) markers while examining one eigentrait at a time. Our pleiotropy test, on the other hand, jointly models two phenotypes and quantifies the evidence against the pleiotropy hypothesis by performing a two-dimensional QTL scan over a genomic region. One limitation of CAPE is its inability to account for population structure. Incorporation of a polygenic random effect into CAPE's linear models may improve its performance in multiparental populations. CAPE's methods also highlight a current limitation of our pleiotropy test. While our multivariate linear models accommodate interactions between founder allele dosages at two markers, we haven't yet incorporated this functionality into our software. It is one direction for future research.
 
 
 
