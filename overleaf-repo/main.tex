@@ -32,7 +32,7 @@ an opportunity for quantitative methods to enhance understanding of
 the genetic architecture of complex traits. When multiple traits map
 to a common genomic region, knowledge of the number of distinct loci
 provides important insight into the underlying mechanism and can
-assist planning for subsequent experiments. We extend the work of 
+assist planning for subsequent experiments. We extend the work of
 \citet{jiang1995multiple} to develop a likelihood ratio test for the case of more than two alleles, for a pair of traits, to test the null hypothesis of pleiotropy against the alternative hypothesis of separate QTL.
 
 We also incorporate polygenic random effects to account for
@@ -612,27 +612,27 @@ scans, we have integrated C++ code into \texttt{qtl2pleio},
 using the Rcpp package \citep{eddelbuettel2011rcpp}.
 
 Another computational bottleneck is the estimation of the variance
-components $V_g$ and $V_e$. To accelerate this procedure, 
+components $V_g$ and $V_e$. To accelerate this procedure,
 especially for the joint analysis of more than two traits, we will
 consider other strategies for variance component estimation, including
 that described by \citet{hannah2018limmbo}. \citet{hannah2018limmbo}, in joint analysis of dozens of traits, implement a bootstrap
 strategy to estimate variance components for lower-dimensional
 phenotypes before combining bootstrap estimates
-into valid covariance matrices for the full multivariate phenotype. 
+into valid covariance matrices for the full multivariate phenotype.
 Such an approach may ease some of the computational burdens that we encountered.
 
 
-We view tests of pleiotropy as complementary to 
+We view tests of pleiotropy as complementary to
 mediation tests and related methods that have become popular for
 inferring biomolecular causal relationships
 \citep{chick2016defining,schadt2005integrative,baron1986moderator}. A
 mediation test proceeds by including a putative mediator as a
 covariate in the regression analysis of phenotype and QTL genotype;
 a substantial reduction in the association between
-genotype and phenotype corresponds to evidence of mediation. 
+genotype and phenotype corresponds to evidence of mediation.
 
 
-Mediation analyses and our pleiotropy test ask distinct, but related, questions. Mediation analysis seeks to establish causal relationships among traits, including molecular traits, or dependent biological and behavioral processes. Pleiotropy tests examine whether two traits share a single source of genetic variation, which may act in parallel or in a causal network. Pleiotropy is required for causal relations among traits. In many cases, the pleiotropy hypothesis is the only reasonable one. 
+Mediation analyses and our pleiotropy test ask distinct, but related, questions. Mediation analysis seeks to establish causal relationships among traits, including molecular traits, or dependent biological and behavioral processes. Pleiotropy tests examine whether two traits share a single source of genetic variation, which may act in parallel or in a causal network. Pleiotropy is required for causal relations among traits. In many cases, the pleiotropy hypothesis is the only reasonable one.
 
 \citet{schadt2005integrative} argued that
 both pleiotropy tests and causal inference methods may contribute to gene network
@@ -648,23 +648,23 @@ complementary roles emerging for our pleiotropy test
 and mediation tests in the dissection of complex trait genetic
 architecture.
 
-CAPE (Combinatorial Analysis of Pleiotropy and Epistasis) is a strategy for identifying higher-order relationships among traits and marker genotypes \citep{tyler2013cape}. 
-\citet{tyler2017epistatic} used CAPE to identify epistatic gene networks in Diversity Outbred mice. \citet{tyler2016weak} found evidence for weak epistasis in a large intercross population. 
+CAPE (Combinatorial Analysis of Pleiotropy and Epistasis) is a strategy for identifying higher-order relationships among traits and marker genotypes \citep{tyler2013cape}.
+\citet{tyler2017epistatic} used CAPE to identify epistatic gene networks in Diversity Outbred mice. \citet{tyler2016weak} found evidence for weak epistasis in a large intercross population.
 
-CAPE uses linear models that are distinct from those in our pleiotropy test. 
-A CAPE starts with founder allele dosages at all markers and a collection of two or more traits \citep{tyler2017epistatic}. 
-After eigendecomposition to get two or more eigentraits, univariate QTL scans are performed and founder allele effects are estimated at all markers (or a subset of all markers). 
-Next, one identifies markers with sufficiently strong effects of at least one founder allele. 
-Resulting (eigentrait, marker, founder allele) triples are then subjected to a second model fitting. 
-This second round of modeling involves two (eigentrait, marker, founder allele) triples that share an eigentrait. 
-The shared (univariate) eigentrait is modeled as a linear function of the two founder allele dosages and their interaction. 
+CAPE uses linear models that are distinct from those in our pleiotropy test.
+A CAPE starts with founder allele dosages at all markers and a collection of two or more traits \citep{tyler2017epistatic}.
+After eigendecomposition to get two or more eigentraits, univariate QTL scans are performed and founder allele effects are estimated at all markers (or a subset of all markers).
+Next, one identifies markers with sufficiently strong effects of at least one founder allele.
+Resulting (eigentrait, marker, founder allele) triples are then subjected to a second model fitting.
+This second round of modeling involves two (eigentrait, marker, founder allele) triples that share an eigentrait.
+The shared (univariate) eigentrait is modeled as a linear function of the two founder allele dosages and their interaction.
 
-In comparing CAPE and our pleiotropy test, it's important to recognize that the two methods ask different questions. 
-CAPE enables assessment of interactions among specific founder allele dosages at two (possibly identical) markers while examining one eigentrait at a time. 
-Our pleiotropy test, on the other hand, jointly models two phenotypes and quantifies the evidence against the pleiotropy hypothesis by performing a two-dimensional QTL scan over a genomic region. 
-One limitation of CAPE is its inability to account for population structure. Incorporation of a polygenic random effect into CAPE's linear models may improve its performance in multiparental populations. 
-CAPE's methods also highlight a current limitation of our pleiotropy test. 
-While our multivariate linear models accommodate interactions between founder allele dosages at two markers, we haven't yet incorporated this functionality into our software. 
+In comparing CAPE and our pleiotropy test, it's important to recognize that the two methods ask different questions.
+CAPE enables assessment of interactions among specific founder allele dosages at two (possibly identical) markers while examining one eigentrait at a time.
+Our pleiotropy test, on the other hand, jointly models two phenotypes and quantifies the evidence against the pleiotropy hypothesis by performing a two-dimensional QTL scan over a genomic region.
+One limitation of CAPE is its inability to account for population structure. Incorporation of a polygenic random effect into CAPE's linear models may improve its performance in multiparental populations.
+CAPE's methods also highlight a current limitation of our pleiotropy test.
+While our multivariate linear models accommodate interactions between founder allele dosages at two markers, we haven't yet incorporated this functionality into our software.
 It is one direction for future research.
 
 
