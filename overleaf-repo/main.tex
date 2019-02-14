@@ -124,8 +124,8 @@ multiparental populations. Our test builds on research that
 Our innovations include the accommodation of $k$ founder alleles per
 locus (compared to the traditional two founder alleles per locus) and
 the incorporation of multivariate polygenic random effects to account
-for relatedness. Furthermore, we implemented a parametric bootstrap to
-calibrate test statistic values \citep{efron1979,tian2016dissection}.
+for relatedness. Furthermore, we implemented a parametric bootstrap
+test to assess statistical significance \citep{efron1979,tian2016dissection}.
 
 Below, we describe our likelihood ratio test for pleiotropy vs.\
 separate QTL. In simulation studies, we find that it is slightly
@@ -148,7 +148,7 @@ under pleiotropy (that is, along the diagonal where the two QTL are at
 a common location), and the ordered pair of positions that maximizes
 the likelihood under the model where the two QTL are allowed to be
 distinct. The logarithm of the ratio of the two likelihoods is our
-test statistic. We calibrate this test statistic with a parametric
+test statistic. We determine statistical significance with a parametric
 bootstrap.
 
 \subsection{Data structures}
@@ -335,7 +335,7 @@ is zero.
 
 \subsection{Bootstrap for test statistic calibration}
 
-We use a parametric bootstrap to calibrate our test statistic
+We use a parametric bootstrap to determine statistical significance
 \citep{efron1979}. While \citet{jiang1995multiple} used quantiles of a
 chi-squared distribution to determine p-values, this does not account
 for the two-dimensional search over QTL positions.
@@ -466,8 +466,8 @@ the 2 by 2 identity matrix in all power study simulations.
 
 We simulated 400 pairs of traits per set of parameter inputs. For
 each simulation replicate, we calculated the likelihood ratio test
-statistic. We then applied our parametric bootstrap to calibrate the
-test statistics. For each simulation replicate, we used $b = 400$ bootstrap
+statistic. We then applied our parametric bootstrap to determine the
+statistical significance of the results. For each simulation replicate, we used $b = 400$ bootstrap
 samples. Because the bootstrap test statistics within a single set of
 parameter inputs followed approximately the same distribution, we
 pooled the $400 * 400 = 160,000$ bootstrap samples per set of
