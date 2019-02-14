@@ -1,9 +1,10 @@
 Recla analysis: Updated figures
 ================
 Frederick Boehm
-2019-01-20 11:14:16
+2019-02-14 10:57:17
 
-## Read pvl scan results from files
+Read pvl scan results from files
+--------------------------------
 
 ``` r
 library(dplyr)
@@ -27,10 +28,12 @@ as_tibble(read.table("recla-07-22.txt")) -> pvl0722
 as_tibble(read.table("recla-10-22.txt")) -> pvl1022
 ```
 
-## Load Recla from qtl2data
+Load Recla from qtl2data
+------------------------
 
 ``` r
 library(qtl2)
+library(broman) # used for ggplot2 theme
 file <- paste0("https://raw.githubusercontent.com/rqtl/",
                "qtl2data/master/DO_Recla/recla.zip")
 recla <- read_cross2(file)
@@ -41,21 +44,17 @@ insert_pseudomarkers(recla, step = 0.10) -> pseudomap
 gm <- pseudomap$`8`
 ```
 
+We calculate genotype probabilities and convert them to haplotype dosages.
+
 ``` r
-probs <- calc_genoprob(recla, map = pseudomap)
+probs <- calc_genoprob(recla, map = pseudomap, cores=0)
+aprobs <- genoprob_to_alleleprob(probs, cores=0)
 ```
 
-We now convert the genotype probabilities to haplotype dosages.
+We now calculate kinship matrices, by the "leave one chromosome out (loco)" method.
 
 ``` r
-aprobs <- genoprob_to_alleleprob(probs)
-```
-
-We now calculate kinship matrices, by the “leave one chromosome out
-(loco)” method.
-
-``` r
-kinship <- calc_kinship(aprobs, "loco")
+kinship <- calc_kinship(aprobs, "loco", cores=0)
 ```
 
 ``` r
@@ -71,8 +70,13 @@ as_tibble(wlph) -> wlph_tib
 sex2 <- matrix(as.numeric(sex == "female"), ncol = 1)
 colnames(sex2) <- "female"
 rownames(sex2) <- rownames(aprobs[[1]])
-out <- scan1(genoprobs = aprobs, pheno = wlph, kinship = kinship, addcovar = sex2, reml = TRUE)
-saveRDS(out, "scan1.rds") # save scan1 results in case we want to tweak figures
+file <- "scan1.rds"
+if(file.exists(file)) {
+    out <- readRDS(file)
+} else {
+    out <- scan1(genoprobs = aprobs, pheno = wlph, kinship = kinship, addcovar = sex2, reml = TRUE, cores=0)
+    saveRDS(out, "scan1.rds") # save scan1 results in case we want to tweak figures
+}
 ```
 
 ``` r
@@ -87,7 +91,7 @@ saveRDS(out, "scan1.rds") # save scan1 results in case we want to tweak figures
     ## 3             LD_transitions   1 95.8075 5.028258
     ## 4                OF_distance   2 49.9770 5.544458
     ## 5                         bw   2 52.3932 7.352334
-    ## 6            OF_immobile_pct   2 53.2646 9.771813
+    ## 6            OF_immobile_pct   2 53.2646 9.771814
     ## 7  VC_bottom_distance_first4   2 71.0160 6.531654
     ## 8         OF_distance_first4   3 10.7360 5.541166
     ## 9  VC_bottom_distance_first4   3 16.3700 5.518637
@@ -134,7 +138,7 @@ saveRDS(out, "scan1.rds") # save scan1 results in case we want to tweak figures
     ## 50            LD_transitions  11 58.9000 5.903217
     ## 51     VC_bottom_transitions  11 60.5984 5.114051
     ## 52              LD_light_pct  11 63.3943 6.464176
-    ## 53         LD_distance_light  11 63.4514 6.373437
+    ## 53         LD_distance_light  11 63.4514 6.373438
     ## 54           VC_top_time_pct  12 20.5776 6.950144
     ## 55        VC_bottom_velocity  12 21.7760 5.653292
     ## 56             OF_center_pct  12 35.5140 6.399422
@@ -143,15 +147,15 @@ saveRDS(out, "scan1.rds") # save scan1 results in case we want to tweak figures
     ## 59             OF_corner_pct  13 59.7966 6.594594
     ## 60     VC_bottom_time_first4  14 11.9183 5.204369
     ## 61 VC_bottom_distance_first4  14 12.5316 5.763233
-    ## 62     VC_bottom_transitions  14 12.5316 6.478533
+    ## 62     VC_bottom_transitions  14 12.5316 6.478532
     ## 63           VC_top_velocity  14 12.7819 6.840412
     ## 64        VC_bottom_distance  14 14.5316 5.592030
     ## 65     TS_frequency_climbing  14 21.1141 5.372594
     ## 66             OF_center_pct  14 53.7316 5.377182
     ## 67     TS_frequency_climbing  15 12.6680 6.043265
     ## 68              LD_light_pct  15 15.2374 5.674922
-    ## 69        OF_distance_first4  16 23.2656 5.242101
-    ## 70           VC_top_distance  17 15.6390 6.669275
+    ## 69        OF_distance_first4  16 23.2656 5.242102
+    ## 70           VC_top_distance  17 15.6390 6.669276
     ## 71           VC_top_velocity  18  8.3750 5.558628
     ## 72        VC_top_time_first4  18 17.8068 6.246206
     ## 73            LD_transitions  18 37.4182 5.090332
@@ -171,10 +175,10 @@ pos_HP_latency <- peaks8 %>%
   select(pos)
 ```
 
-## Find peaks for two traits
+Find peaks for two traits
+-------------------------
 
-Make a supplementary table for
-manuscript.
+Make a supplementary table for manuscript.
 
 ``` r
 xtable::xtable(find_peaks(out[, c(10, 22)], pseudomap, threshold = 5) %>%
@@ -183,7 +187,7 @@ xtable::xtable(find_peaks(out[, c(10, 22)], pseudomap, threshold = 5) %>%
 ```
 
     ## % latex table generated in R 3.5.2 by xtable 1.8-3 package
-    ## % Sun Jan 20 11:27:11 2019
+    ## % Thu Feb 14 10:57:33 2019
     ## \begin{table}[ht]
     ## \centering
     ## \begin{tabular}{rllrr}
@@ -197,15 +201,15 @@ xtable::xtable(find_peaks(out[, c(10, 22)], pseudomap, threshold = 5) %>%
     ##   5 & LD\_light\_pct & 11 & 63.39 & 6.46 \\ 
     ##   6 & HP\_latency & 12 & 43.52 & 5.13 \\ 
     ##   7 & LD\_light\_pct & 15 & 15.24 & 5.67 \\ 
-    ##   8 & HP\_latency & 19 & 47.80 & 5.48 \\ 
+    ##   8 & HP\_latency & 19 & 47.80 & 5.49 \\ 
     ##    \hline
     ## \end{tabular}
     ## \end{table}
 
-## Correlation
+Correlation
+-----------
 
-Given that the two traits “percent time in light” and “distance traveled
-in light” share a peak, we want to ask how correlated they are.
+Given that the two traits "percent time in light" and "distance traveled in light" share a peak, we want to ask how correlated they are.
 
 ``` r
 cor(wlph[ , 7], wlph[ , 10], use = "complete.obs")
@@ -225,14 +229,16 @@ cor(wlph[ , 7], wlph[ , 22], use = "complete.obs")
 
     ## [1] -0.143598
 
-## Plots
+Plots
+-----
 
 ``` r
 library(qtl2pleio)
 colnames(recla$pheno)[c(10, 22)] <- c("percent time in light", "hot plate latency")
 p1022 <- tidy_scan_pvl(pvl1022, pmap = gm) %>%
   add_intercepts(c(as.numeric(pos_LD_light_pct), as.numeric(pos_HP_latency))) %>%
-  plot_pvl(phenames = colnames(recla$pheno)[c(10, 22)]) + ggtitle("percent time in light and hot plate latency")
+  plot_pvl(phenames = colnames(recla$pheno)[c(10, 22)]) + ggtitle("percent time in light and hot plate latency") +
+    broman::theme_karl()
 ```
 
     ## Warning: Column `marker`/`marker1` joining character vector and factor,
@@ -257,10 +263,11 @@ ggsave(filename =  "profile.svg", plot = p1022)
 
     ## Warning: Removed 208 rows containing missing values (geom_path).
 
-## Scatter plot of phenotypes
+Scatter plot of phenotypes
+--------------------------
 
 ``` r
-scatter1022 <- ggplot() + geom_point(data = wlph_tib, aes(y = HP_latency, x = LD_light_pct)) + labs(x = "percent time in light", y = "hot plate latency") + ggtitle("hot plate latency vs. percent time in light")
+scatter1022 <- ggplot() + geom_point(data = wlph_tib, aes(y = HP_latency, x = LD_light_pct)) + labs(x = "percent time in light", y = "hot plate latency") + ggtitle("hot plate latency vs. percent time in light") + broman::theme_karl()
 ggsave(filename = "scatter.eps", plot = scatter1022)
 ```
 
@@ -276,7 +283,8 @@ ggsave(filename = "scatter.svg", plot = scatter1022)
 
     ## Warning: Removed 3 rows containing missing values (geom_point).
 
-## Genome-wide LOD plots for the traits from Recla
+Genome-wide LOD plots for the traits from Recla
+-----------------------------------------------
 
 ``` r
 setEPS()
@@ -299,16 +307,10 @@ dev.off()
     ##                 2
 
 ``` r
-setEPS()
-postscript("genomewide_lod_trait10.eps")
-plot(out, map = pseudomap, lodcolumn = 10, main = "percent time in light")
-dev.off()
-```
-
-    ## quartz_off_screen 
-    ##                 2
-
-``` r
+#setEPS()
+#postscript("genomewide_lod_trait10.eps")
+#plot(out, map = pseudomap, lodcolumn = 10, main = "percent time in light")
+#dev.off()
 svg("genomewide_lod_trait10.svg")
 plot(out, map = pseudomap, lodcolumn = 10, main = "percent time in light")
 dev.off()
@@ -318,16 +320,10 @@ dev.off()
     ##                 2
 
 ``` r
-setEPS()
-postscript("genomewide_lod_trait22.eps")
-plot(out, map = pseudomap, lodcolumn = 22, main = "hot plate latency")
-dev.off()
-```
-
-    ## quartz_off_screen 
-    ##                 2
-
-``` r
+#setEPS()
+#postscript("genomewide_lod_trait22.eps")
+#plot(out, map = pseudomap, lodcolumn = 22, main = "hot plate latency")
+#dev.off()
 svg("genomewide_lod_trait22.svg")
 plot(out, map = pseudomap, lodcolumn = 22, main = "hot plate latency")
 dev.off()
@@ -340,16 +336,20 @@ dev.off()
 # genomewide lod plots for 10 & 22, pct time in light and hot plate latency
 setEPS()
 postscript("genomewide_lods_10-22.eps")
+ymx <- max(c(out[,10], out[,22]))
 par(mfrow = c(2, 1))
-plot(out, map = pseudomap, lodcolumn = 10, main = "percent time in light")
-plot(out, map = pseudomap, lodcolumn = 22, main = "hot plate latency")
+plot(out, map = pseudomap, lodcolumn = 10, main = "percent time in light",
+     ylim=c(0, ymx*1.05), altcol="green4")
+plot(out, map = pseudomap, lodcolumn = 22, main = "hot plate latency",
+     ylim=c(0, ymx*1.05), altcol="green4")
 dev.off()
 ```
 
     ## quartz_off_screen 
     ##                 2
 
-## LOD plots for both traits on Chromosome 8
+LOD plots for both traits on Chromosome 8
+-----------------------------------------
 
 ``` r
 # first, look at dimensions of `out`
@@ -373,21 +373,30 @@ dev.off()
     ## quartz_off_screen 
     ##                 2
 
-## Allele effects plots on chr 8 for Recla traits
+Allele effects plots on chr 8 for Recla traits
+----------------------------------------------
 
 ``` r
-scan1coef(aprobs[ , 8], pheno = wlph[, 10], kinship = kinship$`8`, 
-          reml = TRUE,
-          addcovar = sex2) -> s1c_10
-scan1coef(aprobs[ , 8], pheno = wlph[, 22], kinship = kinship$`8`, 
-          reml = TRUE,
-          addcovar = sex2) -> s1c_22
-```
+file10 <- "s1c_10.rds"
+if(file.exists(file10)) {
+    s1c_10 <- readRDS(file10)
+} else {
+    scan1coef(aprobs[ , 8], pheno = wlph[, 10], kinship = kinship$`8`,
+              reml = TRUE,
+              addcovar = sex2) -> s1c_10
+    saveRDS(s1c_10, file10) # percent time in light
+}
 
-``` r
-# save scan1coef output objects for fine-tuning of figures
-saveRDS(s1c_10, "s1c_10.rds") # percent time in light
-saveRDS(s1c_22, "s1c_22.rds") # hot plate latency
+file22 <- "s1c_22.rds"
+if(file.exists(file22)) {
+    s1c_22 <- readRDS(file22)
+} else {
+    scan1coef(aprobs[ , 8], pheno = wlph[, 22], kinship = kinship$`8`,
+              reml = TRUE,
+              addcovar = sex2) -> s1c_22
+    # save scan1coef output objects for fine-tuning of figures
+    saveRDS(s1c_22, file22) # hot plate latency
+}
 ```
 
 ``` r
@@ -419,23 +428,24 @@ dev.off()
     ## quartz_off_screen 
     ##                 2
 
-## Session info
+Session info
+------------
 
 ``` r
 devtools::session_info()
 ```
 
     ## ─ Session info ──────────────────────────────────────────────────────────
-    ##  setting  value                                      
-    ##  version  R version 3.5.2 Patched (2018-12-24 r75893)
-    ##  os       macOS Mojave 10.14.2                       
-    ##  system   x86_64, darwin15.6.0                       
-    ##  ui       X11                                        
-    ##  language (EN)                                       
-    ##  collate  en_US.UTF-8                                
-    ##  ctype    en_US.UTF-8                                
-    ##  tz       America/Chicago                            
-    ##  date     2019-01-20                                 
+    ##  setting  value                       
+    ##  version  R version 3.5.2 (2018-12-20)
+    ##  os       macOS High Sierra 10.13.6   
+    ##  system   x86_64, darwin15.6.0        
+    ##  ui       X11                         
+    ##  language en_US.UTF-8                 
+    ##  collate  en_US.UTF-8                 
+    ##  ctype    UTF-8                       
+    ##  tz       America/Chicago             
+    ##  date     2019-02-14                  
     ## 
     ## ─ Packages ──────────────────────────────────────────────────────────────
     ##  package     * version    date       lib source                           
@@ -446,18 +456,18 @@ devtools::session_info()
     ##  bit           1.1-14     2018-05-29 [1] CRAN (R 3.5.0)                   
     ##  bit64         0.9-7      2017-05-08 [1] CRAN (R 3.5.0)                   
     ##  blob          1.1.1      2018-03-25 [1] CRAN (R 3.5.0)                   
-    ##  broman        0.68-2     2018-07-25 [1] CRAN (R 3.5.0)                   
+    ##  broman      * 0.68-4     2018-08-17 [1] local                            
     ##  callr         3.1.1      2018-12-21 [1] CRAN (R 3.5.0)                   
     ##  cli           1.0.1      2018-09-25 [1] CRAN (R 3.5.0)                   
-    ##  colorspace    1.3-2      2016-12-14 [1] CRAN (R 3.5.0)                   
+    ##  colorspace    1.4-0      2019-01-13 [1] CRAN (R 3.5.2)                   
     ##  crayon        1.3.4      2017-09-16 [1] CRAN (R 3.5.0)                   
-    ##  data.table    1.11.8     2018-09-30 [1] CRAN (R 3.5.0)                   
+    ##  data.table    1.12.0     2019-01-13 [1] CRAN (R 3.5.2)                   
     ##  DBI           1.0.0      2018-05-02 [1] CRAN (R 3.5.0)                   
     ##  desc          1.2.0      2018-05-01 [1] CRAN (R 3.5.0)                   
-    ##  devtools      2.0.1      2018-10-26 [1] CRAN (R 3.5.2)                   
+    ##  devtools      2.0.1      2018-10-26 [1] CRAN (R 3.5.1)                   
     ##  digest        0.6.18     2018-10-10 [1] CRAN (R 3.5.0)                   
     ##  dplyr       * 0.7.8      2018-11-10 [1] CRAN (R 3.5.0)                   
-    ##  evaluate      0.12       2018-10-09 [1] CRAN (R 3.5.0)                   
+    ##  evaluate      0.13       2019-02-12 [1] CRAN (R 3.5.2)                   
     ##  fs            1.2.6      2018-08-23 [1] CRAN (R 3.5.0)                   
     ##  gdtools     * 0.1.7      2018-02-27 [1] CRAN (R 3.5.0)                   
     ##  ggplot2     * 3.1.0      2018-10-25 [1] CRAN (R 3.5.0)                   
@@ -465,7 +475,7 @@ devtools::session_info()
     ##  gtable        0.2.0      2016-02-26 [1] CRAN (R 3.5.0)                   
     ##  htmltools     0.3.6      2017-04-28 [1] CRAN (R 3.5.0)                   
     ##  jsonlite      1.6        2018-12-07 [1] CRAN (R 3.5.0)                   
-    ##  knitr         1.21       2018-12-10 [1] CRAN (R 3.5.2)                   
+    ##  knitr         1.21       2018-12-10 [1] CRAN (R 3.5.1)                   
     ##  labeling      0.3        2014-08-23 [1] CRAN (R 3.5.0)                   
     ##  lazyeval      0.2.1      2017-10-29 [1] CRAN (R 3.5.0)                   
     ##  lubridate     1.7.4      2018-04-11 [1] CRAN (R 3.5.0)                   
@@ -474,34 +484,35 @@ devtools::session_info()
     ##  munsell       0.5.0      2018-06-12 [1] CRAN (R 3.5.0)                   
     ##  pillar        1.3.1      2018-12-15 [1] CRAN (R 3.5.0)                   
     ##  pkgbuild      1.0.2      2018-10-16 [1] CRAN (R 3.5.0)                   
-    ##  pkgconfig     2.0.2      2018-08-16 [1] CRAN (R 3.5.0)                   
+    ##  pkgconfig     2.0.2      2018-08-16 [1] CRAN (R 3.5.1)                   
     ##  pkgload       1.0.2      2018-10-29 [1] CRAN (R 3.5.0)                   
     ##  plyr          1.8.4      2016-06-08 [1] CRAN (R 3.5.0)                   
     ##  prettyunits   1.0.2      2015-07-13 [1] CRAN (R 3.5.0)                   
     ##  processx      3.2.1      2018-12-05 [1] CRAN (R 3.5.0)                   
     ##  ps            1.3.0      2018-12-21 [1] CRAN (R 3.5.0)                   
-    ##  purrr         0.2.5      2018-05-29 [1] CRAN (R 3.5.0)                   
-    ##  qtl2        * 0.17-9     2018-12-25 [1] Github (rqtl/qtl2@1c007a2)       
-    ##  qtl2pleio   * 0.1.2.9000 2018-12-31 [1] Github (fboehm/qtl2pleio@be41d66)
-    ##  R6            2.3.0      2018-10-04 [1] CRAN (R 3.5.0)                   
-    ##  Rcpp          1.0.0.1    2018-12-28 [1] Github (RcppCore/Rcpp@0c9f683)   
+    ##  purrr         0.3.0      2019-01-27 [1] CRAN (R 3.5.2)                   
+    ##  qtl2        * 0.18       2019-02-08 [1] local                            
+    ##  qtl2pleio   * 0.1.2.9000 2019-01-28 [1] Github (fboehm/qtl2pleio@be41d66)
+    ##  R6            2.3.0      2018-10-04 [1] CRAN (R 3.5.1)                   
+    ##  Rcpp          1.0.0      2018-11-07 [1] CRAN (R 3.5.0)                   
     ##  remotes       2.0.2      2018-10-30 [1] CRAN (R 3.5.0)                   
-    ##  rlang         0.3.0.1    2018-10-25 [1] CRAN (R 3.5.0)                   
+    ##  rlang         0.3.1      2019-01-08 [1] CRAN (R 3.5.2)                   
     ##  rmarkdown     1.11       2018-12-08 [1] CRAN (R 3.5.0)                   
     ##  rprojroot     1.3-2      2018-01-03 [1] CRAN (R 3.5.0)                   
     ##  RSQLite       2.1.1      2018-05-06 [1] CRAN (R 3.5.0)                   
-    ##  scales        1.0.0      2018-08-09 [1] CRAN (R 3.5.0)                   
+    ##  scales        1.0.0      2018-08-09 [1] CRAN (R 3.5.1)                   
     ##  sessioninfo   1.1.1      2018-11-05 [1] CRAN (R 3.5.0)                   
-    ##  stringi       1.2.4      2018-07-20 [1] CRAN (R 3.5.0)                   
-    ##  stringr       1.3.1      2018-05-10 [1] CRAN (R 3.5.0)                   
+    ##  stringi       1.3.1      2019-02-13 [1] CRAN (R 3.5.2)                   
+    ##  stringr       1.4.0      2019-02-10 [1] CRAN (R 3.5.2)                   
     ##  svglite       1.2.1      2017-09-11 [1] CRAN (R 3.5.0)                   
     ##  testthat      2.0.1      2018-10-13 [1] CRAN (R 3.5.0)                   
-    ##  tibble        1.4.2      2018-01-22 [1] CRAN (R 3.5.0)                   
-    ##  tidyselect    0.2.5      2018-10-11 [1] CRAN (R 3.5.0)                   
+    ##  tibble        2.0.1      2019-01-12 [1] CRAN (R 3.5.2)                   
+    ##  tidyselect    0.2.5      2018-10-11 [1] CRAN (R 3.5.1)                   
     ##  usethis       1.4.0      2018-08-14 [1] CRAN (R 3.5.0)                   
     ##  withr         2.1.2      2018-03-15 [1] CRAN (R 3.5.0)                   
     ##  xfun          0.4        2018-10-23 [1] CRAN (R 3.5.0)                   
     ##  xtable        1.8-3      2018-08-29 [1] CRAN (R 3.5.0)                   
     ##  yaml          2.2.0      2018-07-25 [1] CRAN (R 3.5.0)                   
     ## 
-    ## [1] /Library/Frameworks/R.framework/Versions/3.5/Resources/library
+    ## [1] /Users/kbroman/Rlibs
+    ## [2] /Library/Frameworks/R.framework/Versions/3.5/Resources/library
