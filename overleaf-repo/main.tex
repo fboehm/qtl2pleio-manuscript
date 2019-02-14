@@ -475,7 +475,7 @@ parameter inputs followed approximately the same distribution, we
 pooled the $400 * 400 = 160,000$ bootstrap samples per set of
 parameter inputs and compared each test statistic to the empirical
 distribution derived from the 160,000 bootstrap samples. However, for
-parameter inputs with interlocus distance equal to zero, we didn't
+parameter inputs with interlocus distance equal to zero, we did not
 pool the 160,000 bootstrap samples; instead, we proceeded by
 calculating power (\textit{i.e.}, type I error rate, in this case), as we did in the
 type I error rate study above.
@@ -602,7 +602,7 @@ Founder allele effects plots provide further evidence for the presence
 of two distinct loci. As \citet{macdonald2007joint} and
 \citet{king2012genetic} have demonstrated in their analyses of multiparental
 \emph{Drosophila} populations, a biallelic pleiotropic QTL would result in
-allele effects plots that have similar patterns. While we don't know
+allele effects plots that have similar patterns. While we do not know
 that ``percent time in light'' and ``hot plate latency'' arise from
 biallelic QTL, the dramatic differences that we observe in allele
 effects patterns further support the argument for two distinct loci.
@@ -653,26 +653,23 @@ complementary roles emerging for our pleiotropy test
 and mediation tests in the dissection of complex trait genetic
 architecture.
 
-CAPE (Combinatorial Analysis of Pleiotropy and Epistasis) is a strategy for identifying higher-order relationships among traits and marker genotypes \citep{tyler2013cape}.
-\citet{tyler2017epistatic} used CAPE to identify epistatic gene networks in Diversity Outbred mice. \citet{tyler2016weak} found evidence for weak epistasis in a large intercross population.
-
-CAPE uses linear models that are distinct from those in our pleiotropy test.
-A CAPE starts with founder allele dosages at all markers and a collection of two or more traits \citep{tyler2017epistatic}.
-After eigendecomposition to get two or more eigentraits, univariate QTL scans are performed and founder allele effects are estimated at all markers (or a subset of all markers).
-Next, one identifies markers with sufficiently strong effects of at least one founder allele.
-Resulting (eigentrait, marker, founder allele) triples are then subjected to a second model fitting.
-This second round of modeling involves two (eigentrait, marker, founder allele) triples that share an eigentrait.
-The shared (univariate) eigentrait is modeled as a linear function of the two founder allele dosages and their interaction.
-
-In comparing CAPE and our pleiotropy test, it's important to recognize that the two methods ask different questions.
-CAPE enables assessment of interactions among specific founder allele dosages at two (possibly identical) markers while examining one eigentrait at a time.
-Our pleiotropy test, on the other hand, jointly models two phenotypes and quantifies the evidence against the pleiotropy hypothesis by performing a two-dimensional QTL scan over a genomic region.
-One limitation of CAPE is its inability to account for population structure. Incorporation of a polygenic random effect into CAPE's linear models may improve its performance in multiparental populations.
-CAPE's methods also highlight a current limitation of our pleiotropy test.
-While our multivariate linear models accommodate interactions between founder allele dosages at two markers, we haven't yet incorporated this functionality into our software.
-It is one direction for future research.
-
-
+Two related approaches for identifying and exploiting pleiotropy
+deserve mention. First, CAPE (Combinatorial Analysis of Pleiotropy and
+Epistasis) is a strategy for identifying identifying higher-order
+relationships among traits and marker genotypes
+\citep{tyler2013cape,tyler2016weak} and has recently been extended for
+use with multiparental populations, including DO mice
+\citep{tyler2017epistatic}. CAPE exploits the pleiotropic relationship
+among traits in order to characterize the underlying network of QTLs,
+and it can suggest possible pleiotropic effects, but it does not
+provide an explicit test of pleiotropy.
+Second, \citet{schaid2016} described a test for pleiotropy in the
+context of human genome-wide association studies (GWAS). Their approach is
+fundamentally different from ours, in that rather than ask whether
+traits are affected by a common locus or distinct loci, they ask
+whether the traits are all affected by a particular SNP or only some
+are. This difference in approach may be due to the difference in
+mapping resolution, between humans GWAS and experimental crosses.
 
 Technological advances
 in mass spectrometry and RNA sequencing have enabled the acquisition of
