@@ -34,7 +34,13 @@ clean: mostlyclean
 
 R/power-curves.eps: R/plot-power-curves.R
 	R CMD BATCH R/plot-power-curves.R
-	
+
 Rmd/scatter.eps: $(RMD_FILE)
 	Rscript -e "rmarkdown::render('$<')"
-  
+
+# use latexdiff to get PDF comparing current to an older version
+diff:
+	latexdiff latexdiff/main_old.tex overleaf-repo/main.tex > latexdiff/diff.tex
+	mv latexdiff/diff.tex overleaf-repo
+	cd overleaf-repo;$(LATEXMK) -pdfps -bibtex diff.tex
+	mv overleaf-repo/diff* latexdiff/
