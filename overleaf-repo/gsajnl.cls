@@ -50,7 +50,7 @@
 \newdateformat{monthyeardate}{%
   \monthname[\THEMONTH] \THEYEAR}
 
-\RequirePackage{enumitem} 
+\RequirePackage{enumitem}
 \setlist[itemize]{noitemsep}
 
 
@@ -67,7 +67,7 @@
 % Choose article type
 \newcommand*{\articletype}[1]{%
   \RequirePackage{styles/#1}}
-  
+
 % Copyright statement
 \RequirePackage{textcomp} % For copyright symbol styling
 \newcommand{\copyrightstatement}{Copyright \, \textcopyright\, \the\year{} by the Genetics Society of America}
@@ -130,8 +130,8 @@
 \pagestyle{fancy}          % Enables the custom headers/footers
 
 \fancypagestyle{firststyle}{
-   \fancyhead[R]{{\watermarkfont GENETICS |} \headerfont \articletypename}
-   \fancyfoot[R]{\footnotesize Genetics, Vol. XXX, XXXX–XXXX \hspace{1em} \monthyeardate\today \hspace{2em} \thepage\ }
+   \fancyhead[R]{}
+   \fancyfoot[R]{\thepage\ }
 }
 
 % Headers
@@ -201,7 +201,7 @@
 
 % Colored margin box
 \newcommand{\marginmark}{
-\begin{textblock}{2}(200,9.5) 
+\begin{textblock}{2}(200,9.5)
 \begin{tikzpicture}
 \fill[color=color2] (0,0) rectangle (1.2,0.25);
 \end{tikzpicture}
@@ -224,7 +224,7 @@ THE ABSTRACT\vskip12pt}\let\go\relax\fi
 \noindent
 {%
 \parbox{\dimexpr\linewidth}{%
-	\ifthenelse{\boolean{displaylineno}}{\internallinenumbers}{}%
+    \ifthenelse{\boolean{displaylineno}}{\internallinenumbers}{}%
     {\absfont\bfseries ABSTRACT} \absfont \theabstract
 }%
 \vskip10pt%
@@ -298,8 +298,6 @@ THE ABSTRACT\vskip12pt}\let\go\relax\fi
 }
 
 \newcommand{\firstpagefootnote}{\blfootnote{\copyrightfont \ifthenelse{\boolean{displaycopyright}}{\copyrightstatement}{}\\%
-doi: 10.1534/genetics.XXX.XXXXXX \\%
-Manuscript compiled: \today%
 }}
 
 \newenvironment{tableminipage}[1]{\begin{minipage}{#1}\renewcommand\footnoterule{ \kern -1ex}%
